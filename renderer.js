@@ -7,7 +7,5 @@ editor.getSession().setMode("ace/mode/sql");
 editor.setFontSize("14px");
 editor.setShowPrintMargin(false);
 editor.setOptions({
-	enableBasicAutocompletion: true,
-	enableSnippets: true,
-	enableLiveAutocompletion: false
+	enableBasicAutocompletion: true
 });
