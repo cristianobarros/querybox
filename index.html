@@ -2,18 +2,40 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>SQL Editor</title>
+  <style type="text/css" media="screen">
+    body {
+        overflow: hidden;
+    }
+    #editor {
+        margin: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+  </style>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+  <pre id="editor">WITH contrato_vigente AS (
+ SELECT * FROM contrato WHERE rodada_fim IS NULL
+)
+SELECT atleta.id, atleta.apelido, clube.id, clube.nome, posicao.abreviacao, SUM(pontuacao.quantidade)
+FROM pontuacao pontuacao
+JOIN participacao participacao ON pontuacao.participacao = participacao.id
+JOIN contrato contrato ON participacao.contrato = contrato.id
+JOIN atleta atleta ON contrato.atleta = atleta.id
+JOIN contrato_vigente ON atleta.id = contrato_vigente.atleta
+JOIN clube clube ON contrato_vigente.clube = clube.id
+JOIN posicao posicao ON contrato_vigente.posicao = posicao.id
+WHERE pontuacao.scout = 13
+GROUP BY atleta.id, atleta.apelido, clube.id, clube.nome, posicao.abreviacao
+ORDER BY 6 DESC</pre>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js" type="text/javascript" charset="utf-8"></script>
   </body>
-
   <script>
     // You can also require other files to run in this process
-    require('./renderer.js')
+    require("./renderer.js")
   </script>
 </html>

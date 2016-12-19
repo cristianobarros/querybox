@@ -1,22 +1,22 @@
 {
-  "name": "electron-quick-start",
+  "name": "js-sql-editor",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A JavaScript SQL Editor",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "JavaScript",
+    "SQL",
+    "editor"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "Cristiano de Barros",
   "devDependencies": {
     "electron": "^1.4.1"
+  },
+  "dependencies": {
+    "ace-code-editor": "^1.2.3"
   }
 }
