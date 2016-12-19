@@ -9,3 +9,5 @@ editor.setShowPrintMargin(false);
 editor.setOptions({
 	enableBasicAutocompletion: true
 });
+var StatusBar = ace.require("ace/ext/statusbar").StatusBar;
+var statusBar = new StatusBar(editor, document.getElementById("status"));

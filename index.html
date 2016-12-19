@@ -7,13 +7,31 @@
     body {
         overflow: hidden;
     }
-    #editor {
+    #editor { 
         margin: 0;
         position: absolute;
         top: 0;
-        bottom: 0;
+        bottom: 20px;
         left: 0;
         right: 0;
+    }
+    #status {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 20px;
+        background-color: rgb(245, 245, 245);
+        color: gray;
+    }
+    .ace_status-indicator {
+        position: absolute;
+        right: 0;
+        border-left: 1px solid;
+		padding-left: 5px;
+		padding-right: 5px;
     }
   </style>
   </head>
@@ -32,8 +50,10 @@ JOIN posicao posicao ON contrato_vigente.posicao = posicao.id
 WHERE pontuacao.scout = 13
 GROUP BY atleta.id, atleta.apelido, clube.id, clube.nome, posicao.abreviacao
 ORDER BY 6 DESC</pre>
+  <div id="status"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" type="text/javascript" charset="utf-8"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ext-statusbar.js" type="text/javascript" charset="utf-8"></script>
   </body>
   <script>
     // You can also require other files to run in this process
