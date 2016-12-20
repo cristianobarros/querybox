@@ -1,7 +1,11 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
+const fs = require('fs');
+const path = require('path');
 const pg = require('pg');
+
+const config = loadConfig();
 
 var ace = require("brace");
 
@@ -44,36 +48,41 @@ editor.commands.addCommand({
 	}
 });
 
+function loadConfig() {
+	return JSON.parse(fs.readFileSync(path.join(__dirname, 'connection.properties'), 'utf8'));
+}
+
 function getSQL() {
 	return editor.getSelectedText() || editor.getValue();
 }
 
 function execute(sql) {
 
-	var config = {
-	  port: 5432,
-	  host: '192.168.1.10',
-	  database: 'channeldb_plano_20161208_cristiano',
-	  user: 'channel',
-	  password: 'channel'
-	};
-
 	var client = new pg.Client(config);
 
-	client.connect();
+	client.connect(function(err) {
 
-	var start = new Date();
-
-	const query = client.query(sql, function(err, result){
 		if (err) {
 			document.getElementById("info").innerHTML = err.message;
 			throw err;
 		}
-		showResult(result, new Date() - start);
-		// disconnect the client
-		client.end(function (err) {
-			if (err) throw err;
+
+		var start = new Date();
+
+		const query = client.query(sql, function(err, result) {
+
+			if (err) {
+				document.getElementById("info").innerHTML = err.message;
+				throw err;
+			}
+
+			showResult(result, new Date() - start);
+			// disconnect the client
+			client.end(function (err) {
+				if (err) throw err;
+			});
 		});
+
 	});
 }
 
