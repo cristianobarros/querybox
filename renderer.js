@@ -25,14 +25,11 @@ editor.focus();
 var StatusBar = ace.acequire("ace/ext/statusbar").StatusBar;
 var statusBar = new StatusBar(editor, document.getElementById("status"));
 
-console.log(statusBar);
-
 editor.commands.addCommand({
 	name: "execute",
 	bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
 	exec: function() {
 		var sql = getSQL();
-		console.log(sql);
 		execute(sql);
 	}
 });
