@@ -13,7 +13,7 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600, icon: 'icon/32.png', webPreferences: {devTools: true}})
+  mainWindow = new BrowserWindow({width: 800, height: 600, title: 'SQL Editor', icon: 'icon/32.png', webPreferences: {devTools: true}})
 
   // maximize the window.
   mainWindow.maximize()
