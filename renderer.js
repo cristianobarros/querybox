@@ -52,11 +52,11 @@ function getSQL() {
 function execute(sql) {
 
 	var config = {
-	  user: 'postgres',
-	  database: 'analisa',
-	  password: 'admin',
+	  port: 5432,
 	  host: 'localhost',
-	  port: 5432
+	  database: 'analisa',
+	  user: 'postgres',
+	  password: 'admin'
 	};
 
 	var client = new pg.Client(config);
