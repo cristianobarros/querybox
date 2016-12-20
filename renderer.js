@@ -25,6 +25,8 @@ editor.focus();
 var StatusBar = ace.acequire("ace/ext/statusbar").StatusBar;
 var statusBar = new StatusBar(editor, document.getElementById("status"));
 
+console.log(statusBar);
+
 editor.commands.addCommand({
 	name: "execute",
 	bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
@@ -63,9 +65,14 @@ function execute(sql) {
 
 	client.connect();
 
+	var start = new Date();
+
 	const query = client.query(sql, function(err, result){
-		if (err) throw err;
-		showResult(result);
+		if (err) {
+			document.getElementById("info").innerHTML = err.message;
+			throw err;
+		}
+		showResult(result, new Date() - start);
 		// disconnect the client
 		client.end(function (err) {
 			if (err) throw err;
@@ -73,7 +80,7 @@ function execute(sql) {
 	});
 }
 
-function showResult(result) {
+function showResult(result, time) {
 	var html = '';
 	html += '<thead>';
 	for (var i = 0; i < result.fields.length; i++) {
@@ -93,6 +100,7 @@ function showResult(result) {
 		html += '</tr>';
 	}
 	html += '</tbody>';
+	document.getElementById("info").innerHTML = result.rowCount + " rows in " + time + " ms";
 	document.getElementById("result").innerHTML = html;
 }
 
