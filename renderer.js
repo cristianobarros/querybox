@@ -53,10 +53,10 @@ function execute(sql) {
 
 	var config = {
 	  port: 5432,
-	  host: 'localhost',
-	  database: 'analisa',
-	  user: 'postgres',
-	  password: 'admin'
+	  host: '192.168.1.10',
+	  database: 'channeldb_plano_20161208_cristiano',
+	  user: 'channel',
+	  password: 'channel'
 	};
 
 	var client = new pg.Client(config);
@@ -65,10 +65,33 @@ function execute(sql) {
 
 	const query = client.query(sql, function(err, result){
 		if (err) throw err;
-		console.log(result);
+		showResult(result);
 		// disconnect the client
 		client.end(function (err) {
 			if (err) throw err;
 		});
 	});
+}
+
+function showResult(result) {
+	var html = '';
+	html += '<thead>';
+	for (var i = 0; i < result.fields.length; i++) {
+		var field = result.fields[i]
+		html += '<th>' + field.name + '</th>';
+	}
+	html += '</thead>';
+	html += '<tbody>';
+	for (var i = 0; i < result.rows.length; i++) {
+		var row = result.rows[i];
+		html += '<tr>';
+		for (var j = 0; j < result.fields.length; j++) {
+			var field = result.fields[j];
+			var value = row[field.name];
+			html += '<td>' + value + '</td>';
+		}
+		html += '</tr>';
+	}
+	html += '</tbody>';
+	document.getElementById("result").innerHTML = html;
 }
