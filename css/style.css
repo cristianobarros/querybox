@@ -28,6 +28,9 @@ body {
 	background-color: rgb(245, 245, 245);
 	color: gray;
 }
+#info {
+	padding-left: 5px;
+}
 .ace_status-indicator {
 	position: absolute;
 	right: 0;
