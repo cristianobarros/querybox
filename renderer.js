@@ -20,3 +20,12 @@ editor.setOptions({
 
 var StatusBar = ace.acequire("ace/ext/statusbar").StatusBar;
 var statusBar = new StatusBar(editor, document.getElementById("status"));
+
+editor.commands.addCommand({
+	name: "execute",
+	bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
+	exec: function() {
+		var text = editor.getSelectedText() || editor.getValue();
+		alert(text);
+	}
+});
