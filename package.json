@@ -17,6 +17,6 @@
     "electron": "^1.4.1"
   },
   "dependencies": {
-    "ace-code-editor": "^1.2.3"
+    "brace": "^0.9.1"
   }
 }
