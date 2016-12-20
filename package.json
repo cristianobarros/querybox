@@ -17,6 +17,7 @@
     "electron": "^1.4.1"
   },
   "dependencies": {
-    "brace": "^0.9.1"
+    "brace": "^0.9.1",
+    "pg": "^6.1.2"
   }
 }
