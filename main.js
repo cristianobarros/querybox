@@ -12,18 +12,18 @@ const url = require('url')
 let mainWindow
 
 function createWindow () {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600, title: 'SQL Editor', icon: 'icon/32.png', webPreferences: {devTools: true}})
 
-  // maximize the window.
-  mainWindow.maximize()
+  var workArea = electron.screen.getPrimaryDisplay().workArea;
+
+  // Create the browser window.
+  mainWindow = new BrowserWindow({width: workArea.width, height: workArea.height, title: 'SQL Editor', icon: 'icon/32.png', show: false, webPreferences: {devTools: true}});
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
-  }))
+  }));
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -31,7 +31,9 @@ function createWindow () {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null
-  })
+  });
+
+  mainWindow.maximize();
 }
 
 // This method will be called when Electron has finished
