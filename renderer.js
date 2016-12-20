@@ -30,7 +30,7 @@ editor.commands.addCommand({
 	bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
 	exec: function() {
 		var sql = getSQL();
-		alert(sql);
+		console.log(sql);
 		execute(sql);
 	}
 });
@@ -64,11 +64,8 @@ function execute(sql) {
 	client.connect();
 
 	const query = client.query(sql, function(err, result){
-		if (err) {
-			alert("Error: " + err.message);
-			throw err;
-		}
-		alert(JSON.stringify(result.rows));
+		if (err) throw err;
+		console.log(result);
 		// disconnect the client
 		client.end(function (err) {
 			if (err) throw err;
