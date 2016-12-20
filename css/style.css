@@ -26,7 +26,8 @@ body {
 	bottom: 0;
 	height: 20px;
 	background-color: rgb(245, 245, 245);
-	color: gray;
+	border: 1px solid;
+	border-color: #808080!important;
 }
 #info {
 	padding-left: 5px;
@@ -35,6 +36,7 @@ body {
 	position: absolute;
 	right: 0;
 	border-left: 1px solid;
+	border-color: #808080!important;
 	padding-left: 5px;
 	padding-right: 5px;
 }
