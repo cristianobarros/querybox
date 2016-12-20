@@ -13,9 +13,10 @@ body {
 	margin: 0;
 	position: absolute;
 	top: 50%;
-	bottom: 20%;
+	bottom: 20px;
 	left: 0;
 	right: 0;
+	overflow: auto;
 }
 #status {
 	margin: 0;

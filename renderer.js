@@ -79,6 +79,7 @@ function execute(sql) {
 
 function showResult(result, time) {
 	var html = '';
+	html += '<table class="table table-bordered table-striped table-hover">';
 	html += '<thead>';
 	for (var i = 0; i < result.fields.length; i++) {
 		var field = result.fields[i]
@@ -97,6 +98,7 @@ function showResult(result, time) {
 		html += '</tr>';
 	}
 	html += '</tbody>';
+	html += '</table>';
 	document.getElementById("info").innerHTML = result.rowCount + " rows in " + time + " ms";
 	document.getElementById("result").innerHTML = html;
 }
