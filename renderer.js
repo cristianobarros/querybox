@@ -88,10 +88,14 @@ function showResult(result) {
 		for (var j = 0; j < result.fields.length; j++) {
 			var field = result.fields[j];
 			var value = row[field.name];
-			html += '<td>' + value + '</td>';
+			html += '<td>' + escape(value) + '</td>';
 		}
 		html += '</tr>';
 	}
 	html += '</tbody>';
 	document.getElementById("result").innerHTML = html;
+}
+
+function escape(text) {
+	return ('' + text).replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
