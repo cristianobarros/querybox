@@ -3,6 +3,8 @@ const electron = require('electron')
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
+const Menu = electron.Menu;
+const MenuItem = electron.MenuItem;
 
 const path = require('path')
 const url = require('url')
@@ -12,6 +14,17 @@ const url = require('url')
 let mainWindow
 
 function createWindow () {
+
+  var menu = new Menu();
+
+  menu.append(new MenuItem({label: 'File', submenu: [
+    new MenuItem({label: 'Execute'}),
+	new MenuItem({label: 'Format'}),
+    new MenuItem({type: 'separator'}),
+    new MenuItem({label: 'Exit', role: 'quit'})
+  ]}));
+
+  Menu.setApplicationMenu(menu);
 
   var workArea = electron.screen.getPrimaryDisplay().workArea;
 
