@@ -43,6 +43,8 @@ function loadEditor(value) {
 	var StatusBar = ace.acequire("ace/ext/statusbar").StatusBar;
 	var statusBar = new StatusBar(editor, document.getElementById("status"));
 
+	statusBar.updateStatus(editor);
+
 	editor.commands.addCommand({
 		name: "execute",
 		bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
