@@ -13,20 +13,30 @@ require("brace/theme/vibrant_ink");
 require("brace/ext/language_tools");
 require("brace/ext/statusbar");
 
+let editor;
+let doc = {
+	sql : "",
+	cursorPosition : {row:0, column:0}
+};
+
 var Datastore = require('nedb');
 
 var db = new Datastore({ filename: "sessions.db", autoload: true });
 
 db.find({}, function(err, docs) {
-	var sql = docs.length > 0 ? docs[0].sql : "";
-	loadEditor(sql);
+	if (docs.length > 0) {
+		doc = docs[0];
+	}
+	loadEditor(doc);
 });
 
-let editor;
+require('electron').ipcRenderer.on('close', function(event, message) {
+	saveEditor(event);
+});
 
-function loadEditor(value) {
+function loadEditor(doc) {
 
-	document.getElementById("editor").innerHTML = value;
+	document.getElementById("editor").innerHTML = doc.sql;
 
 	editor = ace.edit("editor");
 
@@ -39,6 +49,7 @@ function loadEditor(value) {
 	});
 
 	editor.focus();
+	editor.moveCursorToPosition(doc.cursorPosition);
 
 	var StatusBar = ace.acequire("ace/ext/statusbar").StatusBar;
 	var statusBar = new StatusBar(editor, document.getElementById("status"));
@@ -63,6 +74,27 @@ function loadEditor(value) {
 			editor.session.selection.fromJSON(position);
 		}
 	});
+}
+
+function saveEditor(event) {
+
+	var sql = editor.getValue();
+	var cursorPosition = editor.getCursorPosition();
+
+	var docToSave = {
+		"sql" : sql,
+		"cursorPosition" : cursorPosition
+	};
+
+	if (doc._id == null) {
+		db.insert(docToSave, function (err, newDoc) {
+			event.sender.send('close-ok');
+		});
+	} else {
+		db.update({ "_id" : doc._id,}, { $set : docToSave }, function (err, numReplaced) {
+			event.sender.send('close-ok');
+		});
+	}
 }
 
 function loadConfig() {

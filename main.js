@@ -10,14 +10,20 @@ const url = require('url')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+let quit
 
 function createWindow () {
+
+	require('electron').ipcMain.on('close-ok', function(event, message) {
+		quit = true;
+		app.quit();
+	});
 
   var menu = new Menu();
 
   menu.append(new MenuItem({label: 'File', submenu: [
-    new MenuItem({label: 'Execute'}),
-	new MenuItem({label: 'Format'}),
+    new MenuItem({label: 'Execute', accelerator: 'Ctrl+Enter' }),
+	new MenuItem({label: 'Format', accelerator: 'Ctrl+Shift+F' }),
     new MenuItem({type: 'separator'}),
     new MenuItem({label: 'Exit', role: 'quit'})
   ]}));
@@ -35,6 +41,13 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }));
+
+  mainWindow.on('close', function (event) {
+	  if (!quit) {
+		  event.preventDefault();
+		  mainWindow.webContents.send('close');
+	  }
+  });
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
