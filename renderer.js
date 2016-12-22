@@ -139,6 +139,7 @@ function showResult(result, time) {
 	var html = '';
 	html += '<table class="table table-bordered table-striped table-hover">';
 	html += '<thead>';
+	html += '<th></th>';
 	for (var i = 0; i < result.fields.length; i++) {
 		var field = result.fields[i]
 		html += '<th>' + field.name + '</th>';
@@ -148,6 +149,7 @@ function showResult(result, time) {
 	for (var i = 0; i < result.rows.length; i++) {
 		var row = result.rows[i];
 		html += '<tr>';
+		html += '<td>' + (i + 1) + '</dh>';
 		for (var j = 0; j < result.fields.length; j++) {
 			var field = result.fields[j];
 			var value = row[field.name];
