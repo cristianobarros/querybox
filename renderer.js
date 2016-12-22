@@ -4,7 +4,6 @@
 const fs = require('fs');
 const path = require('path');
 const pg = require('pg');
-
 const config = loadConfig();
 
 var ace = require("brace");
@@ -14,39 +13,54 @@ require("brace/theme/vibrant_ink");
 require("brace/ext/language_tools");
 require("brace/ext/statusbar");
 
-var editor = ace.edit("editor");
+var Datastore = require('nedb');
 
-editor.setTheme("ace/theme/vibrant_ink");
-editor.getSession().setMode("ace/mode/sql");
-editor.setFontSize("14px");
-editor.setShowPrintMargin(false);
-editor.setOptions({
-	enableBasicAutocompletion: true
+var db = new Datastore({ filename: "sessions.db", autoload: true });
+
+db.find({}, function(err, docs) {
+	var sql = docs.length > 0 ? docs[0].sql : "";
+	loadEditor(sql);
 });
 
-editor.focus();
 
-var StatusBar = ace.acequire("ace/ext/statusbar").StatusBar;
-var statusBar = new StatusBar(editor, document.getElementById("status"));
+function loadEditor(value) {
 
-editor.commands.addCommand({
-	name: "execute",
-	bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
-	exec: function() {
-		var sql = getSQL();
-		execute(sql);
-	}
-});
+	document.getElementById("editor").innerHTML = value;
 
-editor.commands.addCommand({
-	name: "format",
-	bindKey: { win: "Ctrl-Shift-F", mac: "Command-Shift-F" },
-	exec: function() {
-		var position = editor.session.selection.toJSON();
-		editor.setValue(editor.getValue().toUpperCase());
-		editor.session.selection.fromJSON(position);
-	}
-});
+	var editor = ace.edit("editor");
+
+	editor.setTheme("ace/theme/vibrant_ink");
+	editor.getSession().setMode("ace/mode/sql");
+	editor.setFontSize("14px");
+	editor.setShowPrintMargin(false);
+	editor.setOptions({
+		enableBasicAutocompletion: true
+	});
+
+	editor.focus();
+
+	var StatusBar = ace.acequire("ace/ext/statusbar").StatusBar;
+	var statusBar = new StatusBar(editor, document.getElementById("status"));
+
+	editor.commands.addCommand({
+		name: "execute",
+		bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
+		exec: function() {
+			var sql = getSQL();
+			execute(sql);
+		}
+	});
+
+	editor.commands.addCommand({
+		name: "format",
+		bindKey: { win: "Ctrl-Shift-F", mac: "Command-Shift-F" },
+		exec: function() {
+			var position = editor.session.selection.toJSON();
+			editor.setValue(editor.getValue().toUpperCase());
+			editor.session.selection.fromJSON(position);
+		}
+	});
+}
 
 function loadConfig() {
 	return JSON.parse(fs.readFileSync(path.join(__dirname, 'connection.properties'), 'utf8'));

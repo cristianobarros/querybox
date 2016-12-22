@@ -6,20 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="./style/bootstrap.min.css">
   </head>
   <body>
-  <div id="editor">WITH contrato_vigente AS (
- SELECT * FROM contrato WHERE rodada_fim IS NULL
-)
-SELECT atleta.id, atleta.apelido, clube.id, clube.nome, posicao.abreviacao, SUM(pontuacao.quantidade)
-FROM pontuacao pontuacao
-JOIN participacao participacao ON pontuacao.participacao = participacao.id
-JOIN contrato contrato ON participacao.contrato = contrato.id
-JOIN atleta atleta ON contrato.atleta = atleta.id
-JOIN contrato_vigente ON atleta.id = contrato_vigente.atleta
-JOIN clube clube ON contrato_vigente.clube = clube.id
-JOIN posicao posicao ON contrato_vigente.posicao = posicao.id
-WHERE pontuacao.scout = 13
-GROUP BY atleta.id, atleta.apelido, clube.id, clube.nome, posicao.abreviacao
-ORDER BY 6 DESC</div>
+  <div id="editor"></div>
     <div id="result"></div>
     <div id="status"><div id="info"></div></div>
   </body>
