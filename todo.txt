@@ -1,0 +1,8 @@
+// TODO
+( ) Save scrollbar position on exit
+( ) Save text selection on exit
+( ) Save undo/redo history on exit
+( ) Save result on exit
+( ) Save info message on exit
+
+// DONE
