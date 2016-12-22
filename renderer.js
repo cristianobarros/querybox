@@ -7,7 +7,6 @@ const pg = require('pg');
 const config = loadConfig();
 
 var ace = require("brace");
-var snippetManager = ace.acequire("ace/snippets").snippetManager;
 
 require("brace/mode/sql");
 require("brace/theme/vibrant_ink");
@@ -41,6 +40,7 @@ function loadEditor(doc) {
 
 	editor = ace.edit("editor");
 
+	var snippetManager = ace.acequire("ace/snippets").snippetManager;
 	var snippets = snippetManager.parseSnippetFile(fs.readFileSync(path.join(__dirname, 'snippets.txt'), 'utf8'));
 
 	snippetManager.register(snippets);
