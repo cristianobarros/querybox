@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="./css/style.css">
-	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./style/style.css">
+	<link rel="stylesheet" type="text/css" href="./style/bootstrap.min.css">
   </head>
   <body>
-    <pre id="editor">WITH contrato_vigente AS (
+  <div id="editor">WITH contrato_vigente AS (
  SELECT * FROM contrato WHERE rodada_fim IS NULL
 )
 SELECT atleta.id, atleta.apelido, clube.id, clube.nome, posicao.abreviacao, SUM(pontuacao.quantidade)
@@ -19,9 +19,9 @@ JOIN clube clube ON contrato_vigente.clube = clube.id
 JOIN posicao posicao ON contrato_vigente.posicao = posicao.id
 WHERE pontuacao.scout = 13
 GROUP BY atleta.id, atleta.apelido, clube.id, clube.nome, posicao.abreviacao
-ORDER BY 6 DESC</pre>
+ORDER BY 6 DESC</div>
     <div id="result"></div>
-    <div id="status"><span id="info"></span></div>
+    <div id="status"><div id="info"></div></div>
   </body>
   <script>
     require("./renderer.js")
