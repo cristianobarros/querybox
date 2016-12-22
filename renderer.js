@@ -22,12 +22,13 @@ db.find({}, function(err, docs) {
 	loadEditor(sql);
 });
 
+let editor;
 
 function loadEditor(value) {
 
 	document.getElementById("editor").innerHTML = value;
 
-	var editor = ace.edit("editor");
+	editor = ace.edit("editor");
 
 	editor.setTheme("ace/theme/vibrant_ink");
 	editor.getSession().setMode("ace/mode/sql");
