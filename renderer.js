@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const pg = require('pg');
 const config = loadConfig();
+const dateFormat = require('dateformat');
 
 var ace = require("brace");
 
@@ -172,6 +173,8 @@ function showResult(result, time) {
 function valueToHTML(value) {
 	if (value == null) {
 		return '<span class="label label-default">NULL</span>';
+	} else if (value instanceof Date) {
+		return dateFormat(value, 'yyyy-mm-dd HH:MM:ss.l');
 	}
 	return escape(value);
 }
