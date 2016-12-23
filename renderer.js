@@ -46,7 +46,7 @@ function loadEditor(doc) {
 
 	snippetManager.register(snippets);
 
-	editor.setTheme("ace/theme/vibrant_ink");
+	editor.setTheme("ace/theme/chrome");
 	editor.getSession().setMode("ace/mode/sql");
 	editor.setFontSize("14px");
 	editor.setShowPrintMargin(false);
