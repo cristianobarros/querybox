@@ -159,7 +159,7 @@ function showResult(result, time) {
 		for (var j = 0; j < result.fields.length; j++) {
 			var field = result.fields[j];
 			var value = row[field.name];
-			html += '<td>' + escape(value) + '</td>';
+			html += '<td>' + valueToHTML(value) + '</td>';
 		}
 		html += '</tr>';
 	}
@@ -167,6 +167,13 @@ function showResult(result, time) {
 	html += '</table>';
 	document.getElementById("info").innerHTML = result.rowCount + " rows in " + time + " ms";
 	document.getElementById("result").innerHTML = html;
+}
+
+function valueToHTML(value) {
+	if (value == null) {
+		return '<span class="label label-default">NULL</span>';
+	}
+	return escape(value);
 }
 
 function escape(text) {
