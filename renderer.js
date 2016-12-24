@@ -6,6 +6,7 @@ const path = require('path');
 const pg = require('pg');
 const config = loadConfig();
 const dateFormat = require('dateformat');
+const Timer = require('./timer');
 
 var ace = require("brace");
 
@@ -123,7 +124,9 @@ function execute(sql) {
 			throw err;
 		}
 
-		var start = new Date();
+		let timer = new Timer();
+
+		timer.start();
 
 		const query = client.query(sql, function(err, result) {
 
@@ -132,7 +135,9 @@ function execute(sql) {
 				throw err;
 			}
 
-			showResult(result, new Date() - start);
+			timer.stop();
+
+			showResult(result, timer.getTime());
 			// disconnect the client
 			client.end(function (err) {
 				if (err) throw err;
