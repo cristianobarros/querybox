@@ -15,11 +15,13 @@ function Session() {
 			}
 		});
 	}
-	
+
 	function getDefaultSession() {
 		return {
 			sql : "",
-			cursorPosition : {row:0, column:0}
+			cursorPosition : {row:0, column:0},
+			result : null,
+			info : ""
 		}
 	}
 

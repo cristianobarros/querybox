@@ -25,12 +25,13 @@ let doc;
 
 let session = new Session();
 
-session.load(function(document) {
-	doc = document;
-	loadEditor(document);
+session.load(function(d) {
+	doc = d;
+	loadEditor(doc);
 	if (doc.result) {
-		new Result().refresh(doc.result);
+		new Result().refresh(doc.result, doc.time);
 	}
+	document.getElementById("info").innerHTML = doc.info;
 });
 
 ipcRenderer.on('close', function(event, message) {
@@ -104,6 +105,7 @@ function saveEditor(event) {
 
 	doc.sql = sql;
 	doc.cursorPosition = cursorPosition;
+	doc.info = document.getElementById("info").innerHTML;
 
 	session.save(doc, function() {
 		event.sender.send('close-ok');
@@ -135,8 +137,8 @@ function executeSQL() {
 		const query = client.query(getSQL(), function(err, res) {
 
 			timer.stop();
-
 			doc.result = res;
+			doc.time = timer.getTime();
 
 			result.handleErrorIfExists(err);
 			result.refresh(res, timer.getTime());
