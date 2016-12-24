@@ -19,21 +19,25 @@ function createWindow () {
 		app.quit();
 	});
 
-  var menu = new Menu();
-
-  menu.append(new MenuItem({label: 'File', submenu: [
-    new MenuItem({label: 'Execute', accelerator: 'Ctrl+Enter' }),
-	new MenuItem({label: 'Format', accelerator: 'Ctrl+Shift+F' }),
-    new MenuItem({type: 'separator'}),
-    new MenuItem({label: 'Exit', role: 'quit'})
-  ]}));
-
-  Menu.setApplicationMenu(menu);
-
   var workArea = electron.screen.getPrimaryDisplay().workArea;
 
   // Create the browser window.
   mainWindow = new BrowserWindow({width: workArea.width, height: workArea.height, title: 'SQL Editor', icon: 'icon/32.png', show: false, webPreferences: {devTools: true}});
+
+  var menu = new Menu();
+
+  menu.append(new MenuItem({label: 'File', submenu: [
+    new MenuItem({label : 'Execute', accelerator : 'Ctrl+Enter', click : function() {
+		mainWindow.webContents.send('matissa:execute');
+	}}),
+	new MenuItem({label : 'Format', accelerator : 'Ctrl+Shift+F', click : function() {
+		mainWindow.webContents.send('matissa:format');
+	}}),
+    new MenuItem({type : 'separator'}),
+    new MenuItem({label : 'Exit', role : 'quit'})
+  ]}));
+
+  Menu.setApplicationMenu(menu);
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({

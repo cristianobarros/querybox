@@ -1,12 +1,16 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
+const electron = require('electron');
+const ipcRenderer = electron.ipcRenderer;
 const fs = require('fs');
 const path = require('path');
 const pg = require('pg');
 const config = loadConfig();
 const dateFormat = require('dateformat');
+
 const Timer = require('./timer');
+const Formatter = require('./formatter');
 
 var ace = require("brace");
 
@@ -32,8 +36,16 @@ db.find({}, function(err, docs) {
 	loadEditor(doc);
 });
 
-require('electron').ipcRenderer.on('close', function(event, message) {
+ipcRenderer.on('close', function(event, message) {
 	saveEditor(event);
+});
+
+ipcRenderer.on('matissa:execute', function(event, message) {
+	executeSQL();
+});
+
+ipcRenderer.on('matissa:format', function(event, message) {
+	formatSQL();
 });
 
 function loadEditor(doc) {
@@ -68,8 +80,7 @@ function loadEditor(doc) {
 		name: "execute",
 		bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
 		exec: function() {
-			var sql = getSQL();
-			execute(sql);
+			executeSQL();
 		}
 	});
 
@@ -77,11 +88,16 @@ function loadEditor(doc) {
 		name: "format",
 		bindKey: { win: "Ctrl-Shift-F", mac: "Command-Shift-F" },
 		exec: function() {
-			var position = editor.session.selection.toJSON();
-			editor.setValue(editor.getValue().toUpperCase());
-			editor.session.selection.fromJSON(position);
+			formatSQL();
 		}
 	});
+}
+
+function formatSQL() {
+	let formatter = new Formatter();
+	var position = editor.session.selection.toJSON();
+	editor.setValue(formatter.format(getSQL()));
+	editor.session.selection.fromJSON(position);
 }
 
 function saveEditor(event) {
@@ -113,7 +129,7 @@ function getSQL() {
 	return editor.getSelectedText() || editor.getValue();
 }
 
-function execute(sql) {
+function executeSQL() {
 
 	var client = new pg.Client(config);
 
@@ -128,7 +144,7 @@ function execute(sql) {
 
 		timer.start();
 
-		const query = client.query(sql, function(err, result) {
+		const query = client.query(getSQL(), function(err, result) {
 
 			if (err) {
 				document.getElementById("info").innerHTML = err.message;
