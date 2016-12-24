@@ -11,6 +11,7 @@ const dateFormat = require('dateformat');
 
 const Timer = require('./timer');
 const Formatter = require('./formatter');
+const Session = require('./session');
 
 var ace = require("brace");
 
@@ -20,20 +21,13 @@ require("brace/ext/language_tools");
 require("brace/ext/statusbar");
 
 let editor;
-let doc = {
-	sql : "",
-	cursorPosition : {row:0, column:0}
-};
+let doc;
 
-var Datastore = require('nedb');
+let session = new Session();
 
-var db = new Datastore({ filename: "sessions.db", autoload: true });
-
-db.find({}, function(err, docs) {
-	if (docs.length > 0) {
-		doc = docs[0];
-	}
-	loadEditor(doc);
+session.load(function(document) {
+	doc = document;
+	loadEditor(document);
 });
 
 ipcRenderer.on('close', function(event, message) {
@@ -105,20 +99,12 @@ function saveEditor(event) {
 	var sql = editor.getValue();
 	var cursorPosition = editor.getCursorPosition();
 
-	var docToSave = {
-		"sql" : sql,
-		"cursorPosition" : cursorPosition
-	};
+	doc.sql = sql;
+	doc.cursorPosition = cursorPosition;
 
-	if (doc._id == null) {
-		db.insert(docToSave, function (err, newDoc) {
-			event.sender.send('close-ok');
-		});
-	} else {
-		db.update({ "_id" : doc._id,}, { $set : docToSave }, function (err, numReplaced) {
-			event.sender.send('close-ok');
-		});
-	}
+	session.save(doc, function() {
+		event.sender.send('close-ok');
+	});
 }
 
 function loadConfig() {
