@@ -7,16 +7,16 @@ const fs = require('fs');
 const path = require('path');
 const pg = require('pg');
 const config = loadConfig();
-const dateFormat = require('dateformat');
 
 const Timer = require('./timer');
 const Formatter = require('./formatter');
 const Session = require('./session');
+const Result = require('./result');
 
 var ace = require("brace");
 
 require("brace/mode/sql");
-require("brace/theme/vibrant_ink");
+require("brace/theme/chrome");
 require("brace/ext/language_tools");
 require("brace/ext/statusbar");
 
@@ -28,6 +28,9 @@ let session = new Session();
 session.load(function(document) {
 	doc = document;
 	loadEditor(document);
+	if (doc.result) {
+		new Result().refresh(doc.result);
+	}
 });
 
 ipcRenderer.on('close', function(event, message) {
@@ -121,71 +124,27 @@ function executeSQL() {
 
 	client.connect(function(err) {
 
-		if (err) {
-			document.getElementById("info").innerHTML = err.message;
-			throw err;
-		}
+		let result = new Result();
+
+		result.handleErrorIfExists(err);
 
 		let timer = new Timer();
 
 		timer.start();
 
-		const query = client.query(getSQL(), function(err, result) {
-
-			if (err) {
-				document.getElementById("info").innerHTML = err.message;
-				throw err;
-			}
+		const query = client.query(getSQL(), function(err, res) {
 
 			timer.stop();
 
-			showResult(result, timer.getTime());
-			// disconnect the client
+			doc.result = res;
+
+			result.handleErrorIfExists(err);
+			result.refresh(res, timer.getTime());
+
 			client.end(function (err) {
-				if (err) throw err;
+				result.handleErrorIfExists(err);
 			});
 		});
 
 	});
-}
-
-function showResult(result, time) {
-	var html = '';
-	html += '<table class="table table-bordered table-striped table-hover">';
-	html += '<thead>';
-	html += '<th></th>';
-	for (var i = 0; i < result.fields.length; i++) {
-		var field = result.fields[i]
-		html += '<th>' + field.name + '</th>';
-	}
-	html += '</thead>';
-	html += '<tbody>';
-	for (var i = 0; i < result.rows.length; i++) {
-		var row = result.rows[i];
-		html += '<tr>';
-		html += '<td>' + (i + 1) + '</dh>';
-		for (var j = 0; j < result.fields.length; j++) {
-			var field = result.fields[j];
-			var value = row[field.name];
-			html += '<td>' + valueToHTML(value) + '</td>';
-		}
-		html += '</tr>';
-	}
-	html += '</tbody>';
-	html += '</table>';
-	document.getElementById("info").innerHTML = result.rowCount + " rows in " + time + " ms";
-	document.getElementById("result").innerHTML = html;
-}
-
-function valueToHTML(value) {
-	if (value == null) {
-		return '<span class="label label-default">NULL</span>';
-	} else if (value instanceof Date) {
-		return dateFormat(value, 'yyyy-mm-dd HH:MM:ss.l');
-	}
-	return escape(value);
-}
-
-function escape(text) {
-	return ('' + text).replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
