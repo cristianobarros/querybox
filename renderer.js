@@ -3,6 +3,7 @@
 // All of the Node.js APIs are available in this process.
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
+const dialog = electron.remote.dialog;
 const fs = require('fs');
 const path = require('path');
 const pg = require('pg');
@@ -34,8 +35,12 @@ session.load(function(d) {
 	document.getElementById("info").innerHTML = doc.info;
 });
 
-ipcRenderer.on('close', function(event, message) {
-	saveEditor(event);
+ipcRenderer.on('matissa:open', function(event, message) {
+	openFile();
+});
+
+ipcRenderer.on('matissa:save', function(event, message) {
+	saveFile();
 });
 
 ipcRenderer.on('matissa:execute', function(event, message) {
@@ -45,6 +50,47 @@ ipcRenderer.on('matissa:execute', function(event, message) {
 ipcRenderer.on('matissa:format', function(event, message) {
 	formatSQL();
 });
+
+ipcRenderer.on('close', function(event, message) {
+	saveEditor(event);
+});
+
+function openFile() {
+
+	let files = dialog.showOpenDialog({
+	  filters: [
+	    {name: 'SQL', extensions: ['sql']},
+	    {name: 'All Files', extensions: ['*']}
+	  ],
+		properties: ['openFile']
+	});
+
+	if (files === undefined) {
+		return;
+	}
+
+	fs.readFile(files[0], 'utf-8', function (err, data) {
+		editor.setValue(data);
+  });
+}
+
+function saveFile() {
+
+		let file = dialog.showSaveDialog({
+		  filters: [
+		    {name: 'SQL', extensions: ['sql']},
+		    {name: 'All Files', extensions: ['*']}
+		  ]
+		});
+
+		if (file === undefined) {
+			return;
+		}
+
+		fs.writeFile(file, editor.getValue(), function (err) {
+			new Result().handleErrorIfExists(err);
+	  });
+}
 
 function loadEditor(doc) {
 

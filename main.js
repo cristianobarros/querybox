@@ -27,6 +27,13 @@ function createWindow () {
   var menu = new Menu();
 
   menu.append(new MenuItem({label: 'File', submenu: [
+		new MenuItem({label : 'Open', accelerator : 'Ctrl+O', click : function() {
+		mainWindow.webContents.send('matissa:open');
+	}}),
+	new MenuItem({label : 'Save', accelerator : 'Ctrl+S', click : function() {
+		mainWindow.webContents.send('matissa:save');
+	}}),
+		new MenuItem({type : 'separator'}),
     new MenuItem({label : 'Execute', accelerator : 'Ctrl+Enter', click : function() {
 		mainWindow.webContents.send('matissa:execute');
 	}}),
