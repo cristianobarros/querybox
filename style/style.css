@@ -4,13 +4,16 @@ html {
 body {
 	height: 100%;
 }
+#container {
+	height: calc(100% - 21px);
+}
 #editor {
 	margin: 0;
-	height: calc(50% - 10px);
+	height: 50%;
 }
 #result {
 	overflow: auto;
-	height: calc(50% - 11px);
+	height: 50%;
 }
 #status {
 	height: 21px;
