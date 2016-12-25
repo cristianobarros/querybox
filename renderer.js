@@ -193,7 +193,7 @@ function getKeyWords() {
 function formatSQL() {
 	let formatter = new Formatter();
 	var position = editor.session.selection.toJSON();
-	editor.setValue(formatter.format(getSQL(), keywords));
+	editor.setValue(formatter.format(getSQL(), keyWords));
 	editor.session.selection.fromJSON(position);
 }
 
