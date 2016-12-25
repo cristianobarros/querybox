@@ -6,13 +6,11 @@ const ipcRenderer = electron.ipcRenderer;
 const dialog = electron.remote.dialog;
 const fs = require('fs');
 const path = require('path');
-const pg = require('pg');
-const config = loadConfig();
 
-const Timer = require('./timer');
 const Formatter = require('./formatter');
 const Session = require('./session');
 const Result = require('./result');
+const Database = require('./database');
 
 var ace = require("brace");
 
@@ -23,7 +21,8 @@ require("brace/ext/statusbar");
 
 let editor;
 let doc;
-let keywords = getKeyWords();
+let keyWords = getKeyWords();
+let tableNames = [];
 
 let session = new Session();
 
@@ -147,19 +146,39 @@ function loadEditor(doc) {
 		}
 	});
 
-	let staticWordCompleter = {
-	    getCompletions: function(editor, session, pos, prefix, callback) {
-	        callback(null, keywords.map(function(word) {
-	            return {
-	                caption: word,
-	                value: word,
-	                meta: "keyword"
-	            };
-	        }));
-	    }
-	};
+	new Database().getTableNames(function(names) {
+		tableNames = names;
+		buildCompleter();
+	});
 
-	editor.completers = [staticWordCompleter];
+	buildCompleter();
+}
+
+function buildCompleter() {
+
+		let words = keyWords.map(function(word) {
+			return {
+				caption: word,
+				value: word,
+				meta: "keyword"
+			};
+		});
+
+		let tables = tableNames.map(function(word) {
+			return {
+				caption: word,
+				value: word,
+				meta: "table"
+			};
+		});
+
+		let staticWordCompleter = {
+		  getCompletions: function(editor, session, pos, prefix, callback) {
+		    callback(null, words.concat(tables));
+		  }
+		};
+
+		editor.completers = [staticWordCompleter];
 }
 
 function getKeyWords() {
@@ -212,41 +231,10 @@ function extractHeight(height) {
 	return height;
 }
 
-function loadConfig() {
-	return JSON.parse(fs.readFileSync(path.join(__dirname, 'connection.properties'), 'utf8'));
-}
-
 function getSQL() {
 	return editor.getSelectedText() || editor.getValue();
 }
 
 function executeSQL() {
-
-	var client = new pg.Client(config);
-
-	client.connect(function(err) {
-
-		let result = new Result();
-
-		result.handleErrorIfExists(err);
-
-		let timer = new Timer();
-
-		timer.start();
-
-		const query = client.query(getSQL(), function(err, res) {
-
-			timer.stop();
-			doc.result = res;
-			doc.time = timer.getTime();
-
-			result.handleErrorIfExists(err);
-			result.refresh(res, timer.getTime());
-
-			client.end(function (err) {
-				result.handleErrorIfExists(err);
-			});
-		});
-
-	});
+	new Database().execute(getSQL(), doc);
 }
