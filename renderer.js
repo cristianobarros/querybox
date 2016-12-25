@@ -23,6 +23,7 @@ require("brace/ext/statusbar");
 
 let editor;
 let doc;
+let keywords = getKeyWords();
 
 let session = new Session();
 
@@ -145,12 +146,35 @@ function loadEditor(doc) {
 			formatSQL();
 		}
 	});
+
+	let staticWordCompleter = {
+	    getCompletions: function(editor, session, pos, prefix, callback) {
+	        callback(null, keywords.map(function(word) {
+	            return {
+	                caption: word,
+	                value: word,
+	                meta: "keyword"
+	            };
+	        }));
+	    }
+	};
+
+	editor.completers = [staticWordCompleter];
+}
+
+function getKeyWords() {
+	let file = fs.readFileSync(path.join(__dirname, 'keywords.txt'), 'utf8');
+	let keywords = file.split('\n');
+	for (let i = 0; i < keywords.length; i++) {
+		keywords[i] = keywords[i].trim();
+	}
+	return keywords;
 }
 
 function formatSQL() {
 	let formatter = new Formatter();
 	var position = editor.session.selection.toJSON();
-	editor.setValue(formatter.format(getSQL()));
+	editor.setValue(formatter.format(getSQL(), keywords));
 	editor.session.selection.fromJSON(position);
 }
 
