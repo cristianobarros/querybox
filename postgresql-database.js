@@ -49,11 +49,12 @@ function PostgreSQLDatabase(props) {
 
 				client.query(sql, function(err, res) {
 
+					result.handleErrorIfExists(err);
+
 					timer.stop();
 					doc.result = res;
 					doc.time = timer.getTime();
 
-					result.handleErrorIfExists(err);
 					result.refresh(res, timer.getTime());
 
 					client.end(function (err) {
