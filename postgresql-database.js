@@ -2,13 +2,11 @@
 
 const pg = require('pg');
 const Result = require('./result');
-const fs = require('fs');
-const path = require('path');
 const Timer = require('./timer');
 
-function Database() {
+function PostgreSQLDatabase(props) {
 
-	const config = loadConfig();
+	const config = props.config;
 
 	let result = new Result();
 
@@ -66,14 +64,10 @@ function Database() {
 			});
 	}
 
-	function loadConfig() {
-		return JSON.parse(fs.readFileSync(path.join(__dirname, 'connection.properties'), 'utf8'));
-	}
-
 	return {
 		getTableNames : getTableNames,
 		execute : execute
 	}
 }
 
-module.exports = Database;
+module.exports = PostgreSQLDatabase;

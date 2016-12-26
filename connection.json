@@ -1,0 +1,8 @@
+{
+	"type" : "PostgreSQL",
+	"host" : "localhost",
+	"port" : 5432,
+	"database" : "cartolandofc",
+	"user" : "postgres",
+	"password" : "admin"
+}

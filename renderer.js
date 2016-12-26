@@ -10,7 +10,7 @@ const path = require('path');
 const Formatter = require('./formatter');
 const Session = require('./session');
 const Result = require('./result');
-const Database = require('./database');
+const databaseFactory = require('./database-factory').databaseFactory;
 
 var ace = require("brace");
 
@@ -146,7 +146,7 @@ function loadEditor(doc) {
 		}
 	});
 
-	new Database().getTableNames(function(names) {
+	databaseFactory.create().getTableNames(function(names) {
 		tableNames = names;
 		buildCompleter();
 	});
@@ -236,5 +236,5 @@ function getSQL() {
 }
 
 function executeSQL() {
-	new Database().execute(getSQL(), doc);
+	databaseFactory.create().execute(getSQL(), doc);
 }
