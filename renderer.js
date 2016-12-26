@@ -35,19 +35,19 @@ session.load(function(d) {
 	document.getElementById("info").innerHTML = doc.info;
 });
 
-ipcRenderer.on('matissa:open', function(event, message) {
+ipcRenderer.on('quantum:open', function(event, message) {
 	openFile();
 });
 
-ipcRenderer.on('matissa:save', function(event, message) {
+ipcRenderer.on('quantum:save', function(event, message) {
 	saveFile();
 });
 
-ipcRenderer.on('matissa:execute', function(event, message) {
+ipcRenderer.on('quantum:execute', function(event, message) {
 	executeSQL();
 });
 
-ipcRenderer.on('matissa:format', function(event, message) {
+ipcRenderer.on('quantum:format', function(event, message) {
 	formatSQL();
 });
 

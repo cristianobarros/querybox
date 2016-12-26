@@ -28,17 +28,17 @@ function createWindow () {
 
   menu.append(new MenuItem({label: 'File', submenu: [
 		new MenuItem({label : 'Open', accelerator : 'Ctrl+O', click : function() {
-		mainWindow.webContents.send('matissa:open');
+		mainWindow.webContents.send('quantum:open');
 	}}),
 	new MenuItem({label : 'Save', accelerator : 'Ctrl+S', click : function() {
-		mainWindow.webContents.send('matissa:save');
+		mainWindow.webContents.send('quantum:save');
 	}}),
 		new MenuItem({type : 'separator'}),
     new MenuItem({label : 'Execute', accelerator : 'Ctrl+Enter', click : function() {
-		mainWindow.webContents.send('matissa:execute');
+		mainWindow.webContents.send('quantum:execute');
 	}}),
 	new MenuItem({label : 'Format', accelerator : 'Ctrl+Shift+F', click : function() {
-		mainWindow.webContents.send('matissa:format');
+		mainWindow.webContents.send('quantum:format');
 	}}),
     new MenuItem({type : 'separator'}),
     new MenuItem({label : 'Exit', role : 'quit'})
