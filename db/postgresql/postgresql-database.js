@@ -1,8 +1,8 @@
 'use strict';
 
 const pg = require('pg');
-const Result = require('./result');
-const Timer = require('./timer');
+const Result = require('../../result');
+const Timer = require('../../timer');
 
 function PostgreSQLDatabase(props) {
 

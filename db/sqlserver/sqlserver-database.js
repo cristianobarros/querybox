@@ -1,8 +1,8 @@
 'use strict';
 
 var mssql = require('mssql');
-const Result = require('./result');
-const Timer = require('./timer');
+const Result = require('../../result');
+const Timer = require('../../timer');
 
 function SQLServerDatabase(props) {
 

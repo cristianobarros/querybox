@@ -1,7 +1,7 @@
 'use strict';
 
-const PostgreSQLDatabase = require('./postgresql-database');
-const SQLServerDatabase = require('./sqlserver-database');
+const PostgreSQLDatabase = require('./postgresql/postgresql-database');
+const SQLServerDatabase = require('./sqlserver/sqlserver-database');
 
 const fs = require('fs');
 const path = require('path');
@@ -24,7 +24,7 @@ function DatabaseFactory() {
 	}
 
 	function loadConfig() {
-		return JSON.parse(fs.readFileSync(path.join(__dirname, 'connection.json'), 'utf8'));
+		return JSON.parse(fs.readFileSync(path.join(__dirname, '../connection.json'), 'utf8'));
 	}
 
 	return {

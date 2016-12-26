@@ -10,7 +10,7 @@ const path = require('path');
 const Formatter = require('./formatter');
 const Session = require('./session');
 const Result = require('./result');
-const databaseFactory = require('./database-factory').databaseFactory;
+const databaseFactory = require('./db/database-factory').databaseFactory;
 
 var ace = require("brace");
 
