@@ -21,6 +21,7 @@ require("brace/ext/statusbar");
 
 let editor;
 let doc;
+let split;
 let keyWords = getKeyWords();
 let tableNames = [];
 
@@ -100,7 +101,7 @@ function loadEditor(doc) {
 
 	let Split = require("./node_modules/split.js/split");
 
-	var instance = Split(['#editor', '#result'], {
+	split = Split(['#editor', '#result'], {
 		sizes : doc.split,
 		direction : 'vertical',
 		onDrag: function() {
@@ -205,30 +206,11 @@ function saveEditor(event) {
 	doc.sql = sql;
 	doc.cursorPosition = cursorPosition;
 	doc.info = document.getElementById("info").innerHTML;
-	doc.split = getSplitSizes();
+	doc.split = split.getSizes();
 
 	session.save(doc, function() {
 		event.sender.send('close-ok');
 	});
-}
-
-function getSplitSizes() {
-
-	var editorHeight = extractHeight(document.getElementById("editor").style.height);
-	var resultHeight = extractHeight(document.getElementById("result").style.height);
-
-	return [editorHeight, resultHeight];
-}
-
-function extractHeight(height) {
-
-	let percentualPattern = /(\d*?\.?\d*)%/;
-
-	if (percentualPattern.test(height)) {
-		return parseFloat(percentualPattern.exec(height)[1]);
-	}
-
-	return height;
 }
 
 function getSQL() {
