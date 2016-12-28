@@ -35,7 +35,7 @@ function Result() {
 		}
 		html += '</tbody>';
 		html += '</table>';
-		document.getElementById("info").innerHTML = result.fields.length + " rows in " + time + " ms";
+		document.getElementById("info").innerHTML = result.rows.length + " rows in " + time + " ms";
 		document.getElementById("result").innerHTML = html;
 	}
 
