@@ -1,6 +1,6 @@
 'use strict';
 
-const pg = require('pg');
+const pg = require('electron').remote.require('pg');
 const Result = require('../../result');
 const Timer = require('../../timer');
 

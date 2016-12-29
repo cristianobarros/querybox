@@ -110,7 +110,7 @@ function loadEditor(doc) {
 	});
 
 	var snippetManager = ace.acequire("ace/snippets").snippetManager;
-	var snippets = snippetManager.parseSnippetFile(fs.readFileSync(path.join(__dirname, 'snippets.txt'), 'utf8'));
+	var snippets = snippetManager.parseSnippetFile(fs.readFileSync('./snippets.txt', 'utf8'));
 
 	snippetManager.register(snippets);
 
@@ -183,7 +183,7 @@ function buildCompleter() {
 }
 
 function getKeyWords() {
-	let file = fs.readFileSync(path.join(__dirname, 'keywords.txt'), 'utf8');
+	let file = fs.readFileSync('./keywords.txt', 'utf8');
 	let keywords = file.split('\n');
 	for (let i = 0; i < keywords.length; i++) {
 		keywords[i] = keywords[i].trim();
