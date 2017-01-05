@@ -25,7 +25,7 @@ snippet gB
 snippet GB
 	GROUP BY 
 
-	snippet ob
+snippet ob
 	ORDER BY 
 snippet Ob
 	ORDER BY 
