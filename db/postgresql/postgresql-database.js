@@ -47,7 +47,7 @@ function PostgreSQLDatabase(props) {
 
 				timer.start();
 
-				client.query(sql, function(err, res) {
+				client.query({ rowMode : "array", text : sql }, function(err, res) {
 
 					result.handleErrorIfExists(err);
 

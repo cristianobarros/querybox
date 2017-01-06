@@ -22,13 +22,12 @@ function Result() {
 		}
 		html += '</thead>';
 		html += '<tbody>';
-		for (var i = 0; i < result.rows.length; i++) {
-			var row = result.rows[i];
+		for (var rowIndex = 0; rowIndex < result.rows.length; rowIndex++) {
+			var row = result.rows[rowIndex];
 			html += '<tr>';
-			html += '<td>' + (i + 1) + '</dh>';
-			for (var j = 0; j < result.fields.length; j++) {
-				var field = result.fields[j];
-				var value = row[field.name];
+			html += '<td>' + (rowIndex + 1) + '</dh>';
+			for (var columnIndex = 0; columnIndex < result.fields.length; columnIndex++) {
+				var value = row[columnIndex];
 				html += '<td>' + valueToHTML(value) + '</td>';
 			}
 			html += '</tr>';
