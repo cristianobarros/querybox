@@ -4,8 +4,9 @@
   "description": "A JavaScript SQL Editor",
   "main": "main.js",
   "scripts": {
-	"dev":"webpack --watch",
-    "start": "electron ."
+	"dev": "webpack --watch",
+	"dev:start": "electron .",
+    "start": "webpack && electron ."
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
