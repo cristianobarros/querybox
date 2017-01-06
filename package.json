@@ -4,7 +4,9 @@
   "description": "A JavaScript SQL Editor",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+	"dev": "webpack --watch",
+	"dev:start": "electron .",
+    "start": "webpack && electron ."
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -14,7 +16,12 @@
   ],
   "author": "Cristiano de Barros",
   "devDependencies": {
-    "electron": "^1.4.1"
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "electron": "^1.4.1",
+    "webpack": "^1.14.0"
   },
   "dependencies": {
     "brace": "^0.9.1",
@@ -22,6 +29,8 @@
     "mssql": "^3.3.0",
     "nedb": "^1.8.0",
     "pg": "^6.1.2",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
     "split.js": "^1.1.2"
   }
 }

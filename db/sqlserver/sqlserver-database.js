@@ -1,6 +1,6 @@
 'use strict';
 
-var mssql = require('mssql');
+var mssql = require('electron').remote.require('mssql');
 const Result = require('../../result');
 const Timer = require('../../timer');
 
