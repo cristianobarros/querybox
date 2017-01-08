@@ -17,7 +17,11 @@ var ace = require("brace");
 require("brace/mode/sql");
 require("brace/theme/chrome");
 require("brace/ext/language_tools");
-require("brace/ext/statusbar");
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import QueryStatusBar from './component/query-status-bar.jsx';
 
 let editor;
 let doc;
@@ -126,10 +130,7 @@ function loadEditor(doc) {
 	editor.focus();
 	editor.moveCursorToPosition(doc.cursorPosition);
 
-	var StatusBar = ace.acequire("ace/ext/statusbar").StatusBar;
-	var statusBar = new StatusBar(editor, document.getElementById("status"));
-
-	statusBar.updateStatus(editor);
+	ReactDOM.render(<QueryStatusBar editor={editor} />, document.getElementById('status'));
 
 	editor.commands.addCommand({
 		name: "execute",
