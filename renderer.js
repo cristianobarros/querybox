@@ -7,27 +7,21 @@ const dialog = electron.remote.dialog;
 const fs = require('fs');
 const path = require('path');
 
-const Formatter = require('./formatter');
 const Session = require('./session');
 const Result = require('./result');
 const databaseFactory = require('./db/database-factory').databaseFactory;
 
-var ace = require("brace");
-
-require("brace/mode/sql");
-require("brace/theme/chrome");
-require("brace/ext/language_tools");
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import QueryEditor from './component/query-editor.jsx';
 import QueryStatusBar from './component/query-status-bar.jsx';
 
+let queryEditor;
 let editor;
 let doc;
 let split;
 let keyWords = getKeyWords();
-let tableNames = [];
 
 let session = new Session();
 
@@ -43,7 +37,7 @@ session.load(function(d) {
 ipcRenderer.on('quantum:open', (event, message) => openFile());
 ipcRenderer.on('quantum:save', (event, message) => saveFile());
 ipcRenderer.on('quantum:execute', (event, message) => executeSQL());
-ipcRenderer.on('quantum:format', (event, message) => formatSQL());
+ipcRenderer.on('quantum:format', (event, message) => queryEditor.formatSQL());
 ipcRenderer.on('close', (event, message) => saveEditor(event));
 
 function openFile() {
@@ -85,9 +79,19 @@ function saveFile() {
 
 function loadEditor(doc) {
 
-	document.getElementById("editor").innerHTML = doc.sql;
+	let commands = [
+		{
+			name: "execute",
+			bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
+			exec: () => executeSQL()
+		},
+		{
+			name: "format",
+			bindKey: { win: "Ctrl-Shift-F", mac: "Command-Shift-F" },
+			exec: () => queryEditor.formatSQL()
+		},
 
-	editor = ace.edit("editor");
+	];
 
 	let Split = require("./node_modules/split.js/split");
 
@@ -97,63 +101,26 @@ function loadEditor(doc) {
 		onDrag: () => editor.resize()
 	});
 
-	var snippetManager = ace.acequire("ace/snippets").snippetManager;
-	var snippets = snippetManager.parseSnippetFile(fs.readFileSync('./snippets.txt', 'utf8'));
+	let snippets = fs.readFileSync('./snippets.txt', 'utf8');
 
-	snippetManager.register(snippets);
+	databaseFactory.create().getTableNames(function(tables) {
 
-	editor.setTheme("ace/theme/chrome");
-	editor.getSession().setMode("ace/mode/sql");
-	editor.setFontSize("14px");
-	editor.setShowPrintMargin(false);
-	editor.setOptions({
-		enableSnippets: true,
-		enableBasicAutocompletion: true
+		queryEditor = ReactDOM.render(
+			<QueryEditor
+				value={doc.sql}
+				snippets={snippets}
+				commands={commands}
+				keywords={keyWords}
+				tables={tables}
+				cursorPosition={doc.cursorPosition}
+				/>, document.getElementById('editor'));
+
+		editor = queryEditor.refs.queryBoxTextarea.editor;
+
+		ReactDOM.render(<QueryStatusBar editor={editor} />, document.getElementById('status'));
+
 	});
 
-	editor.focus();
-	editor.moveCursorToPosition(doc.cursorPosition);
-
-	ReactDOM.render(<QueryStatusBar editor={editor} />, document.getElementById('status'));
-
-	editor.commands.addCommand({
-		name: "execute",
-		bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
-		exec: () => executeSQL()
-	});
-
-	editor.commands.addCommand({
-		name: "format",
-		bindKey: { win: "Ctrl-Shift-F", mac: "Command-Shift-F" },
-		exec: () => formatSQL()
-	});
-
-	databaseFactory.create().getTableNames(function(names) {
-		tableNames = names;
-		buildCompleter();
-	});
-
-	buildCompleter();
-}
-
-function buildCompleter() {
-
-		let completions = [];
-
-		completions = completions.concat(mapCompletion(keyWords, "keyword"));
-		completions = completions.concat(mapCompletion(tableNames, "table"));
-
-		let staticWordCompleter = {
-		  getCompletions: function(editor, session, pos, prefix, callback) {
-		    callback(null, completions);
-		  }
-		};
-
-		editor.completers = [staticWordCompleter];
-}
-
-function mapCompletion(items, meta) {
-	return items.map((item) => ({ caption : item, value : item, meta : meta }));
 }
 
 function getKeyWords() {
@@ -163,13 +130,6 @@ function getKeyWords() {
 		keywords[i] = keywords[i].trim();
 	}
 	return keywords;
-}
-
-function formatSQL() {
-	let formatter = new Formatter();
-	var position = editor.session.selection.toJSON();
-	editor.setValue(formatter.format(getSQL(), keyWords));
-	editor.session.selection.fromJSON(position);
 }
 
 function saveEditor(event) {
@@ -187,10 +147,6 @@ function saveEditor(event) {
 	});
 }
 
-function getSQL() {
-	return editor.getSelectedText() || editor.getValue();
-}
-
 function executeSQL() {
-	databaseFactory.create().execute(getSQL(), doc);
+	databaseFactory.create().execute(queryEditor.getSQL(), doc);
 }
