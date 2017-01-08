@@ -40,25 +40,11 @@ session.load(function(d) {
 	document.getElementById("info").innerHTML = doc.info;
 });
 
-ipcRenderer.on('quantum:open', function(event, message) {
-	openFile();
-});
-
-ipcRenderer.on('quantum:save', function(event, message) {
-	saveFile();
-});
-
-ipcRenderer.on('quantum:execute', function(event, message) {
-	executeSQL();
-});
-
-ipcRenderer.on('quantum:format', function(event, message) {
-	formatSQL();
-});
-
-ipcRenderer.on('close', function(event, message) {
-	saveEditor(event);
-});
+ipcRenderer.on('quantum:open', (event, message) => openFile());
+ipcRenderer.on('quantum:save', (event, message) => saveFile());
+ipcRenderer.on('quantum:execute', (event, message) => executeSQL());
+ipcRenderer.on('quantum:format', (event, message) => formatSQL());
+ipcRenderer.on('close', (event, message) => saveEditor(event));
 
 function openFile() {
 
@@ -108,9 +94,7 @@ function loadEditor(doc) {
 	split = Split(['#editor', '#result'], {
 		sizes : doc.split,
 		direction : 'vertical',
-		onDrag: function() {
-			editor.resize();
-		}
+		onDrag: () => editor.resize()
 	});
 
 	var snippetManager = ace.acequire("ace/snippets").snippetManager;
@@ -135,17 +119,13 @@ function loadEditor(doc) {
 	editor.commands.addCommand({
 		name: "execute",
 		bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
-		exec: function() {
-			executeSQL();
-		}
+		exec: () => executeSQL()
 	});
 
 	editor.commands.addCommand({
 		name: "format",
 		bindKey: { win: "Ctrl-Shift-F", mac: "Command-Shift-F" },
-		exec: function() {
-			formatSQL();
-		}
+		exec: () => formatSQL()
 	});
 
 	databaseFactory.create().getTableNames(function(names) {
