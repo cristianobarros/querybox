@@ -157,29 +157,22 @@ function loadEditor(doc) {
 
 function buildCompleter() {
 
-		let words = keyWords.map(function(word) {
-			return {
-				caption: word,
-				value: word,
-				meta: "keyword"
-			};
-		});
+		let completions = [];
 
-		let tables = tableNames.map(function(word) {
-			return {
-				caption: word,
-				value: word,
-				meta: "table"
-			};
-		});
+		completions = completions.concat(mapCompletion(keyWords, "keyword"));
+		completions = completions.concat(mapCompletion(tableNames, "table"));
 
 		let staticWordCompleter = {
 		  getCompletions: function(editor, session, pos, prefix, callback) {
-		    callback(null, words.concat(tables));
+		    callback(null, completions);
 		  }
 		};
 
 		editor.completers = [staticWordCompleter];
+}
+
+function mapCompletion(items, meta) {
+	return items.map((item) => ({ caption : item, value : item, meta : meta }));
 }
 
 function getKeyWords() {
