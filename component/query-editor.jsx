@@ -27,7 +27,6 @@ export default class QueryEditor extends React.Component {
         width="100%"
         fontSize={14}
         ref="queryBoxTextarea"
-        commands={this.getCommands()}
         value={this.props.value}
         showPrintMargin={false}
         editorProps={{ $blockScrolling : Infinity }}
@@ -41,16 +40,6 @@ export default class QueryEditor extends React.Component {
       let snippetManager = ace.acequire("ace/snippets").snippetManager;
     	let snippets = snippetManager.parseSnippetFile(this.props.snippets);
     	snippetManager.register(snippets);
-  }
-
-  getCommands() {
-    return [
-      {
-        name: "format",
-        bindKey: { win: "Ctrl-Shift-F", mac: "Command-Shift-F" },
-        exec: () => this.formatSQL()
-      }
-    ];
   }
 
   getCompleters() {
