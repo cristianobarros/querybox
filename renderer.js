@@ -79,20 +79,6 @@ function saveFile() {
 
 function loadEditor(doc) {
 
-	let commands = [
-		{
-			name: "execute",
-			bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
-			exec: () => executeSQL()
-		},
-		{
-			name: "format",
-			bindKey: { win: "Ctrl-Shift-F", mac: "Command-Shift-F" },
-			exec: () => queryEditor.formatSQL()
-		},
-
-	];
-
 	let Split = require("./node_modules/split.js/split");
 
 	split = Split(['#editor', '#result'], {
@@ -109,7 +95,6 @@ function loadEditor(doc) {
 			<QueryEditor
 				value={doc.sql}
 				snippets={snippets}
-				commands={commands}
 				keywords={keyWords}
 				tables={tables}
 				cursorPosition={doc.cursorPosition}
