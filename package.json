@@ -4,8 +4,8 @@
   "description": "A JavaScript SQL Editor",
   "main": "main.js",
   "scripts": {
-	"dev": "webpack --watch",
-	"dev:start": "electron .",
+    "dev": "webpack --watch",
+    "dev:start": "electron .",
     "start": "webpack && electron ."
   },
   "repository": "https://github.com/electron/electron-quick-start",
@@ -30,6 +30,7 @@
     "nedb": "^1.8.0",
     "pg": "^6.1.2",
     "react": "^15.4.1",
+    "react-ace": "^4.1.1",
     "react-dom": "^15.4.1",
     "split.js": "^1.1.2"
   }
