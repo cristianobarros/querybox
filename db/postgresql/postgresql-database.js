@@ -1,68 +1,46 @@
 'use strict';
 
 const pg = require('electron').remote.require('pg');
-const Result = require('../../result');
-const Timer = require('../../timer');
 
-function PostgreSQLDatabase(props) {
+function PostgreSQLDatabase(config) {
 
-	const config = props.config;
-
-	let result = new Result();
-
-	function getTableNames(callback) {
-		let sql = "SELECT * FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');";
-
-		var client = new pg.Client(config);
-
-		client.connect(function(err) {
-
-			result.handleErrorIfExists(err);
-
-			client.query(sql, function(err, res) {
-
-				result.handleErrorIfExists(err);
-
-				callback(res.rows.map(function(row) {
-					return row.table_name;
-				}));
-
-				client.end(function (err) {
-					result.handleErrorIfExists(err);
-				});
-			});
-
-		});
+	function getTableNames(onSuccess, onError) {
+		let sql = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');";
+		execute(sql, onSuccess, onError);
 	}
 
-	function execute(sql, doc) {
+	function execute(sql, onSuccess, onError) {
 
 			var client = new pg.Client(config);
 
 			client.connect(function(err) {
 
-				result.handleErrorIfExists(err);
-
-				let timer = new Timer();
-
-				timer.start();
+				handleErrorIfExists(onError, err);
 
 				client.query({ rowMode : "array", text : sql }, function(err, res) {
 
-					result.handleErrorIfExists(err);
+					handleErrorIfExists(onError, err);
 
-					timer.stop();
-					doc.result = res;
-					doc.time = timer.getTime();
-
-					result.refresh(res, timer.getTime());
+					onSuccess({
+						fields : res.fields.map(function(field) {
+							return { name : field.name };
+						}),
+						rows : res.rows
+					});
 
 					client.end(function (err) {
-						result.handleErrorIfExists(err);
+						handleErrorIfExists(onError, err);
 					});
 				});
 
 			});
+	}
+
+	function handleErrorIfExists(onError, error) {
+		if (error) {
+			onError(error);
+			throw error;
+		}
 	}
 
 	return {

@@ -32,6 +32,7 @@ export default class QueryEditor extends React.Component {
         editorProps={{ $blockScrolling : Infinity }}
         enableSnippets={true}
         enableBasicAutocompletion={true}
+        onChange={this.props.onChange}
         />
     );
   }

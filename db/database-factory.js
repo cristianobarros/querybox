@@ -1,25 +1,20 @@
 'use strict';
 
 const PostgreSQLDatabase = require('./postgresql/postgresql-database');
-const SQLServerDatabase = require('./sqlserver/sqlserver-database');
 
 const fs = require('fs');
 const path = require('path');
 
 function DatabaseFactory() {
 
-	let props = {
-		config : loadConfig()
-	};
+	let config = loadConfig();
 
 	function create() {
-		switch(props.config.type) {
+		switch(config.type) {
 			case 'PostgreSQL':
-				return new PostgreSQLDatabase(props);
-			case 'SQLServer' :
-				return new SQLServerDatabase(props);
+				return new PostgreSQLDatabase(config);
 			default:
-				throw 'Unknown database type: ' + props.config.type;
+				throw 'Unknown database type: ' + config.type;
 		}
 	}
 

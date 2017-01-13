@@ -8,36 +8,27 @@ const fs = require('fs');
 const path = require('path');
 
 const Session = require('./session');
-const Result = require('./result');
 const databaseFactory = require('./db/database-factory').databaseFactory;
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import QueryEditor from './component/query-editor.jsx';
-import QueryStatusBar from './component/query-status-bar.jsx';
+import App from './component/app.jsx';
+import Timer from './timer';
 
-let queryEditor;
 let editor;
-let doc;
-let split;
 let keyWords = getKeyWords();
 
 let session = new Session();
 
-session.load(function(d) {
-	doc = d;
+session.load(function(doc) {
 	loadEditor(doc);
-	if (doc.result) {
-		new Result().refresh(doc.result, doc.time);
-	}
-	document.getElementById("info").innerHTML = doc.info;
 });
 
 ipcRenderer.on('quantum:open', (event, message) => openFile());
 ipcRenderer.on('quantum:save', (event, message) => saveFile());
 ipcRenderer.on('quantum:execute', (event, message) => executeSQL());
-ipcRenderer.on('quantum:format', (event, message) => queryEditor.formatSQL());
+ipcRenderer.on('quantum:format', (event, message) => editor.formatSQL());
 ipcRenderer.on('close', (event, message) => saveEditor(event));
 
 function openFile() {
@@ -54,7 +45,10 @@ function openFile() {
 		return;
 	}
 
-	fs.readFile(files[0], 'utf-8', function (err, data) {
+	fs.readFile(files[0], 'utf-8', function (error, data) {
+		if (error) {
+			editor.setMessage(error.message);
+		}
 		editor.setValue(data);
   });
 }
@@ -72,40 +66,41 @@ function saveFile() {
 			return;
 		}
 
-		fs.writeFile(file, editor.getValue(), function (err) {
-			new Result().handleErrorIfExists(err);
+		fs.writeFile(file, editor.getValue(), function (error) {
+			if (error) {
+				editor.setMessage(error.message);
+			}
 	  });
 }
 
 function loadEditor(doc) {
 
-	let Split = require("./node_modules/split.js/split");
-
-	split = Split(['#editor', '#result'], {
-		sizes : doc.split,
-		direction : 'vertical',
-		onDrag: () => editor.resize()
-	});
-
 	let snippets = fs.readFileSync('./snippets.txt', 'utf8');
 
-	databaseFactory.create().getTableNames(function(tables) {
+	let onSuccess = function(res) {
 
-		queryEditor = ReactDOM.render(
-			<QueryEditor
-				value={doc.sql}
-				snippets={snippets}
-				keywords={keyWords}
-				tables={tables}
-				cursorPosition={doc.cursorPosition}
-				/>, document.getElementById('editor'));
+		let tables = res.rows.map((row) => row[0]);
 
-		editor = queryEditor.refs.queryBoxTextarea.editor;
+			editor = ReactDOM.render(
+					<App
+						id={doc._id}
+						value={doc.value}
+						snippets={snippets}
+						keywords={keyWords}
+						tables={tables}
+						cursorPosition={doc.cursorPosition}
+						result={doc.result}
+						split={doc.split}
+						message={doc.message}
+						/>, document.getElementById('app'));
 
-		ReactDOM.render(<QueryStatusBar editor={editor} />, document.getElementById('status'));
+	};
 
-	});
+	let onError = function(error) {
+		editor.setMessage(error.message);
+	};
 
+	databaseFactory.create().getTableNames(onSuccess, onError);
 }
 
 function getKeyWords() {
@@ -119,19 +114,28 @@ function getKeyWords() {
 
 function saveEditor(event) {
 
-	var sql = editor.getValue();
-	var cursorPosition = editor.getCursorPosition();
+	let state = editor.getState();
 
-	doc.sql = sql;
-	doc.cursorPosition = cursorPosition;
-	doc.info = document.getElementById("info").innerHTML;
-	doc.split = split.getSizes();
-
-	session.save(doc, function() {
+	session.save(state, function() {
 		event.sender.send('close-ok');
 	});
 }
 
 function executeSQL() {
-	databaseFactory.create().execute(queryEditor.getSQL(), doc);
+
+	let timer = new Timer();
+
+	timer.start();
+
+	let onSuccess = function(result) {
+		timer.stop();
+		editor.setMessage(result.rows.length + " rows in " + timer.getTime() + " ms");
+		editor.setResult(result);
+	};
+
+	let onError = function(error) {
+		editor.setMessage(error.message);
+	};
+
+	databaseFactory.create().execute(editor.getSQL(), onSuccess, onError);
 }
