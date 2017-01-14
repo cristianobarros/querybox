@@ -7,7 +7,7 @@ import 'brace/ext/language_tools';
 
 import Formatter from '../formatter';
 
-export default class QueryEditor extends React.Component {
+export default class QueryEditor extends React.PureComponent {
 
   componentDidMount() {
     let editor = this.refs.queryBoxTextarea.editor;

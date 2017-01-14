@@ -1,7 +1,7 @@
 import React from 'react';
 import dateFormat from 'dateformat';
 
-export default class ResultTableCell extends React.Component {
+export default class ResultTableCell extends React.PureComponent {
 
 	valueToHTML (value) {
 		if (value instanceof Date) {
@@ -10,11 +10,11 @@ export default class ResultTableCell extends React.Component {
 		return value;
 	};
 
-   render() {
+	render() {
 		if (this.props.value == null) {
 			return <td><span className="label label-default">NULL</span></td>;
 		}
 		return <td>{this.valueToHTML(this.props.value)}</td>;
-   }
+	}
 
 }

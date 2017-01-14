@@ -6,7 +6,7 @@ import QueryEditor from './../component/query-editor.jsx';
 import QueryInfo from './../component/query-info.jsx';
 import ResultTable from './../component/result-table.jsx';
 
-export default class App extends React.Component {
+export default class App extends React.PureComponent {
 
   constructor(props) {
     super(props);
