@@ -7,6 +7,8 @@ const MenuItem = electron.MenuItem;
 const path = require('path')
 const url = require('url')
 
+const buildTemplate = require('./menu');
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
@@ -24,30 +26,8 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: workArea.width, height: workArea.height, title: 'SQL Editor', icon: 'icon/32.png', show: false, webPreferences: {devTools: true}});
 
-  var menu = new Menu();
-
-  menu.append(new MenuItem({label: 'File', submenu: [
-		new MenuItem({label : 'Open', accelerator : 'Ctrl+O', click : function() {
-		mainWindow.webContents.send('quantum:open');
-	}}),
-	new MenuItem({label : 'Save', accelerator : 'Ctrl+S', click : function() {
-		mainWindow.webContents.send('quantum:save');
-	}}),
-		new MenuItem({type : 'separator'}),
-    new MenuItem({label : 'Execute', accelerator : 'Ctrl+Enter', click : function() {
-		mainWindow.webContents.send('quantum:execute');
-	}}),
-	new MenuItem({label : 'Format', accelerator : 'Ctrl+Shift+F', click : function() {
-		mainWindow.webContents.send('quantum:format');
-	}}),
-    new MenuItem({type : 'separator'}),
-    new MenuItem({label : 'Exit', role : 'quit'})
-  ]}));
-
-	menu.append(new MenuItem({label: 'View', submenu: [
-		new MenuItem({label : 'Reload', accelerator : 'Ctrl+R', role : 'reload'}),
-		new MenuItem({label : 'Toggle Developer Tools', accelerator : 'Ctrl+Shift+I', role : 'toggledevtools'})
-  ]}));
+	const template = buildTemplate();
+	const menu = Menu.buildFromTemplate(template);
 
   Menu.setApplicationMenu(menu);
 
