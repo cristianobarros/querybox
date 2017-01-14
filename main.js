@@ -44,6 +44,11 @@ function createWindow () {
     new MenuItem({label : 'Exit', role : 'quit'})
   ]}));
 
+	menu.append(new MenuItem({label: 'View', submenu: [
+		new MenuItem({label : 'Reload', accelerator : 'Ctrl+R', role : 'reload'}),
+		new MenuItem({label : 'Toggle Developer Tools', accelerator : 'Ctrl+Shift+I', role : 'toggledevtools'})
+  ]}));
+
   Menu.setApplicationMenu(menu);
 
   // and load the index.html of the app.
