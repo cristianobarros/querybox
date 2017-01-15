@@ -16,6 +16,7 @@ import ReactDOM from 'react-dom';
 import App from './component/app.jsx';
 import Timer from './timer';
 import KeywordManager from './db/keyword-manager';
+import SnippetManager from './db/snippet-manager';
 
 let editor;
 
@@ -33,7 +34,7 @@ ipcRenderer.on('close', (event, message) => saveEditor(event));
 
 function openFile() {
 
-	let files = dialog.showOpenDialog({
+	const files = dialog.showOpenDialog({
 	  filters: [
 	    {name: 'SQL', extensions: ['sql']},
 	    {name: 'All Files', extensions: ['*']}
@@ -55,7 +56,7 @@ function openFile() {
 
 function saveFile() {
 
-		let file = dialog.showSaveDialog({
+		const file = dialog.showSaveDialog({
 		  filters: [
 		    {name: 'SQL', extensions: ['sql']},
 		    {name: 'All Files', extensions: ['*']}
@@ -75,30 +76,30 @@ function saveFile() {
 
 function loadEditor(doc) {
 
-	let snippets = fs.readFileSync('./snippets.txt', 'utf8');
+	const onSuccess = function(res) {
 
-	let onSuccess = function(res) {
+		const tables = res.rows.map((row) => row[0]);
+		const snippets = SnippetManager.getSnippets();
+		const keywords = KeywordManager.getKeywords();
 
-		let tables = res.rows.map((row) => row[0]);
-
-			let keywords = KeywordManager.getKeywords();
-
-			editor = ReactDOM.render(
-					<App
-						id={doc._id}
-						value={doc.value}
-						snippets={snippets}
-						keywords={keywords}
-						tables={tables}
-						cursorPosition={doc.cursorPosition}
-						result={doc.result}
-						split={doc.split}
-						message={doc.message}
-						/>, document.getElementById('app'));
+		editor = ReactDOM.render(
+			<App
+				id={doc._id}
+				value={doc.value}
+				snippets={snippets}
+				keywords={keywords}
+				tables={tables}
+				cursorPosition={doc.cursorPosition}
+				result={doc.result}
+				split={doc.split}
+				message={doc.message}
+				/>,
+			document.getElementById('app')
+		);
 
 	};
 
-	let onError = function(error) {
+	const onError = function(error) {
 		editor.setMessage(error.message);
 	};
 
@@ -107,7 +108,7 @@ function loadEditor(doc) {
 
 function saveEditor(event) {
 
-	let state = editor.getState();
+	const state = editor.getState();
 
 	session.save(state, function() {
 		event.sender.send('close-ok');
@@ -116,17 +117,17 @@ function saveEditor(event) {
 
 function executeSQL() {
 
-	let timer = new Timer();
+	const timer = new Timer();
 
 	timer.start();
 
-	let onSuccess = function(result) {
+	const onSuccess = function(result) {
 		timer.stop();
 		editor.setMessage(result.rows.length + " rows in " + timer.getTime() + " ms");
 		editor.setResult(result);
 	};
 
-	let onError = function(error) {
+	const onError = function(error) {
 		editor.setMessage(error.message);
 	};
 
