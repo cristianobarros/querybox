@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import dateFormat from 'dateformat';
 
-export default class ResultTableCell extends React.PureComponent {
+export default class ResultTableCell extends PureComponent {
 
 	valueToHTML (value) {
 		if (value instanceof Date) {

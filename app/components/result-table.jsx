@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 
 import ResultTableRow from './result-table-row.jsx';
 
-export default class ResultTable extends React.PureComponent {
+export default class ResultTable extends PureComponent {
   render() {
 		var headers = this.props.result.fields.map((field, index) => <th key={index}>{field.name}</th>);
 		var rows = this.props.result.rows.map((row, index) => <ResultTableRow key={index} index={index} row={row} />);

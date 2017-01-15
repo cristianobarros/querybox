@@ -13,7 +13,7 @@ const databaseFactory = require('./db/database-factory').databaseFactory;
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './component/app.jsx';
+import App from './containers/app.jsx';
 import Timer from './timer';
 import KeywordManager from './db/keyword-manager';
 import SnippetManager from './db/snippet-manager';

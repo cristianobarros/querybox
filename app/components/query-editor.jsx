@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import AceEditor from 'react-ace';
 
 import 'brace/mode/sql';
@@ -7,7 +7,7 @@ import 'brace/ext/language_tools';
 
 import Formatter from '../formatter';
 
-export default class QueryEditor extends React.PureComponent {
+export default class QueryEditor extends PureComponent {
 
   componentDidMount() {
     let editor = this.refs.queryBoxTextarea.editor;

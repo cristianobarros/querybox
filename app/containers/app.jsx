@@ -1,13 +1,13 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import ace from 'brace';
 import 'brace/ext/statusbar';
 import {Split} from 'split.js';
 
-import QueryEditor from './../component/query-editor.jsx';
-import QueryInfo from './../component/query-info.jsx';
-import ResultTable from './../component/result-table.jsx';
+import QueryEditor from './../components/query-editor.jsx';
+import QueryInfo from './../components/query-info.jsx';
+import ResultTable from './../components/result-table.jsx';
 
-export default class App extends React.PureComponent {
+export default class App extends PureComponent {
 
   constructor(props) {
     super(props);
