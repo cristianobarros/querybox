@@ -24,7 +24,18 @@ function createWindow () {
   var workArea = electron.screen.getPrimaryDisplay().workArea;
 
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: workArea.width, height: workArea.height, title: 'SQL Editor', icon: 'icon/32.png', show: false, webPreferences: {devTools: true}});
+  mainWindow = new BrowserWindow(
+		{
+			width : workArea.width,
+			height : workArea.height,
+			title : 'SQL Editor',
+			icon : './build/icon.ico',
+			show : false,
+			webPreferences : {
+				devTools : true
+			}
+		}
+	);
 
 	const template = buildTemplate();
 	const menu = Menu.buildFromTemplate(template);

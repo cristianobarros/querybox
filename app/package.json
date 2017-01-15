@@ -1,0 +1,19 @@
+{
+  "name": "Quantum",
+  "productName": "Quantum",
+  "version": "1.0.0",
+  "description": "A JavaScript SQL Editor",
+  "main": "./main.js",
+  "author": "Cristiano de Barros",
+  "dependencies": {
+    "brace": "^0.9.1",
+    "dateformat": "^2.0.0",
+    "mssql": "^3.3.0",
+    "nedb": "^1.8.0",
+    "pg": "^6.1.2",
+    "react": "^15.4.1",
+    "react-ace": "^4.1.1",
+    "react-dom": "^15.4.1",
+    "split.js": "^1.1.2"
+  }
+}

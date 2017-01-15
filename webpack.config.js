@@ -1,8 +1,8 @@
 module.exports={
   target: 'electron',
-  entry:'./renderer.js',
+  entry:'./app/renderer.js',
   output:{
-    filename:'./renderer-bundle.js'
+    filename:'./app/renderer-bundle.js'
   },
   module: {
     loaders: [

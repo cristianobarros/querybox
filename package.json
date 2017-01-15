@@ -1,12 +1,17 @@
 {
-  "name": "js-sql-editor",
+  "name": "Quantum",
   "version": "1.0.0",
   "description": "A JavaScript SQL Editor",
   "main": "main.js",
   "scripts": {
     "dev": "webpack --watch",
-    "dev:start": "electron .",
-    "start": "webpack && electron ."
+    "dev:start": "electron ./app/",
+    "start": "webpack && electron ./app/",
+    "pack": "build --dir",
+    "dist": "build -mwl"
+  },
+  "build": {
+    "appId": "com.electron.quantum"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -21,6 +26,7 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "electron": "^1.4.1",
+    "electron-builder": "^11.2.5",
     "webpack": "^1.14.0"
   },
   "dependencies": {

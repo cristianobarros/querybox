@@ -1,6 +1,7 @@
 import React from 'react';
 import ace from 'brace';
 import 'brace/ext/statusbar';
+import {Split} from 'split.js';
 
 import QueryEditor from './../component/query-editor.jsx';
 import QueryInfo from './../component/query-info.jsx';
@@ -62,7 +63,6 @@ export default class App extends React.PureComponent {
    mountSplit() {
 
      let editor = this.getEditor();
-     let Split = require("./../node_modules/split.js/split");
 
      this.split = Split(['#editor', '#result'], {
        sizes : this.props.split,
