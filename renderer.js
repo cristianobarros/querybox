@@ -15,9 +15,9 @@ import ReactDOM from 'react-dom';
 
 import App from './component/app.jsx';
 import Timer from './timer';
+import KeywordManager from './db/keyword-manager';
 
 let editor;
-let keyWords = getKeyWords();
 
 let session = new Session();
 
@@ -81,12 +81,14 @@ function loadEditor(doc) {
 
 		let tables = res.rows.map((row) => row[0]);
 
+			let keywords = KeywordManager.getKeywords();
+
 			editor = ReactDOM.render(
 					<App
 						id={doc._id}
 						value={doc.value}
 						snippets={snippets}
-						keywords={keyWords}
+						keywords={keywords}
 						tables={tables}
 						cursorPosition={doc.cursorPosition}
 						result={doc.result}
@@ -101,15 +103,6 @@ function loadEditor(doc) {
 	};
 
 	databaseFactory.create().getTableNames(onSuccess, onError);
-}
-
-function getKeyWords() {
-	let file = fs.readFileSync('./keywords.txt', 'utf8');
-	let keywords = file.split('\n');
-	for (let i = 0; i < keywords.length; i++) {
-		keywords[i] = keywords[i].trim();
-	}
-	return keywords;
 }
 
 function saveEditor(event) {
