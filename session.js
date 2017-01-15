@@ -1,10 +1,17 @@
 'use strict';
 
+import AppPath from './app-path';
+
 function Session() {
 
 	var Datastore = require('nedb');
 
-	var db = new Datastore({ filename: "sessions.db", autoload: true });
+	var db = new Datastore(
+		{
+			filename : AppPath.getPath(".sessions.db"),
+			autoload : true
+		}
+	);
 
 	function load(callback) {
 		db.find({}, function(err, docs) {

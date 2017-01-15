@@ -1,11 +1,9 @@
 'use strict';
 
-const PostgreSQLDatabase = require('./postgresql/postgresql-database');
-
-import electron from 'electron';
-const app = electron.remote.app;
 const fs = require('fs');
-const path = require('path');
+
+import AppPath from './../app-path';
+import PostgreSQLDatabase from './postgresql/postgresql-database';
 
 function DatabaseFactory() {
 
@@ -21,9 +19,7 @@ function DatabaseFactory() {
 	}
 
 	function loadConfig() {
-		const dir = electron.remote.app.getPath('home');
-		const file = path.join(dir, '.connection.json');
-		return JSON.parse(fs.readFileSync(file, 'utf8'));
+		return JSON.parse(fs.readFileSync(AppPath.getPath('.connection.json'), 'utf8'));
 	}
 
 	return {
