@@ -19,7 +19,7 @@ function DatabaseFactory() {
 	}
 
 	function loadConfig() {
-		return JSON.parse(fs.readFileSync(AppPath.getPath('.connection.json'), 'utf8'));
+		return JSON.parse(fs.readFileSync(AppPath.getPath('connection.json'), 'utf8'));
 	}
 
 	return {

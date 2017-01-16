@@ -7,8 +7,9 @@ const path = require('path');
 function AppPath() {
 
 	function getPath(file) {
-		const dir = electron.remote.app.getPath('home');
-		return path.join(dir, file);
+		const home = electron.remote.app.getPath('home');
+		const app = path.join(home, '.quantum');
+		return path.join(app, file);
 	}
 
 	return {

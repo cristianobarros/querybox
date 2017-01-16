@@ -8,7 +8,7 @@ function Session() {
 
 	var db = new Datastore(
 		{
-			filename : AppPath.getPath(".sessions.db"),
+			filename : AppPath.getPath("sessions.db"),
 			autoload : true
 		}
 	);
