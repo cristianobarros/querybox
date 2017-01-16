@@ -65,7 +65,7 @@ export default class QueryEditor extends PureComponent {
   	let formatter = new Formatter();
     let editor = this.refs.queryBoxTextarea.editor;
   	var position = editor.session.selection.toJSON();
-  	editor.setValue(formatter.format(this.getSQL(), this.props.keywords));
+    editor.setValue(formatter.format(editor.getValue(), this.props.keywords));
   	editor.session.selection.fromJSON(position);
   }
 
