@@ -1,19 +1,13 @@
-
-const electron = require('electron');
-const fs = require('fs');
-const dialog = electron.remote.dialog;
-
 import React, {PureComponent} from 'react';
 import ace from 'brace';
 import 'brace/ext/statusbar';
 import {Split} from 'split.js';
 
+import QueryActions from './../actions/query-actions';
+
 import QueryEditor from './../components/query-editor.jsx';
 import QueryInfo from './../components/query-info.jsx';
 import ResultTable from './../components/result-table.jsx';
-
-import Timer from './../timer';
-import DatabaseFactory from './../db/database-factory';
 
 export default class App extends PureComponent {
 
@@ -122,67 +116,15 @@ export default class App extends PureComponent {
    }
 
    openFile() {
-
-     const self = this;
-     const files = dialog.showOpenDialog({
-       filters: [
-         {name: 'SQL', extensions: ['sql']},
-         {name: 'All Files', extensions: ['*']}
-       ],
-       properties: ['openFile']
-     });
-
-     if (files === undefined) {
-       return;
-     }
-
-     fs.readFile(files[0], 'utf-8', function (error, data) {
-       if (error) {
-         self.setMessage(error.message);
-       }
-       self.setValue(data);
-     });
+     QueryActions.openFile(this);
    }
 
    saveFile() {
-
-     const self = this;
-     const file = dialog.showSaveDialog({
-       filters: [
-         {name: 'SQL', extensions: ['sql']},
-         {name: 'All Files', extensions: ['*']}
-       ]
-     });
-
-     if (file === undefined) {
-       return;
-     }
-
-     fs.writeFile(file, self.getValue(), function (error) {
-       if (error) {
-         self.setMessage(error.message);
-       }
-     });
+     QueryActions.saveFile(this);
    }
 
    executeSQL() {
-
-     const self = this;
-     const timer = new Timer();
-
-     timer.start();
-
-     const onSuccess = function(result) {
-        timer.stop();
-        self.setMessage(result.rows.length + " rows in " + timer.getTime() + " ms");
-        self.setResult(result);
-      };
-
-      const onError = function(error) {
-        self.setMessage(error.message);
-      };
-
-      DatabaseFactory.create().execute(self.getSQL(), onSuccess, onError);
+     QueryActions.executeSQL(this);
     }
 
    getState() {
