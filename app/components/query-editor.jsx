@@ -13,7 +13,8 @@ export default class QueryEditor extends PureComponent {
     let editor = this.refs.queryBoxTextarea.editor;
     editor.focus();
     editor.completers = this.getCompleters();
-    editor.moveCursorToPosition(this.props.cursorPosition)
+    editor.moveCursorToPosition(this.props.cursorPosition);
+    editor.getSession().setUndoManager(new ace.UndoManager());
     this.registerSnippets();
   }
 

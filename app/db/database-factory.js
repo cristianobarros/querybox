@@ -27,6 +27,4 @@ function DatabaseFactory() {
 	}
 }
 
-module.exports = {
-	databaseFactory : new DatabaseFactory()
-};
+module.exports = new DatabaseFactory();
