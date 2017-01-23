@@ -22,8 +22,15 @@ function DatabaseFactory() {
 		return JSON.parse(fs.readFileSync(AppPath.getPath('connection.json'), 'utf8'));
 	}
 
+	function saveConfig(data) {
+		fs.writeFileSync(AppPath.getPath('connection.json'), JSON.stringify(data));
+		config = data;
+	}
+
 	return {
-		create : create
+		create : create,
+		loadConfig : loadConfig,
+		saveConfig : saveConfig
 	}
 }
 

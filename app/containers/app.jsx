@@ -8,6 +8,7 @@ import QueryActions from './../actions/query-actions';
 import QueryEditor from './../components/query-editor.jsx';
 import QueryInfo from './../components/query-info.jsx';
 import ResultTable from './../components/result-table.jsx';
+import ConnectionModal from './../components/connection-modal.jsx';
 
 export default class App extends PureComponent {
 
@@ -39,15 +40,19 @@ export default class App extends PureComponent {
           <QueryEditor
             ref="editor"
             value={this.state.value}
-            snippets={this.props.snippets}
-            keywords={this.props.keywords}
-            tables={this.props.tables}
+            snippets={this.props.completions.snippets}
+            keywords={this.props.completions.keywords}
+            tables={this.props.completions.tables}
             cursorPosition={this.props.cursorPosition}
             onChange={(newValue) => this.setValue(newValue)}
             />
         </div>
         <div id="result">{resultTable}</div>
         <div id="status"><QueryInfo message={this.state.message} /></div>
+        <ConnectionModal
+          ref="connectionModal"
+          onSave={(data) => this.props.onSaveConnection(data)}
+          />
       </div>
       );
    }
@@ -121,6 +126,10 @@ export default class App extends PureComponent {
 
    saveFile() {
      QueryActions.saveFile(this);
+   }
+
+   editConnection() {
+     this.refs.connectionModal.show();
    }
 
    executeSQL() {

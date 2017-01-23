@@ -9,10 +9,17 @@ import Formatter from '../formatter';
 
 export default class QueryEditor extends PureComponent {
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.tables !== nextProps.tables) {
+      let editor = this.refs.queryBoxTextarea.editor;
+      editor.completers = this.getCompleters(nextProps);
+    }
+  }
+
   componentDidMount() {
     let editor = this.refs.queryBoxTextarea.editor;
     editor.focus();
-    editor.completers = this.getCompleters();
+    editor.completers = this.getCompleters(this.props);
     editor.moveCursorToPosition(this.props.cursorPosition);
     editor.getSession().setUndoManager(new ace.UndoManager());
     this.registerSnippets();
@@ -44,12 +51,12 @@ export default class QueryEditor extends PureComponent {
     	snippetManager.register(snippets);
   }
 
-  getCompleters() {
+  getCompleters(props) {
 
   		let completions = [];
 
-  		completions = completions.concat(this.mapCompletion(this.props.keywords, "keyword"));
-  		completions = completions.concat(this.mapCompletion(this.props.tables, "table"));
+      completions = completions.concat(this.mapCompletion(props.keywords, "keyword"));
+      completions = completions.concat(this.mapCompletion(props.tables, "table"));
 
   		return [{
   		  getCompletions: function(editor, session, pos, prefix, callback) {

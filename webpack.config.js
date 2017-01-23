@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 module.exports={
   target: 'electron',
   entry:'./app/renderer.js',
@@ -15,5 +17,11 @@ module.exports={
         }
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      jQuery: 'jquery',
+      $: 'jquery',
+    }),
+  ],
 }

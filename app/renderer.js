@@ -17,6 +17,7 @@ import SnippetManager from './db/snippet-manager';
 let app;
 
 let session = new Session();
+const completions = {};
 
 session.load(function(doc) {
 	loadEditor(doc);
@@ -24,6 +25,7 @@ session.load(function(doc) {
 
 ipcRenderer.on('quantum:open', (event, message) => app.openFile());
 ipcRenderer.on('quantum:save', (event, message) => app.saveFile());
+ipcRenderer.on('quantum:edit-connection', (event, message) => app.editConnection());
 ipcRenderer.on('quantum:execute', (event, message) => app.executeSQL());
 ipcRenderer.on('quantum:format', (event, message) => app.formatSQL());
 ipcRenderer.on('close', (event, message) => saveEditor(event));
@@ -32,21 +34,20 @@ function loadEditor(doc) {
 
 	const onSuccess = function(res) {
 
-		const tables = res.rows.map((row) => row[0]);
-		const snippets = SnippetManager.getSnippets();
-		const keywords = KeywordManager.getKeywords();
+		completions.tables = res.rows.map((row) => row[0]);
+		completions.snippets = SnippetManager.getSnippets();
+		completions.keywords = KeywordManager.getKeywords();
 
 		app = ReactDOM.render(
 			<App
 				id={doc._id}
 				value={doc.value}
-				snippets={snippets}
-				keywords={keywords}
-				tables={tables}
+				completions={completions}
 				cursorPosition={doc.cursorPosition}
 				result={doc.result}
 				split={doc.split}
 				message={doc.message}
+				onSaveConnection={(data) => onSaveConnection(doc, data)}
 				/>,
 			document.getElementById('app')
 		);
@@ -58,6 +59,11 @@ function loadEditor(doc) {
 	};
 
 	DatabaseFactory.create().getTableNames(onSuccess, onError);
+}
+
+function onSaveConnection(doc, data) {
+	DatabaseFactory.saveConfig(data);
+	loadEditor(doc);
 }
 
 function saveEditor(event) {
