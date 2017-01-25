@@ -1,15 +1,14 @@
 'use strict';
 
-const fs = require('fs');
+import fs from 'fs';
 
 import AppPath from './../app-path';
 import PostgreSQLDatabase from './postgresql/postgresql-database';
 
 function DatabaseFactory() {
 
-	let config = loadConfig();
-
 	function create() {
+		const config = loadConfig();
 		switch(config.type) {
 			case 'PostgreSQL':
 				return new PostgreSQLDatabase(config);
@@ -24,7 +23,6 @@ function DatabaseFactory() {
 
 	function saveConfig(data) {
 		fs.writeFileSync(AppPath.getPath('connection.json'), JSON.stringify(data));
-		config = data;
 	}
 
 	return {

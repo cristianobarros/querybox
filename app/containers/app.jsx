@@ -10,6 +10,10 @@ import QueryInfo from './../components/query-info.jsx';
 import ResultTable from './../components/result-table.jsx';
 import ConnectionModal from './../components/connection-modal.jsx';
 
+import KeywordManager from './../db/keyword-manager';
+import SnippetManager from './../db/snippet-manager';
+import DatabaseFactory from './../db/database-factory';
+
 export default class App extends PureComponent {
 
   constructor(props) {
@@ -17,13 +21,17 @@ export default class App extends PureComponent {
     this.state = {
       value : props.value,
       result : props.result,
-      message : props.message
+      message : props.message,
+      tables : [],
+      snippets : SnippetManager.getSnippets(),
+      keywords : KeywordManager.getKeywords(),
     };
   }
 
   componentDidMount() {
     this.mountStatusBar();
     this.mountSplit();
+    this.loadTables();
   }
 
   render() {
@@ -40,9 +48,9 @@ export default class App extends PureComponent {
           <QueryEditor
             ref="editor"
             value={this.state.value}
-            snippets={this.props.completions.snippets}
-            keywords={this.props.completions.keywords}
-            tables={this.props.completions.tables}
+            snippets={this.state.snippets}
+            keywords={this.state.keywords}
+            tables={this.state.tables}
             cursorPosition={this.props.cursorPosition}
             onChange={(newValue) => this.setValue(newValue)}
             />
@@ -51,10 +59,38 @@ export default class App extends PureComponent {
         <div id="status"><QueryInfo message={this.state.message} /></div>
         <ConnectionModal
           ref="connectionModal"
-          onSave={(data) => this.props.onSaveConnection(data)}
+          onSave={(data) => this.onSaveConnection(data)}
           />
       </div>
       );
+   }
+
+   onSaveConnection(data) {
+     DatabaseFactory.saveConfig(data);
+   }
+
+   loadTables() {
+
+     const self = this;
+
+     const onSuccess = function(res) {
+       const newTables = res.rows.map((row) => row[0]);
+       self.setState({
+         tables : newTables
+       });
+     };
+
+     const onError = function(error) {
+       self.setState({
+         message : error.message
+       });
+     };
+
+     try {
+       DatabaseFactory.create().getTableNames(onSuccess, onError);
+     } catch (error) {
+       onError(error);
+     }
    }
 
    mountStatusBar() {

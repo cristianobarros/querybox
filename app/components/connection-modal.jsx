@@ -5,11 +5,20 @@ import 'bootstrap';
 
 import DatabaseFactory from './../db/database-factory';
 
+const EMPTY_STATE = {
+  "type" : "",
+  "host" : "",
+  "port" : "",
+  "database" : "",
+  "user" : "",
+  "password" : ""
+};
+
 export default class ConnectionModal extends PureComponent {
 
   constructor() {
     super();
-    this.state = DatabaseFactory.loadConfig();
+    this.state = EMPTY_STATE;
   }
 
   componentDidMount() {
@@ -88,6 +97,13 @@ export default class ConnectionModal extends PureComponent {
   }
 
   show() {
+    let newState;
+    try {
+      newState = DatabaseFactory.loadConfig();
+    } catch (error) {
+      newState = EMPTY_STATE;
+    }
+    this.setState(newState);
     $(this.refs.connectionModal).modal('show');
   }
 
