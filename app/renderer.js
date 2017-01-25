@@ -2,6 +2,7 @@
 import electron from 'electron';
 const ipcRenderer = electron.ipcRenderer;
 
+import AppPath from './app-path';
 import Session from './session';
 
 import React from 'react';
@@ -9,8 +10,9 @@ import ReactDOM from 'react-dom';
 
 import App from './containers/app.jsx';
 
-let app;
+AppPath.createAppPathIfDoNotExists();
 
+let app;
 let session = new Session();
 
 session.load(function(doc) {

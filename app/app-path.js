@@ -1,19 +1,32 @@
 'use strict';
 
+import fs from 'fs';
 import electron from 'electron';
 const app = electron.remote.app;
-const path = require('path');
+import path from 'path';
 
 function AppPath() {
 
 	function getPath(file) {
-		const home = electron.remote.app.getPath('home');
-		const app = path.join(home, '.quantum');
+		const app = getAppPath();
 		return path.join(app, file);
 	}
 
+	function getAppPath() {
+		const home = electron.remote.app.getPath('home');
+		return path.join(home, '.quantum');
+	}
+
+	function createAppPathIfDoNotExists() {
+		const appPath = getAppPath();
+		if (!fs.existsSync(appPath)) {
+			fs.mkdir(appPath);
+		}
+	}
+
 	return {
-		getPath : getPath
+		getPath : getPath,
+		createAppPathIfDoNotExists : createAppPathIfDoNotExists
 	}
 }
 
