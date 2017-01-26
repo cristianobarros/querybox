@@ -49,7 +49,8 @@ export default class ConnectionModal extends PureComponent {
               <div className="form-group">
                 <label htmlFor="type" className="control-label">Type</label>
                 <select id="type" className="form-control" onChange={(event) => this.handleChange(event)}>
-                  <option>PostgreSQL</option>
+                  <option value=""></option>
+                  <option value="PostgreSQL">PostgreSQL</option>
                 </select>
               </div>
               <div className="form-group">
