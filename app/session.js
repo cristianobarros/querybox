@@ -37,7 +37,8 @@ function Session() {
 			cursorPosition : { row : 0, column : 0 },
 			result : null,
 			message : "",
-			split : [50, 50]
+			split : [50, 50],
+			zoomFactor : 1
 		}
 	}
 

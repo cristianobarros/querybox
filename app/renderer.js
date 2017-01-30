@@ -24,6 +24,7 @@ session.load().then(function(doc) {
 			result={doc.result}
 			split={doc.split}
 			message={doc.message}
+			zoomFactor={doc.zoomFactor}
 			/>,
 		document.getElementById('app')
 	);

@@ -29,7 +29,7 @@ function buildTemplate() {
           click: (item, win) => win.webContents.send('quantum:format'),
         },
         {
-          label: 'Edit connection',
+          label: 'Edit Connection',
           click: (item, win) => win.webContents.send('quantum:edit-connection'),
         },
         {
@@ -54,6 +54,24 @@ function buildTemplate() {
           accelerator: 'Ctrl+Shift+I',
           role: 'toggledevtools',
         },
+        {
+          type: 'separator',
+        },
+        {
+          label: 'Reset Zoom',
+          accelerator: 'Ctrl+0',
+          role: 'resetzoom',
+        },
+        {
+          label: 'Zoom Out',
+          accelerator: 'Ctrl+-',
+          role: 'zoomout',
+        },
+        {
+          label: 'Zoom In',
+          accelerator: 'Ctrl+=',
+          role: 'zoomin',
+        }
       ],
     }
   ];

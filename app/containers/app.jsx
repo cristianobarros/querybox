@@ -3,6 +3,8 @@ import ace from 'brace';
 import 'brace/ext/statusbar';
 import {Split} from 'split.js';
 
+const {webFrame} = require('electron');
+
 import QueryActions from './../actions/query-actions';
 
 import QueryEditor from './../components/query-editor.jsx';
@@ -32,6 +34,7 @@ export default class App extends PureComponent {
     this.mountStatusBar();
     this.mountSplit();
     this.loadTables();
+    webFrame.setZoomFactor(this.props.zoomFactor);
   }
 
   render() {
@@ -171,7 +174,7 @@ export default class App extends PureComponent {
 
    executeSQL() {
      QueryActions.executeSQL(this);
-    }
+   }
 
    getState() {
      return {
@@ -180,7 +183,8 @@ export default class App extends PureComponent {
        result : this.state.result,
        message : this.state.message,
        cursorPosition : this.getCursorPosition(),
-       split : this.getSplitSizes()
+       split : this.getSplitSizes(),
+       zoomFactor : webFrame.getZoomFactor()
      }
    }
 
