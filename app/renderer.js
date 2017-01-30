@@ -15,7 +15,7 @@ AppPath.createAppPathIfDoNotExists();
 let app;
 let session = new Session();
 
-session.load(function(doc) {
+session.load().then(function(doc) {
 	app = ReactDOM.render(
 		<App
 			id={doc._id}
@@ -33,7 +33,7 @@ function saveEditor(event) {
 
 	const state = app.getState();
 
-	session.save(state, function() {
+	session.save(state).then(function() {
 		event.sender.send('close-ok');
 	});
 }

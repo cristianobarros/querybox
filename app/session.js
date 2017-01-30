@@ -13,13 +13,21 @@ function Session() {
 		}
 	);
 
-	function load(callback) {
-		db.find({}, function(err, docs) {
-			if (docs.length > 0) {
-				callback(docs[0]);
-			} else {
-				callback(getDefaultSession());
-			}
+	function load() {
+		return new Promise(function(fulfill, reject) {
+			db.find({}, function(err, docs) {
+
+				if (err) {
+					reject(err);
+					return;
+				}
+
+				if (docs.length > 0) {
+					fulfill(docs[0]);
+				} else {
+					fulfill(getDefaultSession());
+				}
+			});
 		});
 	}
 
@@ -33,17 +41,30 @@ function Session() {
 		}
 	}
 
-	function save(doc, callback) {
-		if (doc._id == null) {
-			db.insert(doc, function (err, newDoc) {
-				callback();
-				event.sender.send('close-ok');
-			});
-		} else {
-			db.update({ "_id" : doc._id,}, { $set : doc }, function (err, numReplaced) {
-				callback();
-			});
-		}
+	function save(doc) {
+		return new Promise(function(fulfill, reject) {
+			if (doc._id == null) {
+				db.insert(doc, function (err, newDoc) {
+
+					if (err) {
+						reject(err);
+						return;
+					}
+
+					fulfill();
+				});
+			} else {
+				db.update({ "_id" : doc._id,}, { $set : doc }, function (err, numReplaced) {
+
+					if (err) {
+						reject(err);
+						return;
+					}
+
+					fulfill();
+				});
+			}
+		});
 	}
 
 	return {
