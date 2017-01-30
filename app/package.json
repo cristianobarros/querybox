@@ -4,7 +4,10 @@
   "version": "1.0.0",
   "description": "A JavaScript SQL Editor",
   "main": "./main.js",
-  "author": "Cristiano de Barros",
+  "author": {
+    "name": "Cristiano de Barros",
+    "email": "cristiano.barros13@gmail.com"
+  },
   "dependencies": {
     "bootstrap": "^3.3.7",
     "brace": "^0.9.1",

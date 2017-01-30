@@ -2,6 +2,10 @@
   "name": "Quantum",
   "version": "1.0.0",
   "description": "A JavaScript SQL Editor",
+  "author": {
+    "name": "Cristiano de Barros",
+    "email": "cristiano.barros13@gmail.com"
+  },
   "main": "main.js",
   "scripts": {
     "start": "webpack && electron ./app/",
@@ -13,7 +17,12 @@
 	"dist:windows": "build --windows"
   },
   "build": {
-    "appId": "com.electron.quantum"
+    "appId": "com.electron.quantum",
+    "linux": {
+      "target": [
+        "deb"
+      ]
+    }
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
