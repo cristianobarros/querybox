@@ -47,7 +47,10 @@ function KeywordManager() {
 			"COLUMN",
 			"IS",
 			"NULL",
-			"LIMIT"
+			"LIMIT",
+			"RENAME",
+			"TO",
+			"ALL"
 		];
 	}
 
