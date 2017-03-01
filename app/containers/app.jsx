@@ -116,6 +116,8 @@ export default class App extends PureComponent {
        direction : 'vertical',
        onDrag: () => editor.resize()
      });
+
+     editor.resize();
    }
 
    getEditor() {
