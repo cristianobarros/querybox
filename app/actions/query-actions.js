@@ -3,11 +3,14 @@
 import fs from 'fs';
 import electron from 'electron';
 const dialog = electron.remote.dialog;
+import NProgress from 'nprogress';
 
 import Timer from './../timer';
 import DatabaseFactory from './../db/database-factory';
 
 function QueryActions() {
+
+  NProgress.configure({ showSpinner : false });
 
   function openFile(app) {
 
@@ -53,6 +56,7 @@ function QueryActions() {
 
   function executeSQL(app) {
 
+    NProgress.start();
     const timer = new Timer();
 
     timer.start();
@@ -61,10 +65,12 @@ function QueryActions() {
        timer.stop();
        app.setMessage(result.rows.length + " rows in " + timer.getTime() + " ms");
        app.setResult(result);
+       NProgress.done();
      };
 
      const onError = function(error) {
        app.setMessage(error.message);
+       NProgress.done();
      };
 
      DatabaseFactory.create().execute(app.getSQL(), onSuccess, onError);

@@ -2,19 +2,16 @@
   "name": "Quantum",
   "version": "1.0.0",
   "description": "A JavaScript SQL Editor",
-  "author": {
-    "name": "Cristiano de Barros",
-    "email": "cristiano.barros13@gmail.com"
-  },
+  "author": "Cristiano de Barros",
   "main": "main.js",
   "scripts": {
     "start": "webpack && electron ./app/",
     "dev:webpack": "webpack --watch",
     "dev:start": "electron ./app/",
-	"dist": "build",
+    "dist": "build",
     "dist:macos": "build --macos",
-	"dist:linux": "build --linux",
-	"dist:windows": "build --windows"
+    "dist:linux": "build --linux",
+    "dist:windows": "build --windows"
   },
   "build": {
     "appId": "com.electron.quantum",
@@ -30,7 +27,6 @@
     "SQL",
     "editor"
   ],
-  "author": "Cristiano de Barros",
   "devDependencies": {
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
@@ -47,6 +43,7 @@
     "jquery": "^3.1.1",
     "mssql": "^3.3.0",
     "nedb": "^1.8.0",
+    "nprogress": "^0.2.0",
     "pg": "^6.1.2",
     "react": "^15.4.1",
     "react-ace": "^4.1.1",
