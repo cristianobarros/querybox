@@ -50,7 +50,10 @@ function KeywordManager() {
 			"LIMIT",
 			"RENAME",
 			"TO",
-			"ALL"
+			"ALL",
+			"MAX",
+			"MIN",
+			"COALESCE"
 		];
 	}
 
