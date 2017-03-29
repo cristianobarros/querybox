@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import AceEditor from 'react-ace';
 
 import 'brace/mode/sql';
-import 'brace/theme/chrome';
 import 'brace/ext/language_tools';
 
 import Formatter from '../formatter';
@@ -26,10 +25,11 @@ export default class QueryEditor extends PureComponent {
   }
 
   render() {
+    require("brace/theme/" + this.props.theme);
     return (
       <AceEditor
         mode="sql"
-        theme="chrome"
+        theme={this.props.theme}
         name="querybox"
         height="100%"
         width="100%"

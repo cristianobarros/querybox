@@ -5,6 +5,8 @@ import {Split} from 'split.js';
 
 const {webFrame} = require('electron');
 
+import Configuration from "./../configuration";
+
 import QueryActions from './../actions/query-actions';
 
 import QueryEditor from './../components/query-editor.jsx';
@@ -27,6 +29,7 @@ export default class App extends PureComponent {
       tables : [],
       snippets : SnippetManager.getSnippets(),
       keywords : KeywordManager.getKeywords(),
+      theme : props.theme
     };
   }
 
@@ -56,6 +59,7 @@ export default class App extends PureComponent {
             tables={this.state.tables}
             cursorPosition={this.props.cursorPosition}
             onChange={(newValue) => this.setValue(newValue)}
+            theme={this.state.theme}
             />
         </div>
         <div id="result">{resultTable}</div>

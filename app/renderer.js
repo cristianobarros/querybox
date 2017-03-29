@@ -4,6 +4,7 @@ const ipcRenderer = electron.ipcRenderer;
 
 import AppPath from './app-path';
 import Session from './session';
+import Configuration from './configuration';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -11,11 +12,13 @@ import ReactDOM from 'react-dom';
 import App from './containers/app.jsx';
 
 AppPath.createAppPathIfDoNotExists();
+Configuration.createDefaultIfDoNotExists();
 
 let app;
 let session = new Session();
 
 session.load().then(function(doc) {
+	var configuration = Configuration.load();
 	app = ReactDOM.render(
 		<App
 			id={doc._id}
@@ -25,6 +28,7 @@ session.load().then(function(doc) {
 			split={doc.split}
 			message={doc.message}
 			zoomFactor={doc.zoomFactor}
+			theme={configuration.theme}
 			/>,
 		document.getElementById('app')
 	);
