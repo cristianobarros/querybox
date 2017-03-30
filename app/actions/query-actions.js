@@ -56,6 +56,11 @@ function QueryActions() {
 
   function executeSQL(app) {
 
+    if (!DatabaseFactory.hasConfig()) {
+      app.setMessage("No connection configured.");
+      return;
+    }
+
     NProgress.start();
     const timer = new Timer();
 

@@ -102,7 +102,9 @@ export default class App extends PureComponent {
      };
 
      try {
-       DatabaseFactory.create().getTableNames(onSuccess, onError);
+       if (DatabaseFactory.hasConfig()) {
+         DatabaseFactory.create().getTableNames(onSuccess, onError);
+       }
      } catch (error) {
        onError(error);
      }
