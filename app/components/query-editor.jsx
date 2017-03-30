@@ -15,6 +15,10 @@ export default class QueryEditor extends PureComponent {
     }
   }
 
+  componentWillMount() {
+    require("brace/theme/" + this.props.theme);
+  }
+
   componentDidMount() {
     let editor = this.refs.queryBoxTextarea.editor;
     editor.focus();
@@ -25,7 +29,6 @@ export default class QueryEditor extends PureComponent {
   }
 
   render() {
-    require("brace/theme/" + this.props.theme);
     return (
       <AceEditor
         mode="sql"

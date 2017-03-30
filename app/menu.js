@@ -33,6 +33,10 @@ function buildTemplate() {
           click: (item, win) => win.webContents.send('quantum:edit-connection'),
         },
         {
+          label: 'Edit Configuration',
+          click: (item, win) => win.webContents.send('quantum:edit-configuration'),
+        },
+        {
           type: 'separator',
         },
         {

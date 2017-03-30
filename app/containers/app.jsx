@@ -13,6 +13,7 @@ import QueryEditor from './../components/query-editor.jsx';
 import QueryInfo from './../components/query-info.jsx';
 import ResultTable from './../components/result-table.jsx';
 import ConnectionModal from './../components/connection-modal.jsx';
+import ConfigurationModal from './../components/configuration-modal.jsx';
 
 import KeywordManager from './../db/keyword-manager';
 import SnippetManager from './../db/snippet-manager';
@@ -28,8 +29,7 @@ export default class App extends PureComponent {
       message : props.message,
       tables : [],
       snippets : SnippetManager.getSnippets(),
-      keywords : KeywordManager.getKeywords(),
-      theme : props.theme
+      keywords : KeywordManager.getKeywords()
     };
   }
 
@@ -59,7 +59,7 @@ export default class App extends PureComponent {
             tables={this.state.tables}
             cursorPosition={this.props.cursorPosition}
             onChange={(newValue) => this.setValue(newValue)}
-            theme={this.state.theme}
+            theme={this.props.configuration.theme}
             />
         </div>
         <div id="result">{resultTable}</div>
@@ -67,6 +67,10 @@ export default class App extends PureComponent {
         <ConnectionModal
           ref="connectionModal"
           onSave={(data) => this.onSaveConnection(data)}
+          />
+        <ConfigurationModal
+          ref="configurationModal"
+          onSave={this.props.onSaveConfiguration}
           />
       </div>
       );
@@ -176,6 +180,10 @@ export default class App extends PureComponent {
 
    editConnection() {
      this.refs.connectionModal.show();
+   }
+
+   editConfiguration() {
+     this.refs.configurationModal.show();
    }
 
    executeSQL() {

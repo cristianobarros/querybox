@@ -16,9 +16,9 @@ Configuration.createDefaultIfDoNotExists();
 
 let app;
 let session = new Session();
+let configuration = Configuration.load();
 
 session.load().then(function(doc) {
-	var configuration = Configuration.load();
 	app = ReactDOM.render(
 		<App
 			id={doc._id}
@@ -28,7 +28,8 @@ session.load().then(function(doc) {
 			split={doc.split}
 			message={doc.message}
 			zoomFactor={doc.zoomFactor}
-			theme={configuration.theme}
+			configuration={configuration}
+			onSaveConfiguration={(data) => onSaveConfiguration(data)}
 			/>,
 		document.getElementById('app')
 	);
@@ -43,9 +44,15 @@ function saveEditor(event) {
 	});
 }
 
+function onSaveConfiguration(data) {
+	Configuration.save(data);
+	Object.assign(configuration, data);
+}
+
 ipcRenderer.on('quantum:open', (event, message) => app.openFile());
 ipcRenderer.on('quantum:save', (event, message) => app.saveFile());
 ipcRenderer.on('quantum:edit-connection', (event, message) => app.editConnection());
+ipcRenderer.on('quantum:edit-configuration', (event, message) => app.editConfiguration());
 ipcRenderer.on('quantum:execute', (event, message) => app.executeSQL());
 ipcRenderer.on('quantum:format', (event, message) => app.formatSQL());
 ipcRenderer.on('close', (event, message) => saveEditor(event));
