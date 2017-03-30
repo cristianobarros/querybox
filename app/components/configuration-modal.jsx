@@ -11,9 +11,7 @@ export default class ConfigurationModal extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = {
-      theme : "chrome"
-    };
+    this.state = props.configuration;
   }
 
   componentDidMount() {

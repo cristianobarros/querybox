@@ -29,7 +29,8 @@ export default class App extends PureComponent {
       message : props.message,
       tables : [],
       snippets : SnippetManager.getSnippets(),
-      keywords : KeywordManager.getKeywords()
+      keywords : KeywordManager.getKeywords(),
+      configuration : props.configuration
     };
   }
 
@@ -59,7 +60,7 @@ export default class App extends PureComponent {
             tables={this.state.tables}
             cursorPosition={this.props.cursorPosition}
             onChange={(newValue) => this.setValue(newValue)}
-            theme={this.props.configuration.theme}
+            theme={this.state.configuration.theme}
             />
         </div>
         <div id="result">{resultTable}</div>
@@ -70,6 +71,7 @@ export default class App extends PureComponent {
           />
         <ConfigurationModal
           ref="configurationModal"
+          configuration={this.state.configuration}
           onSave={this.props.onSaveConfiguration}
           />
       </div>
@@ -167,6 +169,12 @@ export default class App extends PureComponent {
    setMessage(m) {
      this.setState({
        message : m
+     });
+   }
+
+   setConfiguration(c) {
+     this.setState({
+       configuration : c
      });
    }
 

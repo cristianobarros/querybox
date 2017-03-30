@@ -46,7 +46,7 @@ function saveEditor(event) {
 
 function onSaveConfiguration(data) {
 	Configuration.save(data);
-	Object.assign(configuration, data);
+	app.setConfiguration(data);
 }
 
 ipcRenderer.on('quantum:open', (event, message) => app.openFile());

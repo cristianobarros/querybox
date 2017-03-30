@@ -9,6 +9,7 @@ import Formatter from '../formatter';
 export default class QueryEditor extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
+    require("brace/theme/" + nextProps.theme);
     if (this.props.tables !== nextProps.tables) {
       let editor = this.refs.queryBoxTextarea.editor;
       editor.completers = this.getCompleters(nextProps);
