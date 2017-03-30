@@ -29,11 +29,14 @@ function buildTemplate() {
           click: (item, win) => win.webContents.send('quantum:format'),
         },
         {
-          label: 'Edit Connection',
+          type: 'separator',
+        },
+        {
+          label: 'Connection',
           click: (item, win) => win.webContents.send('quantum:edit-connection'),
         },
         {
-          label: 'Edit Configuration',
+          label: 'Configuration',
           click: (item, win) => win.webContents.send('quantum:edit-configuration'),
         },
         {
