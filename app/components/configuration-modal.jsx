@@ -64,7 +64,6 @@ export default class ConfigurationModal extends PureComponent {
                     <option value="chaos">Chaos</option>
                     <option value="clouds_midnight">Clouds Midnight</option>
                     <option value="cobalt">Cobalt</option>
-                    <option value="gruvbox">Gruvbox</option>
                     <option value="idle_fingers">idle Fingers</option>
                     <option value="kr_theme">krTheme</option>
                     <option value="merbivore">Merbivore</option>
@@ -105,14 +104,18 @@ export default class ConfigurationModal extends PureComponent {
     newState[key] = value;
 
     this.setState(newState);
+    this.props.onChange(newState);
   }
 
   show() {
-    this.setState(Configuration.load());
-    $(this.refs.connectionModal).modal('show');
+    this.setState(this.props.configuration, () => {
+      this.saved = Object.assign({}, this.props.configuration);
+      $(this.refs.connectionModal).modal('show');
+    });
   }
 
   cancel() {
+    this.props.onChange(this.saved);
     $(this.refs.connectionModal).modal('hide');
   }
 

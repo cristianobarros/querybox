@@ -29,6 +29,7 @@ session.load().then(function(doc) {
 			message={doc.message}
 			zoomFactor={doc.zoomFactor}
 			configuration={configuration}
+			onChangeConfiguration={(data) => onChangeConfiguration(data)}
 			onSaveConfiguration={(data) => onSaveConfiguration(data)}
 			/>,
 		document.getElementById('app')
@@ -42,6 +43,10 @@ function saveEditor(event) {
 	session.save(state).then(function() {
 		event.sender.send('close-ok');
 	});
+}
+
+function onChangeConfiguration(data) {
+	app.setConfiguration(data);
 }
 
 function onSaveConfiguration(data) {

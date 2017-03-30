@@ -72,6 +72,7 @@ export default class App extends PureComponent {
         <ConfigurationModal
           ref="configurationModal"
           configuration={this.state.configuration}
+          onChange={this.props.onChangeConfiguration}
           onSave={this.props.onSaveConfiguration}
           />
       </div>
