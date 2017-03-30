@@ -28,7 +28,7 @@ function createWindow () {
 		{
 			width : workArea.width,
 			height : workArea.height,
-			title : 'SQL Editor',
+			title : 'Quantum SQL',
 			icon : './build/icon.ico',
 			show : false,
 			webPreferences : {
