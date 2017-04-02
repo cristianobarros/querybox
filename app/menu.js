@@ -65,6 +65,24 @@ function buildTemplate() {
           type: 'separator',
         },
         {
+          label: 'Cut',
+          accelerator: 'Ctrl+X',
+          role: 'cut',
+        },
+        {
+          label: 'Copy',
+          accelerator: 'Ctrl+C',
+          role: 'copy',
+        },
+        {
+          label: 'Paste',
+          accelerator: 'Ctrl+V',
+          role: 'paste',
+        },
+        {
+          type: 'separator',
+        },
+        {
           label: 'Find',
           accelerator: 'Ctrl+F',
           click: (item, win) => win.webContents.send('quantum:find'),
