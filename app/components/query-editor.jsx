@@ -87,6 +87,14 @@ export default class QueryEditor extends PureComponent {
   	return editor.getSelectedText() || editor.getValue();
   }
 
+  undo() {
+    this.getEditor().execCommand("undo");
+  }
+
+  redo() {
+    this.getEditor().execCommand("redo");
+  }
+
   find() {
     this.getEditor().execCommand("find");
   }

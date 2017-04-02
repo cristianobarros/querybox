@@ -52,6 +52,19 @@ function buildTemplate() {
       label: 'Edit',
       submenu: [
         {
+          label: 'Undo',
+          accelerator: 'Ctrl+Z',
+          click: (item, win) => win.webContents.send('quantum:undo'),
+        },
+        {
+          label: 'Redo',
+          accelerator: 'Ctrl+Y',
+          click: (item, win) => win.webContents.send('quantum:redo'),
+        },
+        {
+          type: 'separator',
+        },
+        {
           label: 'Find',
           accelerator: 'Ctrl+F',
           click: (item, win) => win.webContents.send('quantum:find'),

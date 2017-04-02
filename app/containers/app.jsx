@@ -157,6 +157,14 @@ export default class App extends PureComponent {
      return this.refs.editor.getSQL();
    }
 
+   undo() {
+     return this.refs.editor.undo();
+   }
+
+   redo() {
+     return this.refs.editor.redo();
+   }
+
    find() {
      return this.refs.editor.find();
    }
