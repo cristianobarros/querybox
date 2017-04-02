@@ -49,6 +49,21 @@ function buildTemplate() {
       ],
     },
     {
+      label: 'Edit',
+      submenu: [
+        {
+          label: 'Find',
+          accelerator: 'Ctrl+F',
+          click: (item, win) => win.webContents.send('quantum:find'),
+        },
+        {
+          label: 'Replace',
+          accelerator: 'Ctrl+H',
+          click: (item, win) => win.webContents.send('quantum:replace'),
+        }
+      ]
+    },
+    {
       label: 'View',
       submenu: [
         {

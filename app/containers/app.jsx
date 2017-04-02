@@ -157,6 +157,14 @@ export default class App extends PureComponent {
      return this.refs.editor.getSQL();
    }
 
+   find() {
+     return this.refs.editor.find();
+   }
+
+   replace() {
+     return this.refs.editor.replace();
+   }
+
    setValue(v) {
      this.setState({
        value : v
