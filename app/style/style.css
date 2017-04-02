@@ -28,6 +28,14 @@ body {
 	float: left;
 	padding-left: 5px;
 }
+.ace_search {
+	max-width: 350px!important;
+	color: initial;
+}
+.ace_searchbtn {
+	min-width: 27px;
+	width: auto!important;
+}
 .ace_status-indicator {
 	float: right;
 	padding-left: 5px;
