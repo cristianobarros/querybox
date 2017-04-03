@@ -28,6 +28,23 @@ body {
 	float: left;
 	padding-left: 5px;
 }
+.cell {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    display: block;
+    padding: 8px;
+    width: 100%;
+}
+.cell-overflow {
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .ace_search {
 	max-width: 350px!important;
 	color: initial;

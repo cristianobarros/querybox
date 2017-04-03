@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import dateFormat from 'dateformat';
+import {Cell} from 'fixed-data-table';
 
 export default class ResultTableCell extends PureComponent {
 
@@ -11,10 +12,14 @@ export default class ResultTableCell extends PureComponent {
 	};
 
 	render() {
-		if (this.props.value == null) {
-			return <td><span className="label label-default">NULL</span></td>;
+
+		let value = this.props.rows[this.props.rowIndex][this.props.columnKey];
+
+		if (value == null) {
+			return <Cell><span className="label label-default">NULL</span></Cell>;
 		}
-		return <td>{this.valueToHTML(this.props.value)}</td>;
+
+		return <Cell><div className="cell"><div className="cell-overflow">{this.valueToHTML(value)}</div></div></Cell>;
 	}
 
 }

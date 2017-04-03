@@ -42,13 +42,6 @@ export default class App extends PureComponent {
   }
 
   render() {
-
-    let resultTable = null;
-
-    if (this.state.result != null) {
-      resultTable = <ResultTable result={this.state.result} />
-    }
-
     return (
       <div id="container">
         <div id="editor">
@@ -63,7 +56,7 @@ export default class App extends PureComponent {
             theme={this.state.configuration.theme}
             />
         </div>
-        <div id="result">{resultTable}</div>
+        <ResultTable ref="resultTable" result={this.state.result} />
         <div id="status"><QueryInfo message={this.state.message} /></div>
         <ConnectionModal
           ref="connectionModal"
@@ -180,8 +173,11 @@ export default class App extends PureComponent {
    }
 
    setResult(r) {
+     let comp = this;
      this.setState({
        result : r
+     }, function() {
+       comp.refs.resultTable.resetColumnsWidths();
      });
    }
 
