@@ -70,6 +70,7 @@ export default class ResultTable extends PureComponent {
           )}
           width={this.state.columnWidths[index]}
           isResizable={true}
+          allowCellsRecycling={true}
         />
       ))
     )
