@@ -4,6 +4,8 @@ import ResultTableCell from './result-table-cell.jsx';
 import {Table, Column, Cell} from 'fixed-data-table';
 import {ResizeSensor} from 'css-element-queries';
 
+import ObjectFormatter from './../object-formatter';
+
 const BORDER = 1;
 const MAX_WIDTH = 300;
 const MAX_ROWS_TO_FIND_WIDTH = 30;
@@ -119,15 +121,15 @@ export default class ResultTable extends PureComponent {
     return Math.min(columnWidth, MAX_WIDTH) + BORDER;
   }
 
-  getHeaderWidth(text) {
+  getHeaderWidth(value) {
     let element = document.getElementById("header-width");
-    element.innerHTML = text;
+    element.innerHTML = ObjectFormatter.format(value);
     return element.clientWidth;
   }
 
-  getCellWidth(text) {
+  getCellWidth(value) {
     let element = document.getElementById("cell-width");
-    element.innerHTML = text;
+    element.innerHTML = ObjectFormatter.format(value);
     return element.clientWidth;
   }
 

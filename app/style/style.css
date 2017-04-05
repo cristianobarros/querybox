@@ -33,7 +33,6 @@ body {
 }
 #header-width, #cell-width {
 	visibility: hidden;
-	z-index: -1;
 	position: absolute;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 14px;
