@@ -36,8 +36,9 @@ body {
     left: 0;
     box-sizing: border-box;
     display: block;
-    padding: 8px;
+    padding: 0px 8px;
     width: 100%;
+		line-height: 30px;
 }
 .cell-overflow, .cell-overflow-null {
     box-sizing: border-box;

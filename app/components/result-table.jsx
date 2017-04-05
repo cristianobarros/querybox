@@ -53,10 +53,10 @@ export default class ResultTable extends PureComponent {
   renderTable() {
     return (
       <Table
-        headerHeight={40}
+        headerHeight={30}
         onColumnResizeEndCallback={(newColumnWidth, columnKey) => this.onColumnResizeEndCallback(newColumnWidth, columnKey)}
         rowsCount={this.props.result.rows.length}
-        rowHeight={40}
+        rowHeight={30}
         isColumnResizing={false}
         width={this.state.width}
         height={this.state.height}>
