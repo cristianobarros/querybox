@@ -72,12 +72,19 @@ export default class ResultTable extends PureComponent {
           cell={props => (
             <ResultTableCell value={this.props.result.rows[props.rowIndex][props.columnKey]}></ResultTableCell>
           )}
-          width={this.state.columnWidths[index]}
+          width={this.getColumnWidth(index)}
           isResizable={true}
           allowCellsRecycling={true}
         />
       ))
     )
+  }
+
+  getColumnWidth(index) {
+    if (index < this.state.columnWidths.length) {
+      return this.state.columnWidths[index]
+    }
+    return 0;
   }
 
   onColumnResizeEndCallback(newColumnWidth, columnKey) {
