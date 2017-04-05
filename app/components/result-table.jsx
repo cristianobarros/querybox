@@ -4,6 +4,10 @@ import ResultTableCell from './result-table-cell.jsx';
 import {Table, Column, Cell} from 'fixed-data-table';
 import {ResizeSensor} from 'css-element-queries';
 
+const BORDER = 1;
+const MAX_WIDTH = 300;
+const MAX_ROWS_TO_FIND_WIDTH = 30;
+
 export default class ResultTable extends PureComponent {
 
   constructor(props) {
@@ -85,8 +89,39 @@ export default class ResultTable extends PureComponent {
   }
 
   getDefaultWidths() {
+    const comp = this;
     const result = this.props.result;
-    return result ? result.fields.map((field, index) => 200) : [];
+    return result ? result.fields.map(function(field, index) {
+      return comp.resolveCellWidth(comp.props.result, index);
+    }) : [];
+  }
+
+  resolveCellWidth(result, index) {
+
+    const rows = result.rows;
+    const rowsToFindWidth = Math.min(rows.length, MAX_ROWS_TO_FIND_WIDTH);
+
+    let columnWidth = this.getHeaderWidth(result.fields[index].name);
+
+    for (let i = 0; i < rowsToFindWidth; i++) {
+      let value = rows[i][index];
+      let width = this.getCellWidth(value);
+      columnWidth = Math.max(width, columnWidth);
+    }
+
+    return Math.min(columnWidth, MAX_WIDTH) + BORDER;
+  }
+
+  getHeaderWidth(text) {
+    let element = document.getElementById("header-width");
+    element.innerHTML = text;
+    return element.clientWidth;
+  }
+
+  getCellWidth(text) {
+    let element = document.getElementById("cell-width");
+    element.innerHTML = text;
+    return element.clientWidth;
   }
 
 }
