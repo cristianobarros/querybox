@@ -50,11 +50,14 @@ body {
     padding: 8px;
     width: 100%;
 }
-.cell-overflow {
+.cell-overflow, .cell-overflow-null {
     box-sizing: border-box;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+.cell-overflow-null {
+	color: #fff;
 }
 .ace_search {
 	max-width: 350px!important;
