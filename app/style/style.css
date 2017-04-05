@@ -28,16 +28,6 @@ body {
 	float: left;
 	padding-left: 5px;
 }
-#header-width {
-	font-weight: 700;
-}
-#header-width, #cell-width {
-	visibility: hidden;
-	position: absolute;
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-	font-size: 14px;
-	padding: 8px;
-}
 .cell {
     position: absolute;
     top: 0;

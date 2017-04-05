@@ -7,6 +7,7 @@ import {ResizeSensor} from 'css-element-queries';
 import ObjectFormatter from './../object-formatter';
 
 const BORDER = 1;
+const PADDING = 16;
 const MAX_WIDTH = 300;
 const MAX_ROWS_TO_FIND_WIDTH = 30;
 
@@ -118,19 +119,26 @@ export default class ResultTable extends PureComponent {
       columnWidth = Math.max(width, columnWidth);
     }
 
-    return Math.min(columnWidth, MAX_WIDTH) + BORDER;
+    return Math.min(columnWidth, MAX_WIDTH);
   }
 
   getHeaderWidth(value) {
-    let element = document.getElementById("header-width");
-    element.innerHTML = ObjectFormatter.format(value);
-    return element.clientWidth;
+    const font = "bold 14px 'Helvetica Neue',Helvetica,Arial,sans-serif";
+    const text = ObjectFormatter.format(value);
+    return this.getTextWidth(text, font);
   }
 
   getCellWidth(value) {
-    let element = document.getElementById("cell-width");
-    element.innerHTML = ObjectFormatter.format(value);
-    return element.clientWidth;
+    const font = "14px 'Helvetica Neue',Helvetica,Arial,sans-serif";
+    const text = ObjectFormatter.format(value);
+    return this.getTextWidth(text, font);
+  }
+
+  getTextWidth(text, font) {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    context.font = font;
+    return context.measureText(text).width + PADDING + BORDER;
   }
 
 }
