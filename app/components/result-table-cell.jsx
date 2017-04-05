@@ -13,7 +13,7 @@ export default class ResultTableCell extends PureComponent {
 
 	render() {
 
-		let value = this.props.rows[this.props.rowIndex][this.props.columnKey];
+		let value = this.props.value;
 
 		if (value == null) {
 			return <Cell><span className="label label-default">NULL</span></Cell>;

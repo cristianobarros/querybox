@@ -64,9 +64,9 @@ export default class ResultTable extends PureComponent {
         <Column
           key={index}
           columnKey={index}
-          header={<Cell>{field.name}</Cell>}
+          header={<ResultTableCell value={field.name}></ResultTableCell>}
           cell={props => (
-            <ResultTableCell rows={this.props.result.rows} {...props}></ResultTableCell>
+            <ResultTableCell value={this.props.result.rows[props.rowIndex][props.columnKey]}></ResultTableCell>
           )}
           width={this.state.columnWidths[index]}
           isResizable={true}
