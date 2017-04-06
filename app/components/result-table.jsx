@@ -1,8 +1,12 @@
+
+import {clipboard} from 'electron';
+
 import React, {PureComponent} from 'react';
 
 import ResultTableCell from './result-table-cell.jsx';
 import {Table, Column, Cell} from 'fixed-data-table';
 import {ResizeSensor} from 'css-element-queries';
+import {ContextMenu, MenuItem, ContextMenuTrigger} from "react-contextmenu";
 
 import ObjectFormatter from './../object-formatter';
 
@@ -52,16 +56,21 @@ export default class ResultTable extends PureComponent {
 
   renderTable() {
     return (
-      <Table
-        headerHeight={30}
-        onColumnResizeEndCallback={(newColumnWidth, columnKey) => this.onColumnResizeEndCallback(newColumnWidth, columnKey)}
-        rowsCount={this.props.result.rows.length}
-        rowHeight={30}
-        isColumnResizing={false}
-        width={this.state.width}
-        height={this.state.height}>
-        {this.renderColumns()}
-      </Table>
+      <div>
+        <Table
+          headerHeight={30}
+          onColumnResizeEndCallback={(newColumnWidth, columnKey) => this.onColumnResizeEndCallback(newColumnWidth, columnKey)}
+          rowsCount={this.props.result.rows.length}
+          rowHeight={30}
+          isColumnResizing={false}
+          width={this.state.width}
+          height={this.state.height}>
+          {this.renderColumns()}
+        </Table>
+        <ContextMenu id="CONTEXT_MENU">
+            <MenuItem onClick={this.copy}>Copy</MenuItem>
+        </ContextMenu>
+      </div>
     );
   }
 
@@ -73,7 +82,12 @@ export default class ResultTable extends PureComponent {
           columnKey={index}
           header={<ResultTableCell value={field.name}></ResultTableCell>}
           cell={props => (
-            <ResultTableCell value={this.props.result.rows[props.rowIndex][props.columnKey]}></ResultTableCell>
+            <ContextMenuTrigger
+                id="CONTEXT_MENU"
+                collect={this.collect}
+                text={ObjectFormatter.format(this.props.result.rows[props.rowIndex][props.columnKey])}>
+                <ResultTableCell value={ObjectFormatter.format(this.props.result.rows[props.rowIndex][props.columnKey])}></ResultTableCell>
+            </ContextMenuTrigger>
           )}
           width={this.getColumnWidth(index)}
           isResizable={true}
@@ -81,6 +95,16 @@ export default class ResultTable extends PureComponent {
         />
       ))
     )
+  }
+
+  collect(props) {
+    return {
+       text : props.text
+    };
+  }
+
+  copy(e, data, target) {
+    clipboard.writeText(data.text);
   }
 
   getColumnWidth(index) {

@@ -9,7 +9,7 @@ export default class ResultTableCell extends PureComponent {
 		if (this.props.value == null) {
 			return <Cell><div className="cell"><div className="cell-overflow-null"><span className="label label-default">NULL</span></div></div></Cell>;
 		}
-		return <Cell><div className="cell"><div className="cell-overflow">{ObjectFormatter.format(this.props.value)}</div></div></Cell>;
+		return <Cell><div className="cell"><div className="cell-overflow">{this.props.value}</div></div></Cell>;
 	}
 
 }
