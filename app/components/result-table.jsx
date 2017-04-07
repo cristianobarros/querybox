@@ -104,7 +104,7 @@ export default class ResultTable extends PureComponent {
   }
 
   copy(e, data, target) {
-    clipboard.writeText(data.text);
+    clipboard.writeText(String(data.text));
   }
 
   getColumnWidth(index) {
