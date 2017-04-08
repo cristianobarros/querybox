@@ -17,6 +17,9 @@ const PADDING = 16;
 const MAX_WIDTH = 300;
 const MAX_ROWS_TO_FIND_WIDTH = 30;
 
+const HEADER_FONT = "bold 14px 'Helvetica Neue',Helvetica,Arial,sans-serif";
+const CELL_FONT = "14px 'Helvetica Neue',Helvetica,Arial,sans-serif";
+
 export default class ResultTable extends PureComponent {
 
   constructor(props) {
@@ -137,25 +140,18 @@ export default class ResultTable extends PureComponent {
     const rows = result.rows;
     const rowsToFindWidth = Math.min(rows.length, MAX_ROWS_TO_FIND_WIDTH);
 
-    let columnWidth = this.getHeaderWidth(result.fields[index].name);
+    let columnWidth = this.getTextWidth(result.fields[index].name, HEADER_FONT);
 
     for (let i = 0; i < rowsToFindWidth; i++) {
       let value = rows[i][index];
-      let width = this.getCellWidth(value);
+      let width = this.getTextWidth(value, CELL_FONT);
       columnWidth = Math.max(width, columnWidth);
     }
 
     return Math.min(columnWidth, MAX_WIDTH);
   }
 
-  getHeaderWidth(value) {
-    const font = "bold 14px 'Helvetica Neue',Helvetica,Arial,sans-serif";
-    const text = ObjectFormatter.format(value);
-    return TextMeasurer.getTextWidth(text, font) + PADDING + BORDER;
-  }
-
-  getCellWidth(value) {
-    const font = "14px 'Helvetica Neue',Helvetica,Arial,sans-serif";
+  getTextWidth(value, font) {
     const text = ObjectFormatter.format(value);
     return TextMeasurer.getTextWidth(text, font) + PADDING + BORDER;
   }
