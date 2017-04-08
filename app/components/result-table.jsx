@@ -10,6 +10,8 @@ import {ContextMenu, MenuItem, ContextMenuTrigger} from "react-contextmenu";
 
 import ObjectFormatter from './../object-formatter';
 
+import TextMeasurer from './../util/text-measurer';
+
 const BORDER = 1;
 const PADDING = 16;
 const MAX_WIDTH = 300;
@@ -149,20 +151,13 @@ export default class ResultTable extends PureComponent {
   getHeaderWidth(value) {
     const font = "bold 14px 'Helvetica Neue',Helvetica,Arial,sans-serif";
     const text = ObjectFormatter.format(value);
-    return this.getTextWidth(text, font);
+    return TextMeasurer.getTextWidth(text, font) + PADDING + BORDER;
   }
 
   getCellWidth(value) {
     const font = "14px 'Helvetica Neue',Helvetica,Arial,sans-serif";
     const text = ObjectFormatter.format(value);
-    return this.getTextWidth(text, font);
-  }
-
-  getTextWidth(text, font) {
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-    context.font = font;
-    return context.measureText(text).width + PADDING + BORDER;
+    return TextMeasurer.getTextWidth(text, font) + PADDING + BORDER;
   }
 
 }
