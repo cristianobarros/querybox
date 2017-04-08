@@ -5,9 +5,16 @@ import 'brace/mode/sql';
 import 'brace/ext/searchbox';
 import 'brace/ext/language_tools';
 
+import uuid from 'uuid/v4';
+
 import Formatter from '../formatter';
 
 export default class QueryEditor extends PureComponent {
+
+  constructor(props) {
+    super(props);
+    this.uuid = uuid();
+  }
 
   componentWillReceiveProps(nextProps) {
     require("brace/theme/" + nextProps.theme);
@@ -34,8 +41,8 @@ export default class QueryEditor extends PureComponent {
     return (
       <AceEditor
         mode="sql"
+        name={this.uuid}
         theme={this.props.theme}
-        name="querybox"
         height="100%"
         width="100%"
         fontSize={14}
