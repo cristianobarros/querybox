@@ -8,10 +8,14 @@ body {
 	height: 100%;
 }
 #container {
-	height: calc(100% - 21px);
+	height: calc(100% - 63px);
 }
 .tab-content {
 	height: 100%;
+	display : none;
+}
+.tab-content.active {
+	display : inline;
 }
 .editor {
 	margin: 0;

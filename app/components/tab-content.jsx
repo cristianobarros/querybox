@@ -36,7 +36,7 @@ export default class TabContent extends PureComponent {
 
   render() {
     return (
-      <div className="tab-content">
+      <div className={"tab-content " + (this.props.active ? "active" : "")}>
         <div ref="editor" className="editor">
           <QueryEditor
             ref="aceEditor"
@@ -49,7 +49,11 @@ export default class TabContent extends PureComponent {
             theme={this.props.theme}
             />
         </div>
-        <ResultTable ref="resultTable" result={this.state.result} />
+        <ResultTable
+          ref="resultTable"
+          result={this.state.result}
+          visible={this.props.active}
+          />
         <div ref="statusBar" className="status-bar"><QueryInfo message={this.state.message} /></div>
       </div>
     );

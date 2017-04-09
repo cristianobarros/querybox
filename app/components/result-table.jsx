@@ -27,6 +27,7 @@ export default class ResultTable extends PureComponent {
   constructor(props) {
     super(props);
     this.uuid = uuid();
+    this.attachedResizeSensor = false;
     this.state = {
       width : 0,
       height : 0,
@@ -41,12 +42,39 @@ export default class ResultTable extends PureComponent {
   }
 
   componentDidMount() {
-    let comp = this;
-    let element = this.refs.result;
+    if (this.props.visible && !this.attachedResizeSensor) {
+      this.attachedResizeSensor = true;
+      this.attachResizeSensor();
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.visible && !this.attachedResizeSensor) {
+      this.attachedResizeSensor = true;
+      const self = this;
+      self.updateSize(this.refs.result)
+      .then(function() {
+        self.attachResizeSensor();
+      });
+    }
+  }
+
+  attachResizeSensor() {
+    const self = this;
+    const element = this.refs.result;
     new ResizeSensor(element, function() {
-      comp.setState({
+      self.updateSize(element);
+    });
+  }
+
+  updateSize(element, callback) {
+    const self = this;
+    return new Promise(function(fulfill, reject) {
+      self.setState({
         width : element.clientWidth,
-        height : element.clientHeight,
+        height : element.clientHeight
+      }, function() {
+        fulfill();
       })
     });
   }
@@ -75,7 +103,7 @@ export default class ResultTable extends PureComponent {
           height={this.state.height}>
           {this.renderColumns()}
         </Table>
-        <ContextMenu id={this.id}>
+        <ContextMenu id={this.uuid}>
             <MenuItem onClick={this.copy}>Copy</MenuItem>
         </ContextMenu>
       </div>
@@ -91,7 +119,7 @@ export default class ResultTable extends PureComponent {
           header={<ResultTableCell value={field.name}></ResultTableCell>}
           cell={props => (
             <ContextMenuTrigger
-                id={this.id}
+                id={this.uuid}
                 collect={this.collect}
                 text={ObjectFormatter.format(this.props.result.rows[props.rowIndex][props.columnKey])}>
                 <ResultTableCell value={ObjectFormatter.format(this.props.result.rows[props.rowIndex][props.columnKey])}></ResultTableCell>

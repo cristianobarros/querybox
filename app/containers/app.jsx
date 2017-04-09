@@ -14,17 +14,17 @@ export default class App extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = { configuration : props.configuration };
+    this.state = {
+      configuration : props.configuration,
+      activeTabIndex : props.state.activeTabIndex
+    };
   }
 
   render() {
     return (
       <div id="container">
-        <TabContent
-          ref="tabContent"
-          state={this.props.state.tabs[0].content}
-          theme={this.state.configuration.theme}
-          />
+        <ul className="nav nav-tabs">{this.renderTabs()}</ul>
+        {this.renderTabsContents()}
         <ConnectionModal
           ref="connectionModal"
           onSave={(data) => this.onSaveConnection(data)}
@@ -37,6 +37,40 @@ export default class App extends PureComponent {
           />
       </div>
       );
+   }
+
+   renderTabs() {
+     let activeTabIndex = this.state.activeTabIndex;
+     return this.props.state.tabs.map((tab, index) => {
+       let className = index == activeTabIndex ? "active" : null;
+       return (
+         <li className={className} key={index} onClick={() => this.onClickTab(index)}>
+           <a href="javascript:void(0)">{tab.name}</a>
+         </li>
+       );
+     });
+   }
+
+   onClickTab(index) {
+     this.setState({
+       activeTabIndex : index
+     });
+   }
+
+   renderTabsContents() {
+     let activeTabIndex = this.state.activeTabIndex;
+     return this.props.state.tabs.map((tab, index) => {
+       const active = index == activeTabIndex;
+       return (
+         <TabContent
+           key={index}
+           active={active}
+           ref={"tabContent-" + index}
+           state={tab.content}
+           theme={this.state.configuration.theme}
+           />
+       );
+     });
    }
 
    onSaveConnection(data) {
@@ -53,44 +87,52 @@ export default class App extends PureComponent {
      Configuration.save(data);
    }
 
+   getActiveTabContent() {
+     return this.getTabContent(this.state.activeTabIndex);
+   }
+
+   getTabContent(index) {
+     return this.refs["tabContent-" + index];
+   }
+
    formatSQL() {
-     return this.refs.tabContent.formatSQL();
+     return this.getActiveTabContent().formatSQL();
    }
 
    getSQL() {
-     return this.refs.tabContent.getSqlToExecute();
+     return this.getActiveTabContent().getSqlToExecute();
    }
 
    undo() {
-     return this.refs.tabContent.undo();
+     return this.getActiveTabContent().undo();
    }
 
    redo() {
-     return this.refs.tabContent.redo();
+     return this.getActiveTabContent().redo();
    }
 
    find() {
-     return this.refs.tabContent.find();
+     return this.getActiveTabContent().find();
    }
 
    replace() {
-     return this.refs.tabContent.replace();
+     return this.getActiveTabContent().replace();
    }
 
    getSql() {
-     return this.refs.tabContent.getSql();
+     return this.getActiveTabContent().getSql();
    }
 
    setSql(v) {
-     this.refs.tabContent.setSql(v);
+     this.getActiveTabContent().setSql(v);
    }
 
    setResult(r) {
-     this.refs.tabContent.setResult(r);
+     this.getActiveTabContent().setResult(r);
    }
 
    setMessage(m) {
-     this.refs.tabContent.setMessage(m);
+     this.getActiveTabContent().setMessage(m);
    }
 
    openFile() {
@@ -114,13 +156,16 @@ export default class App extends PureComponent {
    }
 
    getState() {
+     const self = this;
      return {
        _id : this.props.state._id,
-       activeTabIndex : 0,
-       tabs : [{
-         name : "Tab 1",
-         content : this.refs.tabContent.getState()
-       }]
+       activeTabIndex : this.state.activeTabIndex,
+       tabs : this.props.state.tabs.map((tab, index) => {
+         return {
+           name : tab.name,
+           content : self.getTabContent(index).getState()
+         };
+       })
      }
    }
 
