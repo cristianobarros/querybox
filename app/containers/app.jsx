@@ -24,9 +24,9 @@ export default class App extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      sql : props.sql,
-      result : props.result,
-      message : props.message,
+      sql : props.state.tabs[0].content.sql,
+      result : props.state.tabs[0].content.result,
+      message : props.state.tabs[0].content.message,
       tables : [],
       snippets : SnippetManager.getSnippets(),
       keywords : KeywordManager.getKeywords(),
@@ -38,7 +38,7 @@ export default class App extends PureComponent {
     this.mountStatusBar();
     this.mountSplit();
     this.loadTables();
-    webFrame.setZoomFactor(this.props.zoomFactor);
+    webFrame.setZoomFactor(this.props.state.tabs[0].content.zoomFactor);
   }
 
   render() {
@@ -51,7 +51,7 @@ export default class App extends PureComponent {
             snippets={this.state.snippets}
             keywords={this.state.keywords}
             tables={this.state.tables}
-            cursorPosition={this.props.cursorPosition}
+            cursorPosition={this.props.state.tabs[0].content.cursorPosition}
             onChange={(newValue) => this.setSql(newValue)}
             theme={this.state.configuration.theme}
             />
@@ -118,7 +118,7 @@ export default class App extends PureComponent {
      let editor = this.getEditor();
 
      this.split = Split(['#editor', '#result'], {
-       sizes : this.props.split,
+       sizes : this.props.state.tabs[0].content.split,
        direction : 'vertical',
        onDrag: () => editor.resize()
      });
@@ -215,13 +215,19 @@ export default class App extends PureComponent {
 
    getState() {
      return {
-       _id : this.props.id,
-       sql : this.state.sql,
-       result : this.state.result,
-       message : this.state.message,
-       cursorPosition : this.getCursorPosition(),
-       split : this.getSplitSizes(),
-       zoomFactor : webFrame.getZoomFactor()
+       _id : this.props.state._id,
+       activeTabIndex : 0,
+       tabs : [{
+         name : "Tab 1",
+         content : {
+           sql : this.state.sql,
+           result : this.state.result,
+           message : this.state.message,
+           cursorPosition : this.getCursorPosition(),
+           split : this.getSplitSizes(),
+           zoomFactor : webFrame.getZoomFactor()
+         }
+       }]
      }
    }
 

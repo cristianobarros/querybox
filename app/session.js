@@ -33,6 +33,13 @@ function Session() {
 
 	function getDefaultSession() {
 		return {
+			activeTabIndex : 0,
+			tabs : [{ name : "Tab 1", content : getDefaultTab() }]
+		};
+	}
+
+	function getDefaultTab() {
+		return {
 			sql : "",
 			cursorPosition : { row : 0, column : 0 },
 			result : null,

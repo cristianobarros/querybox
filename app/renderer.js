@@ -21,13 +21,7 @@ let configuration = Configuration.load();
 session.load().then(function(doc) {
 	app = ReactDOM.render(
 		<App
-			id={doc._id}
-			sql={doc.sql}
-			cursorPosition={doc.cursorPosition}
-			result={doc.result}
-			split={doc.split}
-			message={doc.message}
-			zoomFactor={doc.zoomFactor}
+			state={doc}
 			configuration={configuration}
 			onChangeConfiguration={(data) => onChangeConfiguration(data)}
 			onSaveConfiguration={(data) => onSaveConfiguration(data)}
