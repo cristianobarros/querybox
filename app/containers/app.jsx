@@ -55,8 +55,11 @@ export default class App extends PureComponent {
    }
 
    onClickTab(index) {
+     const self = this;
      this.setState({
        activeTabIndex : index
+     }, function() {
+       self.focusQueryEditor();
      });
    }
 
@@ -77,6 +80,7 @@ export default class App extends PureComponent {
    }
 
    newTab() {
+     const self = this;
      this.setState(function(prevState) {
        let newTabs = Array.from(prevState.tabs);
        newTabs.push(Session.getDefaultTab(newTabs.length + 1));
@@ -84,6 +88,8 @@ export default class App extends PureComponent {
          activeTabIndex : newTabs.length - 1,
          tabs : newTabs
        };
+     }, function() {
+       self.focusQueryEditor();
      });
    }
 
@@ -93,6 +99,7 @@ export default class App extends PureComponent {
        return false;
      }
 
+     const self = this;
      this.setState(function(prevState) {
 
        let index = prevState.activeTabIndex;
@@ -110,11 +117,13 @@ export default class App extends PureComponent {
          activeTabIndex : newTabIndex,
          tabs : newTabs
        };
+     }, function() {
+       self.focusQueryEditor();
      });
-
    }
 
    previousTab() {
+     const self = this;
      this.setState(function(prevState) {
        let newTabIndex = prevState.activeTabIndex - 1;
        if (newTabIndex < 0) {
@@ -123,10 +132,13 @@ export default class App extends PureComponent {
        return {
          activeTabIndex : newTabIndex
        };
+     }, function() {
+       self.focusQueryEditor();
      });
    }
 
    nextTab() {
+     const self = this;
      this.setState(function(prevState) {
        let newTabIndex = prevState.activeTabIndex + 1;
        if (newTabIndex >= prevState.tabs.length) {
@@ -135,7 +147,13 @@ export default class App extends PureComponent {
        return {
          activeTabIndex : newTabIndex
        };
+     }, function() {
+       self.focusQueryEditor();
      });
+   }
+
+   focusQueryEditor() {
+     this.getActiveTabContent().refs.aceEditor.refs.queryBoxTextarea.editor.focus();
    }
 
    onSaveConnection(data) {
