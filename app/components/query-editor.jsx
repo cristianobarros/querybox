@@ -82,10 +82,9 @@ export default class QueryEditor extends PureComponent {
   }
 
   formatSQL() {
-  	let formatter = new Formatter();
     let editor = this.getEditor();
   	var position = editor.session.selection.toJSON();
-    editor.setValue(formatter.format(editor.getValue(), this.props.keywords));
+    editor.setValue(Formatter.format(editor.getValue(), this.props.keywords));
   	editor.session.selection.fromJSON(position);
   }
 

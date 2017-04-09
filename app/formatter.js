@@ -45,4 +45,4 @@ function Formatter() {
 	}
 }
 
-module.exports = Formatter;
+module.exports = new Formatter();
