@@ -37,9 +37,9 @@ export default class TabContent extends PureComponent {
   render() {
     return (
       <div className="tab-content">
-        <div id="editor">
+        <div ref="editor" className="editor">
           <QueryEditor
-            ref="editor"
+            ref="aceEditor"
             value={this.state.sql}
             snippets={this.state.snippets}
             keywords={this.state.keywords}
@@ -50,7 +50,7 @@ export default class TabContent extends PureComponent {
             />
         </div>
         <ResultTable ref="resultTable" result={this.state.result} />
-        <div id="status"><QueryInfo message={this.state.message} /></div>
+        <div ref="statusBar" className="status-bar"><QueryInfo message={this.state.message} /></div>
       </div>
     );
   }
@@ -60,7 +60,7 @@ export default class TabContent extends PureComponent {
     let editor = this.getEditor();
 
     let StatusBar = ace.acequire("ace/ext/statusbar").StatusBar;
-    let statusBar = new StatusBar(editor, document.getElementById("status"));
+    let statusBar = new StatusBar(editor, this.refs.statusBar);
 
     statusBar.updateStatus(editor);
   }
@@ -69,7 +69,7 @@ export default class TabContent extends PureComponent {
 
     let editor = this.getEditor();
 
-    this.split = Split(['#editor', '#result'], {
+    this.split = Split([this.refs.editor, this.refs.resultTable.refs.result], {
       sizes : this.props.state.split,
       direction : 'vertical',
       onDrag: () => editor.resize()
@@ -105,11 +105,11 @@ export default class TabContent extends PureComponent {
   }
 
   formatSQL() {
-    return this.refs.editor.formatSQL();
+    return this.refs.aceEditor.formatSQL();
   }
 
   getEditor() {
-    return this.refs.editor.refs.queryBoxTextarea.editor;
+    return this.refs.aceEditor.refs.queryBoxTextarea.editor;
   }
 
   getSql() {
@@ -138,23 +138,23 @@ export default class TabContent extends PureComponent {
   }
 
   undo() {
-    return this.refs.editor.undo();
+    return this.refs.aceEditor.undo();
   }
 
   redo() {
-    return this.refs.editor.redo();
+    return this.refs.aceEditor.redo();
   }
 
   find() {
-    return this.refs.editor.find();
+    return this.refs.aceEditor.find();
   }
 
   replace() {
-    return this.refs.editor.replace();
+    return this.refs.aceEditor.replace();
   }
 
   getSqlToExecute() {
-    return this.refs.editor.getSQL();
+    return this.refs.aceEditor.getSQL();
   }
 
   getCursorPosition() {

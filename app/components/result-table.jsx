@@ -38,8 +38,8 @@ export default class ResultTable extends PureComponent {
   }
 
   componentDidMount() {
-    let element = document.getElementById("result");
     let comp = this;
+    let element = this.refs.result;
     new ResizeSensor(element, function() {
       comp.setState({
         width : element.clientWidth,
@@ -56,7 +56,7 @@ export default class ResultTable extends PureComponent {
       table = this.renderTable()
     }
 
-    return <div id="result">{table}</div>
+    return <div ref="result" className="result">{table}</div>
   }
 
   renderTable() {
