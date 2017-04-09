@@ -14,9 +14,7 @@ export default class App extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = {
-      configuration : props.configuration
-    };
+    this.state = { configuration : props.configuration };
   }
 
   render() {
@@ -34,8 +32,8 @@ export default class App extends PureComponent {
         <ConfigurationModal
           ref="configurationModal"
           configuration={this.state.configuration}
-          onChange={this.props.onChangeConfiguration}
-          onSave={this.props.onSaveConfiguration}
+          onChange={this.onChangeConfiguration}
+          onSave={this.onSaveConfiguration}
           />
       </div>
       );
@@ -44,6 +42,15 @@ export default class App extends PureComponent {
    onSaveConnection(data) {
      DatabaseFactory.saveConfig(data);
      this.refs.tabContent.loadTables();
+   }
+
+   onChangeConfiguration(data) {
+     this.setState({ configuration : data });
+   }
+
+   onSaveConfiguration(data) {
+     this.onChangeConfiguration(data);
+     Configuration.save(data);
    }
 
    formatSQL() {
@@ -84,12 +91,6 @@ export default class App extends PureComponent {
 
    setMessage(m) {
      this.refs.tabContent.setMessage(m);
-   }
-
-   setConfiguration(c) {
-     this.setState({
-       configuration : c
-     });
    }
 
    openFile() {

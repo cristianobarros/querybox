@@ -39,15 +39,6 @@ function saveEditor(event) {
 	});
 }
 
-function onChangeConfiguration(data) {
-	app.setConfiguration(data);
-}
-
-function onSaveConfiguration(data) {
-	Configuration.save(data);
-	app.setConfiguration(data);
-}
-
 ipcRenderer.on('quantum:open', (event, message) => app.openFile());
 ipcRenderer.on('quantum:save', (event, message) => app.saveFile());
 ipcRenderer.on('quantum:edit-connection', (event, message) => app.editConnection());
