@@ -10,6 +10,9 @@ body {
 #container {
 	height: calc(100% - 21px);
 }
+.tab-content {
+	height: 100%;
+}
 #editor {
 	margin: 0;
 	height: 50%;
