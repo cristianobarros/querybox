@@ -30,7 +30,7 @@ function QueryActions() {
       if (error) {
         app.setMessage(error.message);
       }
-      app.setValue(data);
+      app.setSql(data);
     });
   }
 
@@ -47,7 +47,7 @@ function QueryActions() {
       return;
     }
 
-    fs.writeFile(file, app.getValue(), function (error) {
+    fs.writeFile(file, app.getSql(), function (error) {
       if (error) {
         app.setMessage(error.message);
       }

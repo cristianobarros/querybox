@@ -22,7 +22,7 @@ session.load().then(function(doc) {
 	app = ReactDOM.render(
 		<App
 			id={doc._id}
-			value={doc.value}
+			sql={doc.sql}
 			cursorPosition={doc.cursorPosition}
 			result={doc.result}
 			split={doc.split}

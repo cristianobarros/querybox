@@ -24,7 +24,7 @@ export default class App extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      value : props.value,
+      sql : props.sql,
       result : props.result,
       message : props.message,
       tables : [],
@@ -47,12 +47,12 @@ export default class App extends PureComponent {
         <div id="editor">
           <QueryEditor
             ref="editor"
-            value={this.state.value}
+            value={this.state.sql}
             snippets={this.state.snippets}
             keywords={this.state.keywords}
             tables={this.state.tables}
             cursorPosition={this.props.cursorPosition}
-            onChange={(newValue) => this.setValue(newValue)}
+            onChange={(newValue) => this.setSql(newValue)}
             theme={this.state.configuration.theme}
             />
         </div>
@@ -130,7 +130,7 @@ export default class App extends PureComponent {
      return this.refs.editor.refs.queryBoxTextarea.editor;
    }
 
-   getValue() {
+   getSql() {
      return this.getEditor().getValue();
    }
 
@@ -166,9 +166,9 @@ export default class App extends PureComponent {
      return this.refs.editor.replace();
    }
 
-   setValue(v) {
+   setSql(v) {
      this.setState({
-       value : v
+       sql : v
      });
    }
 
@@ -216,7 +216,7 @@ export default class App extends PureComponent {
    getState() {
      return {
        _id : this.props.id,
-       value : this.state.value,
+       sql : this.state.sql,
        result : this.state.result,
        message : this.state.message,
        cursorPosition : this.getCursorPosition(),
