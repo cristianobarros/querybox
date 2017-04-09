@@ -12,6 +12,8 @@ import ObjectFormatter from './../object-formatter';
 
 import TextMeasurer from './../util/text-measurer';
 
+import uuid from 'uuid/v4';
+
 const BORDER = 1;
 const PADDING = 16;
 const MAX_WIDTH = 300;
@@ -24,6 +26,7 @@ export default class ResultTable extends PureComponent {
 
   constructor(props) {
     super(props);
+    this.uuid = uuid();
     this.state = {
       width : 0,
       height : 0,
@@ -72,7 +75,7 @@ export default class ResultTable extends PureComponent {
           height={this.state.height}>
           {this.renderColumns()}
         </Table>
-        <ContextMenu id="CONTEXT_MENU">
+        <ContextMenu id={this.id}>
             <MenuItem onClick={this.copy}>Copy</MenuItem>
         </ContextMenu>
       </div>
@@ -88,7 +91,7 @@ export default class ResultTable extends PureComponent {
           header={<ResultTableCell value={field.name}></ResultTableCell>}
           cell={props => (
             <ContextMenuTrigger
-                id="CONTEXT_MENU"
+                id={this.id}
                 collect={this.collect}
                 text={ObjectFormatter.format(this.props.result.rows[props.rowIndex][props.columnKey])}>
                 <ResultTableCell value={ObjectFormatter.format(this.props.result.rows[props.rowIndex][props.columnKey])}></ResultTableCell>
