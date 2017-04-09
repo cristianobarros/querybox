@@ -10,13 +10,16 @@ import ConfigurationModal from './../components/configuration-modal.jsx';
 
 import DatabaseFactory from './../db/database-factory';
 
+import Session from './../session';
+
 export default class App extends PureComponent {
 
   constructor(props) {
     super(props);
     this.state = {
       configuration : props.configuration,
-      activeTabIndex : props.state.activeTabIndex
+      activeTabIndex : props.state.activeTabIndex,
+      tabs : props.state.tabs
     };
   }
 
@@ -41,10 +44,10 @@ export default class App extends PureComponent {
 
    renderTabs() {
      let activeTabIndex = this.state.activeTabIndex;
-     return this.props.state.tabs.map((tab, index) => {
+     return this.state.tabs.map((tab, index) => {
        let className = index == activeTabIndex ? "active" : null;
        return (
-         <li className={className} key={index} onClick={() => this.onClickTab(index)}>
+         <li className={className} key={tab.uuid} onClick={() => this.onClickTab(index)}>
            <a href="javascript:void(0)">{tab.name}</a>
          </li>
        );
@@ -59,17 +62,79 @@ export default class App extends PureComponent {
 
    renderTabsContents() {
      let activeTabIndex = this.state.activeTabIndex;
-     return this.props.state.tabs.map((tab, index) => {
+     return this.state.tabs.map((tab, index) => {
        const active = index == activeTabIndex;
        return (
          <TabContent
-           key={index}
+           key={tab.uuid}
            active={active}
            ref={"tabContent-" + index}
            state={tab.content}
            theme={this.state.configuration.theme}
            />
        );
+     });
+   }
+
+   newTab() {
+     this.setState(function(prevState) {
+       let newTabs = Array.from(prevState.tabs);
+       newTabs.push(Session.getDefaultTab(newTabs.length + 1));
+       return {
+         activeTabIndex : newTabs.length - 1,
+         tabs : newTabs
+       };
+     });
+   }
+
+   closeTab() {
+
+     if (this.state.tabs.length == 1) {
+       return false;
+     }
+
+     this.setState(function(prevState) {
+
+       let index = prevState.activeTabIndex;
+       let newTabs = Array.from(prevState.tabs);
+
+       newTabs.splice(index, 1);
+
+       let newTabIndex = index - 1;
+
+       if (newTabIndex < 0) {
+         newTabIndex = 0;
+       }
+
+       return {
+         activeTabIndex : newTabIndex,
+         tabs : newTabs
+       };
+     });
+
+   }
+
+   previousTab() {
+     this.setState(function(prevState) {
+       let newTabIndex = prevState.activeTabIndex - 1;
+       if (newTabIndex < 0) {
+         newTabIndex = prevState.tabs.length - 1;
+       }
+       return {
+         activeTabIndex : newTabIndex
+       };
+     });
+   }
+
+   nextTab() {
+     this.setState(function(prevState) {
+       let newTabIndex = prevState.activeTabIndex + 1;
+       if (newTabIndex >= prevState.tabs.length) {
+         newTabIndex = 0;
+       }
+       return {
+         activeTabIndex : newTabIndex
+       };
      });
    }
 
@@ -160,8 +225,9 @@ export default class App extends PureComponent {
      return {
        _id : this.props.state._id,
        activeTabIndex : this.state.activeTabIndex,
-       tabs : this.props.state.tabs.map((tab, index) => {
+       tabs : this.state.tabs.map((tab, index) => {
          return {
+           uuid : tab.uuid,
            name : tab.name,
            content : self.getTabContent(index).getState()
          };

@@ -15,10 +15,9 @@ AppPath.createAppPathIfDoNotExists();
 Configuration.createDefaultIfDoNotExists();
 
 let app;
-let session = new Session();
 let configuration = Configuration.load();
 
-session.load().then(function(doc) {
+Session.load().then(function(doc) {
 	app = ReactDOM.render(
 		<App
 			state={doc}
@@ -34,11 +33,15 @@ function saveEditor(event) {
 
 	const state = app.getState();
 
-	session.save(state).then(function() {
+	Session.save(state).then(function() {
 		event.sender.send('close-ok');
 	});
 }
 
+ipcRenderer.on('quantum:newTab', (event, message) => app.newTab());
+ipcRenderer.on('quantum:closeTab', (event, message) => app.closeTab());
+ipcRenderer.on('quantum:previousTab', (event, message) => app.previousTab());
+ipcRenderer.on('quantum:nextTab', (event, message) => app.nextTab());
 ipcRenderer.on('quantum:open', (event, message) => app.openFile());
 ipcRenderer.on('quantum:save', (event, message) => app.saveFile());
 ipcRenderer.on('quantum:edit-connection', (event, message) => app.editConnection());

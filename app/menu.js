@@ -6,6 +6,29 @@ function buildTemplate() {
       label: 'File',
       submenu: [
         {
+          label: 'New tab',
+          accelerator: 'Ctrl+T',
+          click: (item, win) => win.webContents.send('quantum:newTab'),
+        },
+        {
+          label: 'Close tab',
+          accelerator: 'Ctrl+W',
+          click: (item, win) => win.webContents.send('quantum:closeTab'),
+        },
+        {
+          label: 'Previous tab',
+          accelerator: 'Ctrl+PageUp',
+          click: (item, win) => win.webContents.send('quantum:previousTab'),
+        },
+        {
+          label: 'Next tab',
+          accelerator: 'Ctrl+PageDown',
+          click: (item, win) => win.webContents.send('quantum:nextTab'),
+        },
+        {
+          type: 'separator',
+        },
+        {
           label: 'Open',
           accelerator: 'Ctrl+O',
           click: (item, win) => win.webContents.send('quantum:open'),

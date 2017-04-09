@@ -1,5 +1,7 @@
 'use strict';
 
+import uuid from 'uuid/v4';
+
 import AppPath from './app-path';
 
 function Session() {
@@ -34,18 +36,22 @@ function Session() {
 	function getDefaultSession() {
 		return {
 			activeTabIndex : 0,
-			tabs : [{ name : "Tab 1", content : getDefaultTab() }]
+			tabs : [getDefaultTab(1)]
 		};
 	}
 
-	function getDefaultTab() {
+	function getDefaultTab(number) {
 		return {
-			sql : "",
-			cursorPosition : { row : 0, column : 0 },
-			result : null,
-			message : "",
-			split : [50, 50],
-			zoomFactor : 1
+			uuid : uuid(),
+			name : "Tab " + number,
+			content : {
+				sql : "",
+				cursorPosition : { row : 0, column : 0 },
+				result : null,
+				message : "",
+				split : [50, 50],
+				zoomFactor : 1
+			}
 		}
 	}
 
@@ -77,8 +83,9 @@ function Session() {
 
 	return {
 		load : load,
-		save : save
+		save : save,
+		getDefaultTab : getDefaultTab
 	}
 }
 
-module.exports = Session;
+module.exports = new Session();
