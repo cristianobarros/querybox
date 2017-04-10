@@ -52,6 +52,6 @@
     "react-ace": "^4.1.1",
     "react-contextmenu": "^2.4.0",
     "react-dom": "^15.4.1",
-    "split.js": "^1.1.2"
+    "split.js": "^1.2.0"
   }
 }
