@@ -21,6 +21,8 @@ body {
 .editor {
 	margin: 0;
 	height: 50%;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
 }
 .result {
 	overflow: auto;
