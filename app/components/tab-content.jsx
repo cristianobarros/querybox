@@ -21,6 +21,7 @@ export default class TabContent extends PureComponent {
       sql : props.state.sql,
       result : props.state.result,
       message : props.state.message,
+      split : props.state.split,
       tables : [],
       snippets : SnippetManager.getSnippets(),
       keywords : KeywordManager.getKeywords()
@@ -71,12 +72,15 @@ export default class TabContent extends PureComponent {
 
   mountSplit() {
 
-    let editor = this.getEditor();
-
-    this.split = Split([this.refs.editor, this.refs.resultTable.refs.result], {
-      sizes : this.props.state.split,
-      direction : 'vertical',
-      onDrag: () => editor.resize()
+    const self = this;
+    const editor = this.getEditor();
+    const split = Split([this.refs.editor, this.refs.resultTable.refs.result], {
+      sizes : this.state.split,
+      direction : "vertical",
+      onDrag: function() {
+        self.setState({ split : split.getSizes() });
+        editor.resize();
+      }
     });
 
     editor.resize();
@@ -165,17 +169,13 @@ export default class TabContent extends PureComponent {
     return this.getEditor().getCursorPosition();
   }
 
-  getSplitSizes() {
-    return this.split.getSizes();
-  }
-
   getState() {
     return {
       sql : this.state.sql,
       result : this.state.result,
       message : this.state.message,
       cursorPosition : this.getCursorPosition(),
-      split : this.getSplitSizes(),
+      split : this.state.split,
       zoomFactor : webFrame.getZoomFactor()
     };
   }
