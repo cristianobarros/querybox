@@ -8,7 +8,7 @@ import {Table, Column, Cell} from 'fixed-data-table';
 import {ResizeSensor} from 'css-element-queries';
 import {ContextMenu, MenuItem, ContextMenuTrigger} from "react-contextmenu";
 
-import ObjectFormatter from './../object-formatter';
+import DataTypeFormatter from './../util/data-type-formatter';
 
 import TextMeasurer from './../util/text-measurer';
 
@@ -121,8 +121,8 @@ export default class ResultTable extends PureComponent {
             <ContextMenuTrigger
                 id={this.uuid}
                 collect={this.collect}
-                text={ObjectFormatter.format(this.props.result.rows[props.rowIndex][props.columnKey])}>
-                <ResultTableCell value={ObjectFormatter.format(this.props.result.rows[props.rowIndex][props.columnKey])}></ResultTableCell>
+                text={DataTypeFormatter.format(field.type, this.props.result.rows[props.rowIndex][props.columnKey])}>
+                <ResultTableCell value={DataTypeFormatter.format(field.type, this.props.result.rows[props.rowIndex][props.columnKey])}></ResultTableCell>
             </ContextMenuTrigger>
           )}
           width={this.getColumnWidth(index)}
@@ -169,21 +169,21 @@ export default class ResultTable extends PureComponent {
   resolveCellWidth(result, index) {
 
     const rows = result.rows;
+    const field = result.fields[index];
     const rowsToFindWidth = Math.min(rows.length, MAX_ROWS_TO_FIND_WIDTH);
 
-    let columnWidth = this.getTextWidth(result.fields[index].name, HEADER_FONT);
+    let columnWidth = this.getTextWidth(field.name, HEADER_FONT);
 
     for (let i = 0; i < rowsToFindWidth; i++) {
       let value = rows[i][index];
-      let width = this.getTextWidth(value, CELL_FONT);
+      let width = this.getTextWidth(DataTypeFormatter.format(field.type, value), CELL_FONT);
       columnWidth = Math.max(width, columnWidth);
     }
 
     return Math.min(columnWidth, MAX_WIDTH);
   }
 
-  getTextWidth(value, font) {
-    const text = ObjectFormatter.format(value);
+  getTextWidth(text, font) {
     return TextMeasurer.getTextWidth(text, font) + PADDING + BORDER;
   }
 

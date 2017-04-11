@@ -1,8 +1,6 @@
 import React, {PureComponent} from 'react';
 import {Cell} from 'fixed-data-table';
 
-import ObjectFormatter from './../object-formatter';
-
 export default class ResultTableCell extends PureComponent {
 
 	render() {

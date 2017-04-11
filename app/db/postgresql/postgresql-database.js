@@ -2,6 +2,8 @@
 
 const pg = require('electron').remote.require('pg');
 
+import PostgreSQLDataType from './postgresql-data-type';
+
 function PostgreSQLDatabase(config) {
 
 	function getTableNames(onSuccess, onError) {
@@ -23,7 +25,10 @@ function PostgreSQLDatabase(config) {
 
 					onSuccess({
 						fields : res.fields.map(function(field) {
-							return { name : field.name };
+							return {
+								name : field.name,
+								type : PostgreSQLDataType[field.dataTypeID]
+							};
 						}),
 						rows : res.rows
 					});
