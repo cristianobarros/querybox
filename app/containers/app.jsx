@@ -158,7 +158,7 @@ export default class App extends PureComponent {
 
    onSaveConnection(data) {
      DatabaseFactory.saveConfig(data);
-     this.refs.tabContent.loadTables();
+     this.getActiveTabContent().loadTables();
    }
 
    onChangeConfiguration(data) {
