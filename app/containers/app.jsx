@@ -1,5 +1,7 @@
 import React, {PureComponent} from 'react';
 
+import {ContextMenu, MenuItem, ContextMenuTrigger} from "react-contextmenu";
+
 import Configuration from "./../configuration";
 
 import QueryActions from './../actions/query-actions';
@@ -38,6 +40,9 @@ export default class App extends PureComponent {
           onChange={(data) => this.onChangeConfiguration(data)}
           onSave={(data) => this.onSaveConfiguration(data)}
           />
+        <ContextMenu id="TABS_CONTEXT_MENU">
+          <MenuItem onClick={(e, data, target) => this.closeOtherTabs(e, data, target)}>Close other tabs</MenuItem>
+        </ContextMenu>
       </div>
       );
    }
@@ -48,10 +53,33 @@ export default class App extends PureComponent {
        let className = index == activeTabIndex ? "active" : null;
        return (
          <li className={className} key={tab.uuid} onClick={() => this.onClickTab(index)}>
-           <a href="javascript:void(0)">{tab.name}</a>
+           <ContextMenuTrigger
+               id="TABS_CONTEXT_MENU"
+               index={index}
+               collect={this.collect}
+               attributes={{ href : "javascript:void(0)"}}
+               renderTag="a">{tab.name}</ContextMenuTrigger>
          </li>
        );
      });
+   }
+
+   collect(props) {
+     return {
+        index : props.index
+     };
+   }
+
+   closeOtherTabs(e, data, target) {
+    const self = this;
+    this.setState(function(prevState) {
+      return {
+        activeTabIndex : 0,
+        tabs : [prevState.tabs[data.index]]
+      };
+    }, function() {
+      self.focusQueryEditor();
+    });
    }
 
    onClickTab(index) {
