@@ -17,10 +17,19 @@ export default class QueryEditor extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
+
     require("brace/theme/" + nextProps.theme);
+
+    if (this.props.value !== nextProps.value) {
+      this.getEditor().getSession().setAnnotations([]);
+    }
+
+    if (this.props.error !== nextProps.error) {
+      this.showError(nextProps.error);
+    }
+
     if (this.props.tables !== nextProps.tables) {
-      let editor = this.refs.queryBoxTextarea.editor;
-      editor.completers = this.getCompleters(nextProps);
+      this.getEditor().completers = this.getCompleters(nextProps);
     }
   }
 
@@ -29,13 +38,16 @@ export default class QueryEditor extends PureComponent {
   }
 
   componentDidMount() {
-    let editor = this.refs.queryBoxTextarea.editor;
+    let editor = this.getEditor();
     editor.focus();
     editor.completers = this.getCompleters(this.props);
     editor.commands.removeCommand("transposeletters");
     editor.moveCursorToPosition(this.props.cursorPosition);
     editor.getSession().setUndoManager(new ace.UndoManager());
     this.registerSnippets();
+    if (this.props.error) {
+      this.showError(this.props.error);
+    }
   }
 
   render() {
@@ -58,10 +70,47 @@ export default class QueryEditor extends PureComponent {
     );
   }
 
+  showError(error) {
+    const annotation = Object.assign({
+      text: error.message,
+      type: "error"
+    }, this.getErrorPosition(error));
+    this.getEditor().getSession().setAnnotations([annotation]);
+  }
+
+  getErrorPosition(error) {
+    const offset = this.getErrorOffset();
+    const sql = this.getSQL();
+    const before = sql.substring(0, error.position - 1);
+    const row = (before.match(/\n/g) || []).length;
+    const column = before.substring(before.lastIndexOf("\n") + 1, before.length).length;
+    return {
+      row : row + offset.row,
+      column : column + offset.column
+    };
+  }
+
+  getErrorOffset() {
+    let row = 0;
+    let column = 0;
+    if (this.getEditor().getSelectedText()) {
+      const range = this.getEditor().getSelectionRange();
+      row = range.start.row;
+      // The column offset only makes sense when it is on the first line
+      if (row == 0) {
+        column = range.start.column;
+      }
+    }
+    return {
+      row : row,
+      column : column
+    }
+  }
+
   registerSnippets() {
-      let snippetManager = ace.acequire("ace/snippets").snippetManager;
-    	let snippets = snippetManager.parseSnippetFile(this.props.snippets);
-    	snippetManager.register(snippets);
+    let snippetManager = ace.acequire("ace/snippets").snippetManager;
+    let snippets = snippetManager.parseSnippetFile(this.props.snippets);
+    snippetManager.register(snippets);
   }
 
   getCompleters(props) {

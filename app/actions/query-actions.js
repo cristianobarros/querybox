@@ -74,7 +74,7 @@ function QueryActions() {
      };
 
      const onError = function(error) {
-       app.setMessage(error.message);
+       app.setError(error);
        NProgress.done();
      };
 

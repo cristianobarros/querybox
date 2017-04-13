@@ -214,6 +214,10 @@ export default class App extends PureComponent {
      this.getActiveTabContent().setResult(r);
    }
 
+   setError(error) {
+     this.getActiveTabContent().setError(error);
+   }
+
    setMessage(m) {
      this.getActiveTabContent().setMessage(m);
    }

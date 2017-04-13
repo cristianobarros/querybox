@@ -22,6 +22,7 @@ export default class TabContent extends PureComponent {
       result : props.state.result,
       message : props.state.message,
       split : props.state.split,
+      error : props.state.error,
       tables : [],
       snippets : SnippetManager.getSnippets(),
       keywords : KeywordManager.getKeywords()
@@ -48,6 +49,7 @@ export default class TabContent extends PureComponent {
             cursorPosition={this.props.state.cursorPosition}
             onChange={(newValue) => this.setSql(newValue)}
             theme={this.props.theme}
+            error={this.state.error}
             />
         </div>
         <ResultTable
@@ -139,6 +141,13 @@ export default class TabContent extends PureComponent {
     });
   }
 
+  setError(e) {
+    this.setState({
+      error : JSON.parse(JSON.stringify(e)),
+      message : e.message
+    });
+  }
+
   setMessage(m) {
     this.setState({
       message : m
@@ -176,7 +185,8 @@ export default class TabContent extends PureComponent {
       message : this.state.message,
       cursorPosition : this.getCursorPosition(),
       split : this.state.split,
-      zoomFactor : webFrame.getZoomFactor()
+      zoomFactor : webFrame.getZoomFactor(),
+      error : this.state.error
     };
   }
 
