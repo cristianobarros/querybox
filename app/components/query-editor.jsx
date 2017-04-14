@@ -21,7 +21,7 @@ export default class QueryEditor extends PureComponent {
     require("brace/theme/" + nextProps.theme);
 
     if (this.props.value !== nextProps.value) {
-      this.getEditor().getSession().setAnnotations([]);
+      this.clearError();
     }
 
     if (this.props.error !== nextProps.error) {
@@ -68,6 +68,10 @@ export default class QueryEditor extends PureComponent {
         onChange={this.props.onChange}
         />
     );
+  }
+
+  clearError() {
+    this.getEditor().getSession().setAnnotations([]);
   }
 
   showError(error) {

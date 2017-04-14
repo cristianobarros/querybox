@@ -41,7 +41,8 @@ export default class App extends PureComponent {
           onSave={(data) => this.onSaveConfiguration(data)}
           />
         <ContextMenu id="TABS_CONTEXT_MENU">
-          <MenuItem onClick={(e, data, target) => this.closeOtherTabs(e, data, target)}>Close other tabs</MenuItem>
+          <MenuItem onClick={(e, data, target) => this.closeTab(data.index)}>Close tab</MenuItem>
+          <MenuItem onClick={(e, data, target) => this.closeOtherTabs(data.index)}>Close other tabs</MenuItem>
         </ContextMenu>
       </div>
       );
@@ -70,12 +71,12 @@ export default class App extends PureComponent {
      };
    }
 
-   closeOtherTabs(e, data, target) {
+   closeOtherTabs(index) {
     const self = this;
     this.setState(function(prevState) {
       return {
         activeTabIndex : 0,
-        tabs : [prevState.tabs[data.index]]
+        tabs : [prevState.tabs[index]]
       };
     }, function() {
       self.focusQueryEditor();
@@ -121,7 +122,11 @@ export default class App extends PureComponent {
      });
    }
 
-   closeTab() {
+   closeCurrentTab() {
+     this.closeTab(this.state.activeTabIndex);
+   }
+
+   closeTab(index) {
 
      if (this.state.tabs.length == 1) {
        return false;
@@ -130,15 +135,14 @@ export default class App extends PureComponent {
      const self = this;
      this.setState(function(prevState) {
 
-       let index = prevState.activeTabIndex;
        let newTabs = Array.from(prevState.tabs);
 
        newTabs.splice(index, 1);
 
-       let newTabIndex = index - 1;
+       let newTabIndex = prevState.activeTabIndex;
 
-       if (newTabIndex < 0) {
-         newTabIndex = 0;
+       if (index < newTabIndex || newTabIndex >= newTabs.length) {
+         newTabIndex--;
        }
 
        return {

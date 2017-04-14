@@ -39,7 +39,7 @@ function saveEditor(event) {
 }
 
 ipcRenderer.on('quantum:newTab', (event, message) => app.newTab());
-ipcRenderer.on('quantum:closeTab', (event, message) => app.closeTab());
+ipcRenderer.on('quantum:closeTab', (event, message) => app.closeCurrentTab());
 ipcRenderer.on('quantum:previousTab', (event, message) => app.previousTab());
 ipcRenderer.on('quantum:nextTab', (event, message) => app.nextTab());
 ipcRenderer.on('quantum:open', (event, message) => app.openFile());
