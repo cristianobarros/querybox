@@ -1,0 +1,62 @@
+body {
+  background-color: #21252b;
+}
+.editor {
+  border-left-color: #181a1f;
+  border-right-color: #181a1f;
+  border-bottom-color: #181a1f;
+}
+.status-bar {
+  background-color: #21252b;
+  border: 0px;
+  color: #9da5b4;
+}
+.ace_status-indicator {
+  border-left: 0px;
+}
+.nav-tabs {
+  border-bottom-color: #181a1f;
+}
+.nav-tabs>li>a, .nav-tabs>li>a:hover, .nav-tabs>li>a:focus {
+  color: rgba(157, 165, 180, 0.6);
+  background-color: #21252b;
+  border: 0px;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+  color: #d7dae0;
+  background-color: #282c34;
+  border-color: #181a1f;
+  border-bottom-color: transparent;
+}
+.public_fixedDataTable_main, .public_fixedDataTable_header, .public_fixedDataTable_hasBottomBorder {
+  border-color: #181a1f;
+}
+.public_fixedDataTableRow_main {
+  background-color: #282c34;
+}
+.public_fixedDataTableCell_main {
+  background-color: #282c34;
+  border-color: #181a1f;
+}
+.public_fixedDataTableRow_highlighted, .public_fixedDataTableRow_highlighted .public_fixedDataTableCell_main {
+  background-color: #21252b;
+}
+.public_fixedDataTable_header, .public_fixedDataTable_header .public_fixedDataTableCell_main {
+  background-color: #21252b;
+  background-image: none;
+}
+.public_Scrollbar_main.public_Scrollbar_mainActive, .public_Scrollbar_main:hover {
+  background-color: transparent;
+}
+.public_Scrollbar_mainOpaque, .public_Scrollbar_mainOpaque.public_Scrollbar_mainActive, .public_Scrollbar_mainOpaque:hover {
+  background-color: transparent;
+}
+.gutter {
+    background-color: #21252b;
+}
+.cell {
+  color: #9da5b4;
+}
+.label {
+  color: #21252b;
+}
