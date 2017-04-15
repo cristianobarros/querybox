@@ -43,7 +43,21 @@ body {
   opacity: 1;
   transition-duration: .32s;
 }
-
+.nav-tabs>li>a>i {
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 1.5;
+  border-radius: 3px;
+  text-align: center;
+  visibility: hidden;
+}
+.nav-tabs>li>a:hover>i {
+  visibility: visible;
+}
+.nav-tabs>li>a>i:hover {
+  color: #001133;
+  background-color: #568af2;
+}
 .public_fixedDataTable_main, .public_fixedDataTable_header, .public_fixedDataTable_hasBottomBorder {
   border-color: #181a1f;
 }
