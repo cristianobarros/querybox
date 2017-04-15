@@ -63,6 +63,10 @@ body {
 .nav-tabs>li>a {
 	outline: 0;
 }
+.nav-tabs>li>a>i {
+	font-size: 12px;
+	margin-left: 15px;
+}
 .ace_search {
 	max-width: 350px!important;
 	color: initial;

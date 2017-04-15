@@ -59,7 +59,12 @@ export default class App extends PureComponent {
                index={index}
                collect={this.collect}
                attributes={{ href : "javascript:void(0)"}}
-               renderTag="a">{tab.name}</ContextMenuTrigger>
+               renderTag="a">{tab.name}<i
+                className="glyphicon glyphicon-remove"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  this.closeTab(index);
+                }}></i></ContextMenuTrigger>
          </li>
        );
      });

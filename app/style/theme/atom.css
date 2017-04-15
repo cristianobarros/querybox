@@ -28,6 +28,22 @@ body {
   border-color: #181a1f;
   border-bottom-color: transparent;
 }
+.nav-tabs>li.active::before, .nav-tabs>li.active:hover::before, .nav-tabs>li.active:focus::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  width: 2px;
+  border-top-left-radius: inherit;
+  border-radius: 3px 0;
+  background: #568af2;
+  opacity: 1;
+  transition-duration: .32s;
+}
+
 .public_fixedDataTable_main, .public_fixedDataTable_header, .public_fixedDataTable_hasBottomBorder {
   border-color: #181a1f;
 }
