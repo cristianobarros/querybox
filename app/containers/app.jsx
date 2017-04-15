@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 
 import {ContextMenu, MenuItem, ContextMenuTrigger} from "react-contextmenu";
+import Sortable from "sortablejs";
 
 import Configuration from "./../configuration";
 
@@ -28,7 +29,7 @@ export default class App extends PureComponent {
   render() {
     return (
       <div id="container">
-        <ul className="nav nav-tabs">{this.renderTabs()}</ul>
+        <ul ref="tabs" className="nav nav-tabs">{this.renderTabs()}</ul>
         {this.renderTabsContents()}
         <ConnectionModal
           ref="connectionModal"
@@ -67,6 +68,37 @@ export default class App extends PureComponent {
                 }}></i></ContextMenuTrigger>
          </li>
        );
+     });
+   }
+
+   componentDidMount() {
+     const self = this;
+     Sortable.create(this.refs.tabs, {
+       onEnd : function(e) {
+
+         self.setState(function(prevState) {
+
+           let newTabs = Array.from(prevState.tabs);
+
+           const tab = newTabs.splice(e.oldIndex, 1)[0];
+           newTabs.splice(e.newIndex, 0, tab);
+
+           let newTabIndex = prevState.activeTabIndex;
+
+           if (e.oldIndex < newTabIndex) {
+             newTabIndex--;
+           } else if (e.oldIndex == newTabIndex) {
+             newTabIndex = e.newIndex;
+           }
+
+           return {
+             activeTabIndex : newTabIndex,
+             tabs : newTabs
+           };
+         }, function() {
+           self.focusQueryEditor();
+         });
+       },
      });
    }
 

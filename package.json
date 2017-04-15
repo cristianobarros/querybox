@@ -52,6 +52,7 @@
     "react-ace": "^4.1.1",
     "react-contextmenu": "^2.4.0",
     "react-dom": "^15.4.1",
+    "sortablejs": "^1.5.1",
     "split.js": "^1.2.0"
   }
 }
