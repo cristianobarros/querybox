@@ -59,6 +59,7 @@ export default class App extends PureComponent {
                id="TABS_CONTEXT_MENU"
                index={index}
                collect={this.collect}
+               holdToDisplay={-1}
                attributes={{ href : "javascript:void(0)"}}
                renderTag="a">{tab.name}<i
                 className="glyphicon glyphicon-remove"
@@ -85,7 +86,7 @@ export default class App extends PureComponent {
 
            let newTabIndex = prevState.activeTabIndex;
 
-           if (e.oldIndex < newTabIndex) {
+           if (e.oldIndex < newTabIndex && e.newIndex >= newTabIndex) {
              newTabIndex--;
            } else if (e.oldIndex == newTabIndex) {
              newTabIndex = e.newIndex;
