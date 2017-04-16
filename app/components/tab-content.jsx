@@ -3,7 +3,6 @@ import ace from 'brace';
 import 'brace/ext/statusbar';
 
 import {Split} from 'split.js';
-import {webFrame} from 'electron';
 
 import QueryInfo from './../components/query-info.jsx';
 import QueryEditor from './../components/query-editor.jsx';
@@ -33,7 +32,6 @@ export default class TabContent extends PureComponent {
     this.mountStatusBar();
     this.mountSplit();
     this.loadTables();
-    webFrame.setZoomFactor(this.props.state.zoomFactor);
   }
 
   render() {
@@ -185,7 +183,6 @@ export default class TabContent extends PureComponent {
       message : this.state.message,
       cursorPosition : this.getCursorPosition(),
       split : this.state.split,
-      zoomFactor : webFrame.getZoomFactor(),
       error : this.state.error
     };
   }

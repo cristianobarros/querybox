@@ -1,4 +1,4 @@
-import {ipcRenderer} from 'electron';
+import {ipcRenderer, webFrame} from 'electron';
 
 import React, {PureComponent} from 'react';
 
@@ -59,7 +59,7 @@ export default class App extends PureComponent {
           ref="configurationModal"
           configuration={this.state.configuration}
           onChange={(data) => this.onChangeConfiguration(data)}
-          onSave={(data) => this.onSaveConfiguration(data)}
+          onSave={(data) => this.onChangeConfiguration(data)}
           />
         <ContextMenu id="TABS_CONTEXT_MENU">
           <MenuItem onClick={(e, data, target) => this.closeTab(data.index)}>Close tab</MenuItem>
@@ -93,6 +93,9 @@ export default class App extends PureComponent {
    }
 
    componentDidMount() {
+
+     webFrame.setZoomFactor(this.state.configuration.zoomFactor);
+
      const self = this;
      Sortable.create(this.refs.tabs, {
        onEnd : function(e) {
@@ -255,11 +258,6 @@ export default class App extends PureComponent {
      this.setState({ configuration : data });
    }
 
-   onSaveConfiguration(data) {
-     this.onChangeConfiguration(data);
-     Configuration.save(data);
-   }
-
    getActiveTabContent() {
      return this.getTabContent(this.state.activeTabIndex);
    }
@@ -333,6 +331,9 @@ export default class App extends PureComponent {
    }
 
    close(event) {
+     Configuration.save(Object.assign({}, this.state.configuration, {
+       zoomFactor : webFrame.getZoomFactor()
+     }));
      Session.save(this.getState()).then(function() {
        event.sender.send('close-ok');
      });

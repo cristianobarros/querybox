@@ -16,7 +16,8 @@ function Configuration() {
 
 	function getDefault() {
 		return {
-			theme : "chrome"
+			zoomFactor : 1,
+			theme : "idle_fingers"
 		}
 	}
 
