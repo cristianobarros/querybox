@@ -21,9 +21,10 @@ export default class App extends PureComponent {
   constructor(props) {
     super(props);
     this.registerEvents();
+    const configuration = Configuration.load();
     this.state = {
-      configuration : Configuration.load(),
-      activeTabIndex : props.state.activeTabIndex,
+      configuration : configuration,
+      activeTabIndex : configuration.activeTabIndex,
       tabs : props.state.tabs
     };
   }
@@ -332,7 +333,8 @@ export default class App extends PureComponent {
 
    close(event) {
      Configuration.save(Object.assign({}, this.state.configuration, {
-       zoomFactor : webFrame.getZoomFactor()
+       zoomFactor : webFrame.getZoomFactor(),
+       activeTabIndex : this.state.activeTabIndex
      }));
      Session.save(this.getState()).then(function() {
        event.sender.send('close-ok');
@@ -343,7 +345,6 @@ export default class App extends PureComponent {
      const self = this;
      return {
        _id : this.props.state._id,
-       activeTabIndex : this.state.activeTabIndex,
        tabs : this.state.tabs.map((tab, index) => {
          return {
            uuid : tab.uuid,

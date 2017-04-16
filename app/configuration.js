@@ -17,6 +17,7 @@ function Configuration() {
 	function getDefault() {
 		return {
 			zoomFactor : 1,
+			activeTabIndex : 0,
 			theme : "idle_fingers"
 		}
 	}

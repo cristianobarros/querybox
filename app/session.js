@@ -35,7 +35,6 @@ function Session() {
 
 	function getDefaultSession() {
 		return {
-			activeTabIndex : 0,
 			tabs : [getDefaultTab(1)]
 		};
 	}
