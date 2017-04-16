@@ -24,16 +24,9 @@ export default class ConnectionModal extends PureComponent {
   componentDidMount() {
     $(this.refs.connectionModal).modal({
       show: false,
-      closable: true,
-      detachable: false,
-      allowMultiple: true,
-      observeChanges: true,
-      onHidden: () => this.onCancel(),
+      keyboard: false,
+      backdrop: "static"
     });
-  }
-
-  componentWillUnmount() {
-    this.onCancel();
   }
 
   render() {

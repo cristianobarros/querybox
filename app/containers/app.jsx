@@ -1,8 +1,11 @@
+import {ipcRenderer} from 'electron';
+
 import React, {PureComponent} from 'react';
 
 import {ContextMenu, MenuItem, ContextMenuTrigger} from "react-contextmenu";
 import Sortable from "sortablejs";
 
+import Session from './../session';
 import Configuration from "./../configuration";
 
 import QueryActions from './../actions/query-actions';
@@ -13,17 +16,34 @@ import ConfigurationModal from './../components/configuration-modal.jsx';
 
 import DatabaseFactory from './../db/database-factory';
 
-import Session from './../session';
-
 export default class App extends PureComponent {
 
   constructor(props) {
     super(props);
+    this.registerEvents();
     this.state = {
-      configuration : props.configuration,
+      configuration : Configuration.load(),
       activeTabIndex : props.state.activeTabIndex,
       tabs : props.state.tabs
     };
+  }
+
+  registerEvents() {
+    ipcRenderer.on('quantum:newTab', (event, message) => this.newTab());
+    ipcRenderer.on('quantum:closeTab', (event, message) => this.closeCurrentTab());
+    ipcRenderer.on('quantum:previousTab', (event, message) => this.previousTab());
+    ipcRenderer.on('quantum:nextTab', (event, message) => this.nextTab());
+    ipcRenderer.on('quantum:open', (event, message) => this.openFile());
+    ipcRenderer.on('quantum:save', (event, message) => this.saveFile());
+    ipcRenderer.on('quantum:edit-connection', (event, message) => this.editConnection());
+    ipcRenderer.on('quantum:edit-configuration', (event, message) => this.editConfiguration());
+    ipcRenderer.on('quantum:execute', (event, message) => this.executeSQL());
+    ipcRenderer.on('quantum:format', (event, message) => this.formatSQL());
+    ipcRenderer.on('quantum:undo', (event, message) => this.undo());
+    ipcRenderer.on('quantum:redo', (event, message) => this.redo());
+    ipcRenderer.on('quantum:find', (event, message) => this.find());
+    ipcRenderer.on('quantum:replace', (event, message) => this.replace());
+    ipcRenderer.on('close', (event, message) => this.close(event));
   }
 
   render() {
@@ -310,6 +330,12 @@ export default class App extends PureComponent {
 
    executeSQL() {
      QueryActions.executeSQL(this);
+   }
+
+   close(event) {
+     Session.save(this.getState()).then(function() {
+       event.sender.send('close-ok');
+     });
    }
 
    getState() {
