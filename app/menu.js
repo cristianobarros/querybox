@@ -16,6 +16,11 @@ function buildTemplate() {
           click: (item, win) => win.webContents.send('quantum:closeTab'),
         },
         {
+          label: 'Restore tab',
+          accelerator: 'Ctrl+Shift+T',
+          click: (item, win) => win.webContents.send('quantum:restoreTab'),
+        },
+        {
           label: 'Previous tab',
           accelerator: 'Ctrl+PageUp',
           click: (item, win) => win.webContents.send('quantum:previousTab'),

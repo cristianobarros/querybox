@@ -15,9 +15,23 @@ function Session() {
 		}
 	);
 
-	function load() {
+	function getLastClosed() {
 		return new Promise(function(fulfill, reject) {
-			db.find({}, function(err, docs) {
+			db.find({ $not : { closedOn : null } }).sort({ closedOn : -1 }).limit(1).exec(function(err, docs) {
+
+				if (err) {
+					reject(err);
+					return;
+				}
+
+				fulfill(docs);
+			});
+		});
+	}
+
+	function loadOpened() {
+		return new Promise(function(fulfill, reject) {
+			db.find({ closedOn : null }).sort({ index : 1 }).exec(function(err, docs) {
 
 				if (err) {
 					reject(err);
@@ -25,7 +39,7 @@ function Session() {
 				}
 
 				if (docs.length > 0) {
-					fulfill(docs[0]);
+					fulfill(docs);
 				} else {
 					fulfill(getDefaultSession());
 				}
@@ -34,9 +48,7 @@ function Session() {
 	}
 
 	function getDefaultSession() {
-		return {
-			tabs : [getDefaultTab(1)]
-		};
+		return [getDefaultTab(1)];
 	}
 
 	function getDefaultTab(number) {
@@ -51,6 +63,12 @@ function Session() {
 				split : [50, 50]
 			}
 		}
+	}
+
+	function saveAll(docs) {
+		return Promise.all(docs.map(function(doc) {
+			return save(doc);
+		}));
 	}
 
 	function save(doc) {
@@ -80,8 +98,10 @@ function Session() {
 	}
 
 	return {
-		load : load,
+		loadOpened : loadOpened,
 		save : save,
+		saveAll : saveAll,
+		getLastClosed : getLastClosed,
 		getDefaultTab : getDefaultTab
 	}
 }

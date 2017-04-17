@@ -25,7 +25,7 @@ export default class App extends PureComponent {
     this.state = {
       configuration : configuration,
       activeTabIndex : configuration.activeTabIndex,
-      tabs : props.state.tabs
+      tabs : props.tabs
     };
   }
 
@@ -34,6 +34,7 @@ export default class App extends PureComponent {
     ipcRenderer.on('quantum:closeTab', (event, message) => this.closeCurrentTab());
     ipcRenderer.on('quantum:previousTab', (event, message) => this.previousTab());
     ipcRenderer.on('quantum:nextTab', (event, message) => this.nextTab());
+    ipcRenderer.on('quantum:restoreTab', (event, message) => this.restoreTab());
     ipcRenderer.on('quantum:open', (event, message) => this.openFile());
     ipcRenderer.on('quantum:save', (event, message) => this.saveFile());
     ipcRenderer.on('quantum:edit-connection', (event, message) => this.editConnection());
@@ -134,15 +135,19 @@ export default class App extends PureComponent {
    }
 
    closeOtherTabs(index) {
-    const self = this;
-    this.setState(function(prevState) {
-      return {
-        activeTabIndex : 0,
-        tabs : [prevState.tabs[index]]
-      };
-    }, function() {
-      self.focusQueryEditor();
-    });
+     const self = this;
+     const indexes = Array.from(Array(this.state.tabs.length).keys());
+     indexes.splice(index, 1);
+     this.saveClosedTabs(indexes).then(function() {
+       self.setState(function(prevState) {
+         return {
+           activeTabIndex : 0,
+           tabs : [prevState.tabs[index]]
+         };
+       }, function() {
+         self.focusQueryEditor();
+       });
+     });
    }
 
    onClickTab(index) {
@@ -195,25 +200,32 @@ export default class App extends PureComponent {
      }
 
      const self = this;
-     this.setState(function(prevState) {
+     this.saveClosedTabs([index]).then(function() {
+       self.setState(function(prevState) {
 
-       let newTabs = Array.from(prevState.tabs);
+         let newTabs = Array.from(prevState.tabs);
 
-       newTabs.splice(index, 1);
+         newTabs.splice(index, 1);
 
-       let newTabIndex = prevState.activeTabIndex;
+         let newTabIndex = prevState.activeTabIndex;
 
-       if (index < newTabIndex || newTabIndex >= newTabs.length) {
-         newTabIndex--;
-       }
+         if (index < newTabIndex || newTabIndex >= newTabs.length) {
+           newTabIndex--;
+         }
 
-       return {
-         activeTabIndex : newTabIndex,
-         tabs : newTabs
-       };
-     }, function() {
-       self.focusQueryEditor();
+         return {
+           activeTabIndex : newTabIndex,
+           tabs : newTabs
+         };
+       }, function() {
+         self.focusQueryEditor();
+       });
      });
+   }
+
+   saveClosedTabs(indexes) {
+     const tabs = indexes.map((index) => Object.assign({}, this.getTab(index), { closedOn : new Date() }));
+     return Session.saveAll(tabs);
    }
 
    previousTab() {
@@ -243,6 +255,29 @@ export default class App extends PureComponent {
        };
      }, function() {
        self.focusQueryEditor();
+     });
+   }
+
+   restoreTab() {
+     const self = this;
+     Session.getLastClosed().then((docs) => {
+
+       if (docs.length == 0) {
+         return;
+       }
+
+       Session.save(Object.assign({}, docs[0], { closedOn : null})).then(() => {
+         self.setState(function(prevState) {
+           const newTabs = Array.from(prevState.tabs);
+           newTabs.push(docs[0]);
+           return {
+             activeTabIndex : prevState.tabs.length,
+             tabs : newTabs
+           };
+         }, function() {
+           self.focusQueryEditor();
+         });
+       });
      });
    }
 
@@ -336,23 +371,29 @@ export default class App extends PureComponent {
        zoomFactor : webFrame.getZoomFactor(),
        activeTabIndex : this.state.activeTabIndex
      }));
-     Session.save(this.getState()).then(function() {
+     const tabs = this.getTabs();
+     Session.saveAll(tabs).then(function() {
        event.sender.send('close-ok');
      });
    }
 
-   getState() {
+   getTabs() {
      const self = this;
+     return this.state.tabs.map((tab, index) => {
+       return self.getTab(index);
+     });
+   }
+
+   getTab(index) {
+     const tab = this.state.tabs[index];
      return {
-       _id : this.props.state._id,
-       tabs : this.state.tabs.map((tab, index) => {
-         return {
-           uuid : tab.uuid,
-           name : tab.name,
-           content : self.getTabContent(index).getState()
-         };
-       })
-     }
+       _id : tab._id,
+       uuid : tab.uuid,
+       name : tab.name,
+       index : index,
+       closedOn : null,
+       content : this.getTabContent(index).getState()
+     };
    }
 
 }

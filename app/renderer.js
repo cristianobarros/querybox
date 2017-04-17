@@ -10,6 +10,6 @@ import Configuration from './configuration';
 AppPath.createAppPathIfDoNotExists();
 Configuration.createDefaultIfDoNotExists();
 
-Session.load().then(function(doc) {
-	ReactDOM.render(<App state={doc} />, document.getElementById('app'));
+Session.loadOpened().then(function(tabs) {
+	ReactDOM.render(<App tabs={tabs} />, document.getElementById('app'));
 });
