@@ -90,3 +90,6 @@ body {
 .label {
   color: #21252b;
 }
+.cell-overflow-null {
+	color: #21252b;
+}
