@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 
 import $ from 'jquery';
 import 'bootstrap';
+import 'brace/ext/themelist';
 
 import Configuration from "./../configuration";
 
@@ -11,7 +12,29 @@ export default class ConfigurationModal extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = props.configuration;
+    this.state = Object.assign({
+      themes : this.getThemes()
+    }, props.configuration);
+  }
+
+  getThemes() {
+    const bright = [];
+    const dark = [];
+    const list = ace.acequire("ace/ext/themelist");
+    for (let theme of list.themes) {
+      if (theme.name == 'gruvbox') {
+        continue; // Appears into the list due to a bug, it's not avaliable.
+      }
+      if (theme.isDark) {
+        dark.push(theme);
+      } else {
+        bright.push(theme);
+      }
+    }
+    return {
+      bright : bright.sort((a, b) => a.caption.localeCompare(b.caption)),
+      dark : dark.sort((a, b) => a.caption.localeCompare(b.caption))
+    };
   }
 
   componentDidMount() {
@@ -36,42 +59,10 @@ export default class ConfigurationModal extends PureComponent {
                 <label htmlFor="theme" className="control-label">Theme</label>
                 <select id="theme" value={this.state.theme} className="form-control" onChange={(event) => this.handleChange(event)}>
                   <optgroup label="Bright">
-                    <option value="chrome">Chrome</option>
-                    <option value="clouds">Clouds</option>
-                    <option value="crimson_editor">Crimson Editor</option>
-                    <option value="dawn">Dawn</option>
-                    <option value="dreamweaver">Dreamweaver</option>
-                    <option value="eclipse">Eclipse</option>
-                    <option value="github">GitHub</option>
-                    <option value="iplastic">IPlastic</option>
-                    <option value="solarized_light">Solarized Light</option>
-                    <option value="textmate">TextMate</option>
-                    <option value="tomorrow">Tomorrow</option>
-                    <option value="xcode">XCode</option>
-                    <option value="kuroir">Kuroir</option>
-                    <option value="katzenmilch">KatzenMilch</option>
-                    <option value="sqlserver">SQL Server</option>
+                    {this.renderThemes(this.state.themes.bright)}
                   </optgroup>
                   <optgroup label="Dark">
-                    <option value="ambiance">Ambiance</option>
-                    <option value="chaos">Chaos</option>
-                    <option value="clouds_midnight">Clouds Midnight</option>
-                    <option value="cobalt">Cobalt</option>
-                    <option value="idle_fingers">idle Fingers</option>
-                    <option value="kr_theme">krTheme</option>
-                    <option value="merbivore">Merbivore</option>
-                    <option value="merbivore_soft">Merbivore Soft</option>
-                    <option value="mono_industrial">Mono Industrial</option>
-                    <option value="monokai">Monokai</option>
-                    <option value="pastel_on_dark">Pastel on dark</option>
-                    <option value="solarized_dark">Solarized Dark</option>
-                    <option value="terminal">Terminal</option>
-                    <option value="tomorrow_night">Tomorrow Night</option>
-                    <option value="tomorrow_night_blue">Tomorrow Night Blue</option>
-                    <option value="tomorrow_night_bright">Tomorrow Night Bright</option>
-                    <option value="tomorrow_night_eighties">Tomorrow Night 80s</option>
-                    <option value="twilight">Twilight</option>
-                    <option value="vibrant_ink">Vibrant Ink</option>
+                    {this.renderThemes(this.state.themes.dark)}
                   </optgroup>
                 </select>
               </div>
@@ -85,6 +76,12 @@ export default class ConfigurationModal extends PureComponent {
         </div>
       </div>
     );
+  }
+
+  renderThemes(themes) {
+    return themes.map((theme, index) => {
+      return (<option value={theme.name} key={index}>{theme.caption}</option>);
+    });
   }
 
   handleChange(event) {
