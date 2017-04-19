@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import AceEditor from 'react-ace';
 
 import 'brace/mode/sql';
+import 'brace/snippets/sql';
 import 'brace/ext/searchbox';
 import 'brace/ext/language_tools';
 
