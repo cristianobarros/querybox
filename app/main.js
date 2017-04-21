@@ -28,7 +28,7 @@ function createWindow () {
 		{
 			width : workArea.width,
 			height : workArea.height,
-			title : 'Quantum SQL',
+			title : 'QueryBox',
 			icon : './build/icon.ico',
 			show : false,
 			webPreferences : {

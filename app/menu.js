@@ -8,27 +8,27 @@ function buildTemplate() {
         {
           label: 'New tab',
           accelerator: 'Ctrl+T',
-          click: (item, win) => win.webContents.send('quantum:newTab'),
+          click: (item, win) => win.webContents.send('querybox:newTab'),
         },
         {
           label: 'Close tab',
           accelerator: 'Ctrl+W',
-          click: (item, win) => win.webContents.send('quantum:closeTab'),
+          click: (item, win) => win.webContents.send('querybox:closeTab'),
         },
         {
           label: 'Restore tab',
           accelerator: 'Ctrl+Shift+T',
-          click: (item, win) => win.webContents.send('quantum:restoreTab'),
+          click: (item, win) => win.webContents.send('querybox:restoreTab'),
         },
         {
           label: 'Previous tab',
           accelerator: 'Ctrl+PageUp',
-          click: (item, win) => win.webContents.send('quantum:previousTab'),
+          click: (item, win) => win.webContents.send('querybox:previousTab'),
         },
         {
           label: 'Next tab',
           accelerator: 'Ctrl+PageDown',
-          click: (item, win) => win.webContents.send('quantum:nextTab'),
+          click: (item, win) => win.webContents.send('querybox:nextTab'),
         },
         {
           type: 'separator',
@@ -36,12 +36,12 @@ function buildTemplate() {
         {
           label: 'Open',
           accelerator: 'Ctrl+O',
-          click: (item, win) => win.webContents.send('quantum:open'),
+          click: (item, win) => win.webContents.send('querybox:open'),
         },
         {
 					label: 'Save',
           accelerator: 'Ctrl+S',
-          click: (item, win) => win.webContents.send('quantum:save'),
+          click: (item, win) => win.webContents.send('querybox:save'),
         },
         {
           type: 'separator',
@@ -49,23 +49,23 @@ function buildTemplate() {
         {
           label: 'Execute',
           accelerator: 'Ctrl+Enter',
-          click: (item, win) => win.webContents.send('quantum:execute'),
+          click: (item, win) => win.webContents.send('querybox:execute'),
         },
 				{
           label: 'Format',
           accelerator: 'Ctrl+Shift+F',
-          click: (item, win) => win.webContents.send('quantum:format'),
+          click: (item, win) => win.webContents.send('querybox:format'),
         },
         {
           type: 'separator',
         },
         {
           label: 'Connection',
-          click: (item, win) => win.webContents.send('quantum:edit-connection'),
+          click: (item, win) => win.webContents.send('querybox:edit-connection'),
         },
         {
           label: 'Configuration',
-          click: (item, win) => win.webContents.send('quantum:edit-configuration'),
+          click: (item, win) => win.webContents.send('querybox:edit-configuration'),
         },
         {
           type: 'separator',
@@ -82,12 +82,12 @@ function buildTemplate() {
         {
           label: 'Undo',
           accelerator: 'Ctrl+Z',
-          click: (item, win) => win.webContents.send('quantum:undo'),
+          click: (item, win) => win.webContents.send('querybox:undo'),
         },
         {
           label: 'Redo',
           accelerator: 'Ctrl+Y',
-          click: (item, win) => win.webContents.send('quantum:redo'),
+          click: (item, win) => win.webContents.send('querybox:redo'),
         },
         {
           type: 'separator',
@@ -113,12 +113,12 @@ function buildTemplate() {
         {
           label: 'Find',
           accelerator: 'Ctrl+F',
-          click: (item, win) => win.webContents.send('quantum:find'),
+          click: (item, win) => win.webContents.send('querybox:find'),
         },
         {
           label: 'Replace',
           accelerator: 'Ctrl+H',
-          click: (item, win) => win.webContents.send('quantum:replace'),
+          click: (item, win) => win.webContents.send('querybox:replace'),
         }
       ]
     },

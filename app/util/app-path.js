@@ -12,7 +12,7 @@ class AppPath {
 
 	getAppPath() {
 		const home = electron.remote.app.getPath('home');
-		return path.join(home, '.quantum');
+		return path.join(home, '.querybox');
 	}
 
 	createAppPathIfDoNotExists() {

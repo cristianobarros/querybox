@@ -1,6 +1,6 @@
 {
-  "name": "Quantum",
-  "productName": "Quantum",
+  "name": "QueryBox",
+  "productName": "QueryBox",
   "version": "1.0.0",
   "description": "A JavaScript SQL Editor",
   "main": "./main.js",

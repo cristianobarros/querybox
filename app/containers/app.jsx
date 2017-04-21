@@ -30,21 +30,21 @@ export default class App extends PureComponent {
   }
 
   registerEvents() {
-    ipcRenderer.on('quantum:newTab', (event, message) => this.newTab());
-    ipcRenderer.on('quantum:closeTab', (event, message) => this.closeCurrentTab());
-    ipcRenderer.on('quantum:previousTab', (event, message) => this.previousTab());
-    ipcRenderer.on('quantum:nextTab', (event, message) => this.nextTab());
-    ipcRenderer.on('quantum:restoreTab', (event, message) => this.restoreTab());
-    ipcRenderer.on('quantum:open', (event, message) => this.openFile());
-    ipcRenderer.on('quantum:save', (event, message) => this.saveFile());
-    ipcRenderer.on('quantum:edit-connection', (event, message) => this.editConnection());
-    ipcRenderer.on('quantum:edit-configuration', (event, message) => this.editConfiguration());
-    ipcRenderer.on('quantum:execute', (event, message) => this.executeSQL());
-    ipcRenderer.on('quantum:format', (event, message) => this.formatSQL());
-    ipcRenderer.on('quantum:undo', (event, message) => this.undo());
-    ipcRenderer.on('quantum:redo', (event, message) => this.redo());
-    ipcRenderer.on('quantum:find', (event, message) => this.find());
-    ipcRenderer.on('quantum:replace', (event, message) => this.replace());
+    ipcRenderer.on('querybox:newTab', (event, message) => this.newTab());
+    ipcRenderer.on('querybox:closeTab', (event, message) => this.closeCurrentTab());
+    ipcRenderer.on('querybox:previousTab', (event, message) => this.previousTab());
+    ipcRenderer.on('querybox:nextTab', (event, message) => this.nextTab());
+    ipcRenderer.on('querybox:restoreTab', (event, message) => this.restoreTab());
+    ipcRenderer.on('querybox:open', (event, message) => this.openFile());
+    ipcRenderer.on('querybox:save', (event, message) => this.saveFile());
+    ipcRenderer.on('querybox:edit-connection', (event, message) => this.editConnection());
+    ipcRenderer.on('querybox:edit-configuration', (event, message) => this.editConfiguration());
+    ipcRenderer.on('querybox:execute', (event, message) => this.executeSQL());
+    ipcRenderer.on('querybox:format', (event, message) => this.formatSQL());
+    ipcRenderer.on('querybox:undo', (event, message) => this.undo());
+    ipcRenderer.on('querybox:redo', (event, message) => this.redo());
+    ipcRenderer.on('querybox:find', (event, message) => this.find());
+    ipcRenderer.on('querybox:replace', (event, message) => this.replace());
     ipcRenderer.on('close', (event, message) => this.close(event));
   }
 
