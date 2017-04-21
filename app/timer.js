@@ -1,27 +1,16 @@
-'use strict';
 
-function Timer() {
+export default class Timer {
 
-	let startDate;
-	let stopDate;
-
-	function start() {
-		startDate = new Date();
+	start() {
+		this.startDate = new Date();
 	}
 
-	function stop() {
-		stopDate = new Date();
+	stop() {
+		this.stopDate = new Date();
 	}
 
-	function getTime() {
-		return stopDate - startDate;
+	getTime() {
+		return this.stopDate - this.startDate;
 	}
 
-	return {
-		start : start,
-		stop : stop,
-		getTime : getTime
-	}
 }
-
-module.exports = Timer;
