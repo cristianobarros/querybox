@@ -5,7 +5,7 @@ import electron from 'electron';
 const dialog = electron.remote.dialog;
 import NProgress from 'nprogress';
 
-import Timer from './../timer';
+import Timer from './../util/timer';
 import DatabaseFactory from './../db/database-factory';
 
 function QueryActions() {

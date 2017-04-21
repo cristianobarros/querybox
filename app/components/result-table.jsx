@@ -51,26 +51,23 @@ export default class ResultTable extends PureComponent {
   componentDidUpdate() {
     if (this.props.visible && !this.attachedResizeSensor) {
       this.attachedResizeSensor = true;
-      const self = this;
-      self.updateSize(this.refs.result)
-      .then(function() {
-        self.attachResizeSensor();
+      this.updateSize(this.refs.result)
+      .then(() => {
+        this.attachResizeSensor();
       });
     }
   }
 
   attachResizeSensor() {
-    const self = this;
     const element = this.refs.result;
-    new ResizeSensor(element, function() {
-      self.updateSize(element);
+    new ResizeSensor(element, () => {
+      this.updateSize(element);
     });
   }
 
   updateSize(element, callback) {
-    const self = this;
-    return new Promise(function(fulfill, reject) {
-      self.setState({
+    return new Promise((fulfill, reject) => {
+      this.setState({
         width : element.clientWidth,
         height : element.clientHeight
       }, function() {

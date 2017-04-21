@@ -72,13 +72,12 @@ export default class TabContent extends PureComponent {
 
   mountSplit() {
 
-    const self = this;
     const editor = this.getEditor();
     const split = Split([this.refs.editor, this.refs.resultTable.refs.result], {
       sizes : this.state.split,
       direction : "vertical",
-      onDrag: function() {
-        self.setState({ split : split.getSizes() });
+      onDrag: () => {
+        this.setState({ split : split.getSizes() });
         editor.resize();
       }
     });
@@ -88,17 +87,15 @@ export default class TabContent extends PureComponent {
 
   loadTables() {
 
-    const self = this;
-
-    const onSuccess = function(res) {
+    const onSuccess = (res) => {
       const newTables = res.rows.map((row) => row[0]);
-      self.setState({
+      this.setState({
         tables : newTables
       });
     };
 
-    const onError = function(error) {
-      self.setState({
+    const onError = (error) => {
+      this.setState({
         message : error.message
       });
     };

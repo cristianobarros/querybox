@@ -1,17 +1,13 @@
-"use strict";
 
-function TextMeasurer() {
+class TextMeasurer {
 
-	function getTextWidth(text, font) {
+	getTextWidth(text, font) {
 		const canvas = document.createElement("canvas");
 		const context = canvas.getContext("2d");
 		context.font = font;
 		return context.measureText(text).width;
 	}
 
-	return {
-		getTextWidth : getTextWidth
-	}
 }
 
-module.exports = new TextMeasurer();
+export default new TextMeasurer();

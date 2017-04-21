@@ -5,8 +5,8 @@ import React, {PureComponent} from 'react';
 import {ContextMenu, MenuItem, ContextMenuTrigger} from "react-contextmenu";
 import Sortable from "sortablejs";
 
-import Session from './../session';
-import Configuration from "./../configuration";
+import Session from './../util/session';
+import Configuration from "./../util/configuration";
 
 import QueryActions from './../actions/query-actions';
 
@@ -98,11 +98,10 @@ export default class App extends PureComponent {
 
      webFrame.setZoomFactor(this.state.configuration.zoomFactor);
 
-     const self = this;
      Sortable.create(this.refs.tabs, {
-       onEnd : function(e) {
+       onEnd : (e) => {
 
-         self.setState(function(prevState) {
+         this.setState(function(prevState) {
 
            let newTabs = Array.from(prevState.tabs);
 
@@ -121,8 +120,8 @@ export default class App extends PureComponent {
              activeTabIndex : newTabIndex,
              tabs : newTabs
            };
-         }, function() {
-           self.focusQueryEditor();
+         }, () => {
+           this.focusQueryEditor();
          });
        },
      });
@@ -135,27 +134,25 @@ export default class App extends PureComponent {
    }
 
    closeOtherTabs(index) {
-     const self = this;
      const indexes = Array.from(Array(this.state.tabs.length).keys());
      indexes.splice(index, 1);
-     this.saveClosedTabs(indexes).then(function() {
-       self.setState(function(prevState) {
+     this.saveClosedTabs(indexes).then(() => {
+       this.setState(function(prevState) {
          return {
            activeTabIndex : 0,
            tabs : [prevState.tabs[index]]
          };
-       }, function() {
-         self.focusQueryEditor();
+       }, () => {
+         this.focusQueryEditor();
        });
      });
    }
 
    onClickTab(index) {
-     const self = this;
      this.setState({
        activeTabIndex : index
-     }, function() {
-       self.focusQueryEditor();
+     }, () => {
+       this.focusQueryEditor();
      });
    }
 
@@ -176,16 +173,15 @@ export default class App extends PureComponent {
    }
 
    newTab() {
-     const self = this;
-     this.setState(function(prevState) {
+     this.setState((prevState) => {
        let newTabs = Array.from(prevState.tabs);
        newTabs.push(Session.getDefaultTab(newTabs.length + 1));
        return {
          activeTabIndex : newTabs.length - 1,
          tabs : newTabs
        };
-     }, function() {
-       self.focusQueryEditor();
+     }, () => {
+       this.focusQueryEditor();
      });
    }
 
@@ -199,9 +195,8 @@ export default class App extends PureComponent {
        return false;
      }
 
-     const self = this;
-     this.saveClosedTabs([index]).then(function() {
-       self.setState(function(prevState) {
+     this.saveClosedTabs([index]).then(() => {
+       this.setState((prevState) => {
 
          let newTabs = Array.from(prevState.tabs);
 
@@ -217,8 +212,8 @@ export default class App extends PureComponent {
            activeTabIndex : newTabIndex,
            tabs : newTabs
          };
-       }, function() {
-         self.focusQueryEditor();
+       }, () => {
+         this.focusQueryEditor();
        });
      });
    }
@@ -229,8 +224,7 @@ export default class App extends PureComponent {
    }
 
    previousTab() {
-     const self = this;
-     this.setState(function(prevState) {
+     this.setState((prevState) => {
        let newTabIndex = prevState.activeTabIndex - 1;
        if (newTabIndex < 0) {
          newTabIndex = prevState.tabs.length - 1;
@@ -238,14 +232,13 @@ export default class App extends PureComponent {
        return {
          activeTabIndex : newTabIndex
        };
-     }, function() {
-       self.focusQueryEditor();
+     }, () => {
+       this.focusQueryEditor();
      });
    }
 
    nextTab() {
-     const self = this;
-     this.setState(function(prevState) {
+     this.setState((prevState) => {
        let newTabIndex = prevState.activeTabIndex + 1;
        if (newTabIndex >= prevState.tabs.length) {
          newTabIndex = 0;
@@ -253,13 +246,12 @@ export default class App extends PureComponent {
        return {
          activeTabIndex : newTabIndex
        };
-     }, function() {
-       self.focusQueryEditor();
+     }, () => {
+       this.focusQueryEditor();
      });
    }
 
    restoreTab() {
-     const self = this;
      Session.getLastClosed().then((docs) => {
 
        if (docs.length == 0) {
@@ -267,15 +259,15 @@ export default class App extends PureComponent {
        }
 
        Session.save(Object.assign({}, docs[0], { closedOn : null})).then(() => {
-         self.setState(function(prevState) {
+         this.setState(function(prevState) {
            const newTabs = Array.from(prevState.tabs);
            newTabs.push(docs[0]);
            return {
              activeTabIndex : prevState.tabs.length,
              tabs : newTabs
            };
-         }, function() {
-           self.focusQueryEditor();
+         }, () => {
+           this.focusQueryEditor();
          });
        });
      });
@@ -378,9 +370,8 @@ export default class App extends PureComponent {
    }
 
    getTabs() {
-     const self = this;
      return this.state.tabs.map((tab, index) => {
-       return self.getTab(index);
+       return this.getTab(index);
      });
    }
 

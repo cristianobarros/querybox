@@ -1,14 +1,13 @@
-'use strict';
 
 import fs from 'fs';
 
-import AppPath from './../app-path';
+import AppPath from './../util/app-path';
 import PostgreSQLDatabase from './postgresql/postgresql-database';
 
-function DatabaseFactory() {
+class DatabaseFactory {
 
-	function create() {
-		const config = loadConfig();
+	create() {
+		const config = this.loadConfig();
 		switch(config.type) {
 			case 'PostgreSQL':
 				return new PostgreSQLDatabase(config);
@@ -17,28 +16,22 @@ function DatabaseFactory() {
 		}
 	}
 
-	function hasConfig() {
-		return fs.existsSync(getFilePath());
+	hasConfig() {
+		return fs.existsSync(this.getFilePath());
 	}
 
-	function loadConfig() {
-		return JSON.parse(fs.readFileSync(AppPath.getPath('connection.json'), 'utf8'));
+	loadConfig() {
+		return JSON.parse(fs.readFileSync(this.getFilePath(), 'utf8'));
 	}
 
-	function saveConfig(data) {
-		fs.writeFileSync(AppPath.getPath('connection.json'), JSON.stringify(data));
+	saveConfig(data) {
+		fs.writeFileSync(this.getFilePath(), JSON.stringify(data));
 	}
 
-	function getFilePath() {
+	getFilePath() {
 		return AppPath.getPath('connection.json');
 	}
 
-	return {
-		create : create,
-		hasConfig : hasConfig,
-		loadConfig : loadConfig,
-		saveConfig : saveConfig
-	}
 }
 
-module.exports = new DatabaseFactory();
+export default new DatabaseFactory();

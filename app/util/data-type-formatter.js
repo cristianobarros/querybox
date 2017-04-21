@@ -1,27 +1,24 @@
-"use strict";
 
 import dateFormat from "dateformat";
 
-function DataTypeFormatter() {
+class DataTypeFormatter {
 
-	const formatters = {
-		date : (value) => dateFormat(value, "yyyy-mm-dd"),
-		timestampWithoutTimezone : (value) => dateFormat(value, "yyyy-mm-dd HH:MM:ss.l"),
-		timestamp : (value) => dateFormat(value, "yyyy-mm-dd HH:MM:ss.l"),
-		undefined : (value) => String(value)
+	constructor() {
+		this.formatters = {
+			date : (value) => dateFormat(value, "yyyy-mm-dd"),
+			timestampWithoutTimezone : (value) => dateFormat(value, "yyyy-mm-dd HH:MM:ss.l"),
+			timestamp : (value) => dateFormat(value, "yyyy-mm-dd HH:MM:ss.l"),
+			undefined : (value) => String(value)
+		};
 	}
 
-	function format(type, value) {
+	format(type, value) {
 		if (value == null) {
 			return value;
 		}
-		return formatters[type](value);
-	}
-
-	return {
-		format : format
+		return this.formatters[type](value);
 	}
 
 }
 
-module.exports = new DataTypeFormatter();
+export default new DataTypeFormatter();

@@ -4,7 +4,7 @@ import $ from 'jquery';
 import 'bootstrap';
 import 'brace/ext/themelist';
 
-import Configuration from "./../configuration";
+import Configuration from "./../util//configuration";
 
 import DatabaseFactory from './../db/database-factory';
 

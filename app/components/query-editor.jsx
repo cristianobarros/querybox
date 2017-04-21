@@ -8,7 +8,7 @@ import 'brace/ext/language_tools';
 
 import uuid from 'uuid/v4';
 
-import Formatter from '../formatter';
+import Formatter from '../util/formatter';
 
 export default class QueryEditor extends PureComponent {
 
