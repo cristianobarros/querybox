@@ -6,7 +6,7 @@ class Formatter {
 	}
 
 	format(sql, keywords) {
-		sql = sql.replace(/ +/g, " ");
+		sql = sql.replace(/ +/g, ' ');
 		let tokens = this.readStringTokens(sql);
 		sql = sql.toLowerCase();
 		keywords.forEach(function(keyword) {

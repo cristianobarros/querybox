@@ -57,7 +57,7 @@ function QueryActions() {
   function executeSQL(app) {
 
     if (!DatabaseFactory.hasConfig()) {
-      app.setMessage("No connection configured.");
+      app.setMessage('No connection configured.');
       return;
     }
 
@@ -68,7 +68,7 @@ function QueryActions() {
 
     const onSuccess = function(result) {
        timer.stop();
-       app.setMessage(result.rows.length + " rows in " + timer.getTime() + " ms");
+       app.setMessage(result.rows.length + ' rows in ' + timer.getTime() + ' ms');
        app.setResult(result);
        NProgress.done();
      };

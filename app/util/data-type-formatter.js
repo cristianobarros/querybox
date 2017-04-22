@@ -1,13 +1,13 @@
 
-import dateFormat from "dateformat";
+import dateFormat from 'dateformat';
 
 class DataTypeFormatter {
 
 	constructor() {
 		this.formatters = {
-			date : (value) => dateFormat(value, "yyyy-mm-dd"),
-			timestampWithoutTimezone : (value) => dateFormat(value, "yyyy-mm-dd HH:MM:ss.l"),
-			timestamp : (value) => dateFormat(value, "yyyy-mm-dd HH:MM:ss.l"),
+			date : (value) => dateFormat(value, 'yyyy-mm-dd'),
+			timestampWithoutTimezone : (value) => dateFormat(value, 'yyyy-mm-dd HH:MM:ss.l'),
+			timestamp : (value) => dateFormat(value, 'yyyy-mm-dd HH:MM:ss.l'),
 			undefined : (value) => String(value)
 		};
 	}

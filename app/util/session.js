@@ -9,7 +9,7 @@ class Session {
 	constructor() {
 		this.db = new Datastore(
 			{
-				filename : AppPath.getPath("sessions.db"),
+				filename : AppPath.getPath('sessions.db'),
 				autoload : true
 			}
 		);
@@ -54,12 +54,12 @@ class Session {
 	getDefaultTab(number) {
 		return {
 			uuid : uuid(),
-			name : "Tab " + number,
+			name : 'Tab ' + number,
 			content : {
-				sql : "",
+				sql : '',
 				cursorPosition : { row : 0, column : 0 },
 				result : null,
-				message : "",
+				message : '',
 				split : [50, 50]
 			}
 		}
@@ -84,7 +84,7 @@ class Session {
 					fulfill();
 				});
 			} else {
-				this.db.update({ "_id" : doc._id,}, { $set : doc }, (err, numReplaced) => {
+				this.db.update({ '_id' : doc._id,}, { $set : doc }, (err, numReplaced) => {
 
 					if (err) {
 						reject(err);

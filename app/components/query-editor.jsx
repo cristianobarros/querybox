@@ -19,7 +19,7 @@ export default class QueryEditor extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
 
-    require("brace/theme/" + nextProps.theme);
+    require('brace/theme/' + nextProps.theme);
 
     if (this.props.value !== nextProps.value) {
       this.clearError();
@@ -35,14 +35,14 @@ export default class QueryEditor extends PureComponent {
   }
 
   componentWillMount() {
-    require("brace/theme/" + this.props.theme);
+    require('brace/theme/' + this.props.theme);
   }
 
   componentDidMount() {
     let editor = this.getEditor();
     editor.focus();
     editor.completers = this.getCompleters(this.props);
-    editor.commands.removeCommand("transposeletters");
+    editor.commands.removeCommand('transposeletters');
     editor.moveCursorToPosition(this.props.cursorPosition);
     editor.getSession().setUndoManager(new ace.UndoManager());
     this.registerSnippets();
@@ -54,13 +54,13 @@ export default class QueryEditor extends PureComponent {
   render() {
     return (
       <AceEditor
-        mode="querybox"
+        mode='querybox'
         name={this.uuid}
         theme={this.props.theme}
-        height="100%"
-        width="100%"
+        height='100%'
+        width='100%'
         fontSize={14}
-        ref="queryBoxTextarea"
+        ref='queryBoxTextarea'
         value={this.props.value}
         showPrintMargin={false}
         editorProps={{ $blockScrolling : Infinity }}
@@ -78,7 +78,7 @@ export default class QueryEditor extends PureComponent {
   showError(error) {
     const annotation = Object.assign({
       text: error.message,
-      type: "error"
+      type: 'error'
     }, this.getErrorPosition(error));
     this.getEditor().getSession().setAnnotations([annotation]);
   }
@@ -88,7 +88,7 @@ export default class QueryEditor extends PureComponent {
     const sql = this.getSQL();
     const before = sql.substring(0, error.position - 1);
     const row = (before.match(/\n/g) || []).length;
-    const column = before.substring(before.lastIndexOf("\n") + 1, before.length).length;
+    const column = before.substring(before.lastIndexOf('\n') + 1, before.length).length;
     return {
       row : row + offset.row,
       column : column + offset.column
@@ -113,7 +113,7 @@ export default class QueryEditor extends PureComponent {
   }
 
   registerSnippets() {
-    let snippetManager = ace.acequire("ace/snippets").snippetManager;
+    let snippetManager = ace.acequire('ace/snippets').snippetManager;
     let snippets = snippetManager.parseSnippetFile(this.props.snippets);
     snippetManager.register(snippets);
   }
@@ -122,8 +122,8 @@ export default class QueryEditor extends PureComponent {
 
   		let completions = [];
 
-      completions = completions.concat(this.mapCompletion(props.keywords, "keyword"));
-      completions = completions.concat(this.mapCompletion(props.tables, "table"));
+      completions = completions.concat(this.mapCompletion(props.keywords, 'keyword'));
+      completions = completions.concat(this.mapCompletion(props.tables, 'table'));
 
   		return [{
   		  getCompletions: function(editor, session, pos, prefix, callback) {
@@ -149,19 +149,19 @@ export default class QueryEditor extends PureComponent {
   }
 
   undo() {
-    this.getEditor().execCommand("undo");
+    this.getEditor().execCommand('undo');
   }
 
   redo() {
-    this.getEditor().execCommand("redo");
+    this.getEditor().execCommand('redo');
   }
 
   find() {
-    this.getEditor().execCommand("find");
+    this.getEditor().execCommand('find');
   }
 
   replace() {
-    this.getEditor().execCommand("replace");
+    this.getEditor().execCommand('replace');
   }
 
   getEditor() {

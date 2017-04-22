@@ -17,7 +17,7 @@ class Configuration {
 		return {
 			zoomFactor : 1,
 			activeTabIndex : 0,
-			theme : "idle_fingers"
+			theme : 'idle_fingers'
 		}
 	}
 

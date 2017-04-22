@@ -1,30 +1,33 @@
-'use strict';
 
 const pg = require('electron').remote.require('pg');
 
 import PostgreSQLDataType from './postgresql-data-type';
 
-function PostgreSQLDatabase(config) {
+export default class PostgreSQLDatabase {
 
-	function getTableNames(onSuccess, onError) {
-		let sql = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');";
-		execute(sql, onSuccess, onError);
+	constructor(config) {
+		this.config = config;
 	}
 
-	function execute(sql, onSuccess, onError) {
+	getTableNames(onSuccess, onError) {
+		let sql = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');";
+		this.execute(sql, onSuccess, onError);
+	}
 
-			var client = new pg.Client(config);
+	execute(sql, onSuccess, onError) {
 
-			client.connect(function(err) {
+			var client = new pg.Client(this.config);
 
-				handleErrorIfExists(onError, err);
+			client.connect(err => {
 
-				client.query({ rowMode : "array", text : sql }, function(err, res) {
+				this.handleErrorIfExists(onError, err);
 
-					handleErrorIfExists(onError, err);
+				client.query({ rowMode : "array", text : sql }, (err, res) => {
+
+					this.handleErrorIfExists(onError, err);
 
 					onSuccess({
-						fields : res.fields.map(function(field) {
+						fields : res.fields.map(field => {
 							return {
 								name : field.name,
 								type : PostgreSQLDataType[field.dataTypeID]
@@ -33,25 +36,19 @@ function PostgreSQLDatabase(config) {
 						rows : res.rows
 					});
 
-					client.end(function (err) {
-						handleErrorIfExists(onError, err);
+					client.end(err => {
+						this.handleErrorIfExists(onError, err);
 					});
 				});
 
 			});
 	}
 
-	function handleErrorIfExists(onError, error) {
+	handleErrorIfExists(onError, error) {
 		if (error) {
 			onError(error);
 			throw error;
 		}
 	}
 
-	return {
-		getTableNames : getTableNames,
-		execute : execute
-	}
 }
-
-module.exports = PostgreSQLDatabase;
