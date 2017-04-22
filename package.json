@@ -7,7 +7,7 @@
   "scripts": {
     "start": "webpack && electron ./app/",
     "dev:webpack": "webpack --watch",
-    "dev:start": "electron ./app/",
+    "dev:start": "cross-env NODE_ENV=development electron ./app/",
     "dist": "build",
     "dist:macos": "build --macos",
     "dist:linux": "build --linux",

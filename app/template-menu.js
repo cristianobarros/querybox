@@ -1,6 +1,7 @@
-'use strict';
 
-function buildTemplate() {
+TemplateMenu = function() {};
+
+TemplateMenu.prototype.buildTemplate = function() {
   return [
     {
       label: 'File',
@@ -39,7 +40,7 @@ function buildTemplate() {
           click: (item, win) => win.webContents.send('querybox:open'),
         },
         {
-					label: 'Save',
+          label: 'Save',
           accelerator: 'Ctrl+S',
           click: (item, win) => win.webContents.send('querybox:save'),
         },
@@ -51,7 +52,7 @@ function buildTemplate() {
           accelerator: 'Ctrl+Enter',
           click: (item, win) => win.webContents.send('querybox:execute'),
         },
-				{
+        {
           label: 'Format',
           accelerator: 'Ctrl+Shift+F',
           click: (item, win) => win.webContents.send('querybox:format'),
@@ -126,11 +127,6 @@ function buildTemplate() {
       label: 'View',
       submenu: [
         {
-          label: 'Reload',
-          accelerator: 'Ctrl+R',
-          role: 'reload',
-        },
-        {
           label: 'Toggle Developer Tools',
           accelerator: 'Ctrl+Shift+I',
           role: 'toggledevtools',
@@ -158,4 +154,4 @@ function buildTemplate() {
   ];
 }
 
-module.exports = buildTemplate;
+module.exports = TemplateMenu;

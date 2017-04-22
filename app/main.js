@@ -7,7 +7,7 @@ const MenuItem = electron.MenuItem;
 const path = require('path')
 const url = require('url')
 
-const buildTemplate = require('./menu');
+const TemplateMenu = require('./template-menu-factory');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -37,7 +37,7 @@ function createWindow () {
 		}
 	);
 
-	const template = buildTemplate();
+	const template = TemplateMenu.buildTemplate();
 	const menu = Menu.buildFromTemplate(template);
 
   Menu.setApplicationMenu(menu);
