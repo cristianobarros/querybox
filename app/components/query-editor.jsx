@@ -1,13 +1,13 @@
 import React, {PureComponent} from 'react';
 import AceEditor from 'react-ace';
 
-import 'brace/mode/sql';
-import 'brace/snippets/sql';
 import 'brace/ext/searchbox';
 import 'brace/ext/language_tools';
 
 import uuid from 'uuid/v4';
 
+import '../util/mode';
+import '../util/snippet';
 import Formatter from '../util/formatter';
 
 export default class QueryEditor extends PureComponent {
@@ -54,7 +54,7 @@ export default class QueryEditor extends PureComponent {
   render() {
     return (
       <AceEditor
-        mode="sql"
+        mode="querybox"
         name={this.uuid}
         theme={this.props.theme}
         height="100%"

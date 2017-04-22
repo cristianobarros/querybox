@@ -24,7 +24,7 @@ export default class TabContent extends PureComponent {
       error : props.state.error,
       tables : [],
       snippets : SnippetManager.getSnippets(),
-      keywords : KeywordManager.getKeywords()
+      keywords : KeywordManager.getAllKeywords()
     };
   }
 
