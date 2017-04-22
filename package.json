@@ -34,7 +34,8 @@
     "babel-preset-react": "^6.16.0",
     "electron": "^1.4.1",
     "electron-builder": "^11.2.5",
-    "webpack": "^1.14.0"
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.3"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
