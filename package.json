@@ -5,14 +5,15 @@
   "author": "Cristiano de Barros",
   "main": "main.js",
   "scripts": {
-    "start": "webpack && electron ./app/",
+    "start": "npm run compile && electron ./app/",
+    "compile": "cross-env NODE_ENV=production webpack",
     "dev": "concurrently \"npm run dev:webpack\" \"npm run dev:start\"",
     "dev:webpack": "webpack-dev-server",
     "dev:start": "cross-env NODE_ENV=development electron ./app/",
-    "dist": "build",
-    "dist:macos": "build --macos",
-    "dist:linux": "build --linux",
-    "dist:windows": "build --windows"
+    "dist": "npm run compile && build",
+    "dist:macos": "npm run compile && build --macos",
+    "dist:linux": "npm run compile && build --linux",
+    "dist:windows": "npm run compile && build --windows"
   },
   "build": {
     "appId": "com.electron.quantum",
