@@ -1,14 +1,17 @@
 {
-  "name": "Quantum",
+  "name": "QueryBox",
   "version": "1.0.0",
   "description": "A JavaScript SQL Editor",
   "author": "Cristiano de Barros",
-  "main": "main.js",
+  "main": "main-bundle.js",
   "scripts": {
     "start": "npm run compile && electron ./app/",
-    "compile": "cross-env NODE_ENV=production webpack",
-    "dev": "concurrently \"npm run dev:webpack\" \"npm run dev:start\"",
-    "dev:webpack": "webpack-dev-server",
+    "compile": "concurrently \"npm run compile:main\" \"npm run compile:renderer\"",
+    "compile:main": "cross-env NODE_ENV=production webpack --config webpack.config.main.js",
+    "compile:renderer": "cross-env NODE_ENV=production webpack --config webpack.config.renderer.js",
+    "dev": "npm run dev:webpack:main && concurrently \"npm run dev:webpack:renderer\" \"npm run dev:start\"",
+    "dev:webpack:main": "cross-env NODE_ENV=development webpack --config webpack.config.main.js",
+    "dev:webpack:renderer": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.renderer.js",
     "dev:start": "cross-env NODE_ENV=development electron ./app/",
     "dist": "npm run compile && build",
     "dist:macos": "npm run compile && build --macos",
@@ -16,7 +19,7 @@
     "dist:windows": "npm run compile && build --windows"
   },
   "build": {
-    "appId": "com.electron.quantum",
+    "appId": "io.querybox",
     "linux": {
       "target": [
         "deb"

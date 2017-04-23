@@ -1,5 +1,5 @@
 
-TemplateMenu = function() {};
+var TemplateMenu = function() {};
 
 TemplateMenu.prototype.buildTemplate = function() {
   return [

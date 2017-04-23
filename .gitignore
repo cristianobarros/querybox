@@ -1,6 +1,7 @@
 node_modules
 connection.json
 sessions.db
+main-bundle.js
 renderer-bundle.js
 
 # Packaged app

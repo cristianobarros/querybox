@@ -1,7 +1,7 @@
 
 const TemplateMenu = require("./template-menu");
 
-TemplateMenuDevelopment = function() {};
+var TemplateMenuDevelopment = function() {};
 
 TemplateMenuDevelopment.prototype = new TemplateMenu();
 
