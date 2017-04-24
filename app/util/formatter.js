@@ -9,7 +9,7 @@ class Formatter {
 		sql = sql.replace(/ +/g, ' ');
 		let tokens = this.readStringTokens(sql);
 		sql = sql.toLowerCase();
-		keywords.forEach(function(keyword) {
+		keywords.forEach((keyword) => {
 			sql = sql.replace(RegExp('\\b' + keyword + '\\b', 'gi'), keyword);
 		});
 		sql = this.replaceStringTokens(sql, tokens);
@@ -21,7 +21,7 @@ class Formatter {
 		let tokens = [];
 		let match;
 
-		this.patterns.forEach(function(pattern) {
+		this.patterns.forEach((pattern) => {
 			while ((match = pattern.exec(sql)) !== null) {
 				tokens.push(match);
 			}
@@ -31,7 +31,7 @@ class Formatter {
 	}
 
 	replaceStringTokens(sql, tokens) {
-		tokens.forEach(function(token) {
+		tokens.forEach((token) => {
 			sql = this.replaceString(sql, token.index, token[1]);
 		});
 		return sql;
