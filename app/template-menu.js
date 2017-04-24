@@ -1,7 +1,7 @@
 
 var TemplateMenu = function() {};
 
-TemplateMenu.prototype.buildTemplate = function() {
+TemplateMenu.prototype.buildTemplate = function(keybindings) {
   return [
     {
       label: 'File',
@@ -49,7 +49,7 @@ TemplateMenu.prototype.buildTemplate = function() {
         },
         {
           label: 'Execute',
-          accelerator: 'Ctrl+Enter',
+          accelerator: keybindings.executeQuery,
           click: (item, win) => win.webContents.send('querybox:execute'),
         },
         {

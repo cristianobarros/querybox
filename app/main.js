@@ -19,6 +19,12 @@ global.configuration = Configuration.load();
 let mainWindow
 let quit
 
+function loadMenu() {
+	const template = TemplateMenu.buildTemplate(global.configuration.keybindings);
+	const menu = Menu.buildFromTemplate(template);
+	Menu.setApplicationMenu(menu);
+}
+
 function createWindow () {
 
 	require('electron').ipcMain.on('close-ok', function(event, message) {
@@ -43,10 +49,7 @@ function createWindow () {
 		}
 	);
 
-	const template = TemplateMenu.buildTemplate();
-	const menu = Menu.buildFromTemplate(template);
-
-  Menu.setApplicationMenu(menu);
+	loadMenu();
 
   // and load the index.html of the app.
 	if (process.env.NODE_ENV === 'development') {

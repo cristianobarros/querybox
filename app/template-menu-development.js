@@ -5,8 +5,8 @@ var TemplateMenuDevelopment = function() {};
 
 TemplateMenuDevelopment.prototype = new TemplateMenu();
 
-TemplateMenuDevelopment.prototype.buildTemplate = function() {
-  const template = TemplateMenu.prototype.buildTemplate.call(this);
+TemplateMenuDevelopment.prototype.buildTemplate = function(keybindings) {
+  const template = TemplateMenu.prototype.buildTemplate.call(this, keybindings);
   template[2].submenu.unshift({
     label: 'Reload',
     accelerator: 'Ctrl+R',
