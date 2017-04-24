@@ -4,6 +4,8 @@ import $ from 'jquery';
 import 'bootstrap';
 import 'brace/ext/themelist';
 
+import InputHotkey from "./input-hotkey.jsx";
+
 export default class ConfigurationModal extends PureComponent {
 
   constructor(props) {
@@ -62,6 +64,12 @@ export default class ConfigurationModal extends PureComponent {
                   </optgroup>
                 </select>
               </div>
+              <div className="form-group">
+                <label htmlFor="executeQuery" className="control-label">Execute query</label>
+                <InputHotkey id="executeQuery" className="form-control"
+                  value={this.state.keybindings.executeQuery}
+                  onChange={(value) => this.handleKeybindChange("executeQuery", value)} />
+              </div>
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-default" onClick={() => this.cancel()}>Cancel</button>
@@ -93,9 +101,19 @@ export default class ConfigurationModal extends PureComponent {
     this.props.onChange(newState);
   }
 
+  handleKeybindChange(key, value) {
+
+    const newState = Object.assign({}, this.state);
+
+    newState.keybindings[key] = value;
+
+    this.setState(newState);
+    this.props.onChange(newState);
+  }
+
   show() {
     this.setState(this.props.configuration, () => {
-      this.saved = Object.assign({}, this.props.configuration);
+      this.saved = $.extend(true, {}, this.props.configuration);
       $(this.refs.connectionModal).modal('show');
     });
   }
@@ -107,8 +125,11 @@ export default class ConfigurationModal extends PureComponent {
 
   save() {
     const data = {
-      theme : this.state.theme
-    }
+      theme: this.state.theme,
+      keybindings: {
+        executeQuery: this.state.keybindings.executeQuery,
+      },
+    };
     this.props.onSave(data);
     $(this.refs.connectionModal).modal('hide');
   }

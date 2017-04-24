@@ -60,7 +60,7 @@ export default class App extends PureComponent {
           ref="configurationModal"
           configuration={this.state.configuration}
           onChange={(data) => this.onChangeConfiguration(data)}
-          onSave={(data) => this.onChangeConfiguration(data)}
+          onSave={(data) => this.onSaveConfiguration(data)}
           />
         <ContextMenu id="TABS_CONTEXT_MENU">
           <MenuItem onClick={(e, data, target) => this.closeTab(data.index)}>Close tab</MenuItem>
@@ -285,6 +285,12 @@ export default class App extends PureComponent {
      this.setState({ configuration : data });
    }
 
+   onSaveConfiguration(data) {
+     this.onChangeConfiguration(data);
+     Object.assign(remote.getGlobal('configuration'), this.state.configuration);
+     ipcRenderer.send('querybox:reloadMenu');
+   }
+
    getActiveTabContent() {
      return this.getTabContent(this.state.activeTabIndex);
    }
@@ -364,7 +370,7 @@ export default class App extends PureComponent {
      });
      const tabs = this.getTabs();
      Session.saveAll(tabs).then(function() {
-       event.sender.send('close-ok');
+       event.sender.send('querybox:close');
      });
    }
 

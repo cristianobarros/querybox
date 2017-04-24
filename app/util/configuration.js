@@ -19,7 +19,7 @@ class Configuration {
 			activeTabIndex : 0,
 			theme : 'idle_fingers',
 			keybindings: {
-				executeQuery: "Ctrl+Enter",
+				executeQuery: 'Ctrl+Enter',
 			},
 		}
 	}

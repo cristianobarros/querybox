@@ -1,4 +1,5 @@
 const electron = require('electron');
+const ipcMain = electron.ipcMain;
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const Menu = electron.Menu;
@@ -27,7 +28,11 @@ function loadMenu() {
 
 function createWindow () {
 
-	require('electron').ipcMain.on('close-ok', function(event, message) {
+	ipcMain.on('querybox:reloadMenu', () => {
+		loadMenu();
+	});
+
+	ipcMain.on('querybox:close', () => {
 		Configuration.save(global.configuration);
 		quit = true;
 		app.quit();
