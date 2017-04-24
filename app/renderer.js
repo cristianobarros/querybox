@@ -5,10 +5,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './containers/app.jsx';
-import Configuration from './util/configuration';
 
 AppPath.createAppPathIfDoNotExists();
-Configuration.createDefaultIfDoNotExists();
 
 Session.loadOpened().then((tabs) => {
 	ReactDOM.render(<App tabs={tabs} />, document.getElementById('app'));

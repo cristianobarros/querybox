@@ -4,10 +4,6 @@ import $ from 'jquery';
 import 'bootstrap';
 import 'brace/ext/themelist';
 
-import Configuration from "./../util//configuration";
-
-import DatabaseFactory from './../db/database-factory';
-
 export default class ConfigurationModal extends PureComponent {
 
   constructor(props) {

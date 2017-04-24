@@ -1,4 +1,4 @@
-import {ipcRenderer, webFrame} from 'electron';
+import {ipcRenderer, webFrame, remote} from 'electron';
 
 import React, {PureComponent} from 'react';
 
@@ -6,7 +6,6 @@ import {ContextMenu, MenuItem, ContextMenuTrigger} from "react-contextmenu";
 import Sortable from "sortablejs";
 
 import Session from './../util/session';
-import Configuration from "./../util/configuration";
 
 import QueryActions from './../actions/query-actions';
 
@@ -21,7 +20,7 @@ export default class App extends PureComponent {
   constructor(props) {
     super(props);
     this.registerEvents();
-    const configuration = Configuration.load();
+    const configuration = remote.getGlobal('configuration');
     this.state = {
       configuration : configuration,
       activeTabIndex : configuration.activeTabIndex,
@@ -359,10 +358,10 @@ export default class App extends PureComponent {
    }
 
    close(event) {
-     Configuration.save(Object.assign({}, this.state.configuration, {
+     Object.assign(remote.getGlobal('configuration'), this.state.configuration, {
        zoomFactor : webFrame.getZoomFactor(),
        activeTabIndex : this.state.activeTabIndex
-     }));
+     });
      const tabs = this.getTabs();
      Session.saveAll(tabs).then(function() {
        event.sender.send('close-ok');

@@ -7,7 +7,12 @@ const MenuItem = electron.MenuItem;
 const path = require('path')
 const url = require('url')
 
-const TemplateMenu = require('./template-menu-factory');
+import TemplateMenu from './template-menu-factory';
+import Configuration from './util/configuration';
+
+Configuration.createDefaultIfDoNotExists();
+
+global.configuration = Configuration.load();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -17,6 +22,7 @@ let quit
 function createWindow () {
 
 	require('electron').ipcMain.on('close-ok', function(event, message) {
+		Configuration.save(global.configuration);
 		quit = true;
 		app.quit();
 	});

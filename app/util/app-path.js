@@ -11,8 +11,12 @@ class AppPath {
 	}
 
 	getAppPath() {
-		const home = electron.remote.app.getPath('home');
+		const home = this.getApp().getPath('home');
 		return path.join(home, '.querybox');
+	}
+
+	getApp() {
+		return electron.remote ? electron.remote.app : electron.app;
 	}
 
 	createAppPathIfDoNotExists() {
