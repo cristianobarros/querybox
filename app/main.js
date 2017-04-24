@@ -8,9 +8,11 @@ const MenuItem = electron.MenuItem;
 const path = require('path')
 const url = require('url')
 
-import TemplateMenu from './template-menu-factory';
+import AppPath from './util/app-path';
 import Configuration from './util/configuration';
+import TemplateMenu from './template-menu-factory';
 
+AppPath.createAppPathIfDoNotExists();
 Configuration.createDefaultIfDoNotExists();
 
 global.configuration = Configuration.load();

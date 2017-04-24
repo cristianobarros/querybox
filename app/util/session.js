@@ -17,7 +17,7 @@ class Session {
 
 	getLastClosed() {
 		return new Promise((fulfill, reject) => {
-			this.db.find({ $not : { closedOn : null } }).sort({ closedOn : -1 }).limit(1).exec(function(err, docs) {
+			this.db.find({ $not : { closedOn : null } }).sort({ closedOn : -1 }).limit(1).exec((err, docs) => {
 
 				if (err) {
 					reject(err);
@@ -31,7 +31,7 @@ class Session {
 
 	loadOpened() {
 		return new Promise((fulfill, reject) => {
-			this.db.find({ closedOn : null }).sort({ index : 1 }).exec(function(err, docs) {
+			this.db.find({ closedOn : null }).sort({ index : 1 }).exec((err, docs) => {
 
 				if (err) {
 					reject(err);
@@ -41,7 +41,7 @@ class Session {
 				if (docs.length > 0) {
 					fulfill(docs);
 				} else {
-					fulfill(getDefaultSession());
+					fulfill(this.getDefaultSession());
 				}
 			});
 		});
