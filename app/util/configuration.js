@@ -19,7 +19,15 @@ class Configuration {
 			activeTabIndex : 0,
 			theme : 'idle_fingers',
 			keybindings: {
+				newTab: 'Ctrl+T',
+				closeTab: 'Ctrl+W',
+				restoreTab: 'Ctrl+Shift+T',
+				previousTab: 'Ctrl+PageUp',
+				nextTab: 'Ctrl+PageDown',
+				openFile: 'Ctrl+O',
+				saveFile: 'Ctrl+S',
 				executeQuery: 'Ctrl+Enter',
+				formatQuery: 'Ctrl+Shift+F',
 			},
 		}
 	}

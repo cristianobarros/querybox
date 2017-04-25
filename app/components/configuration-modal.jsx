@@ -58,7 +58,7 @@ export default class ConfigurationModal extends PureComponent {
                 <li className="active"><a href="#themes" data-toggle="pill">Themes</a></li>
                 <li><a href="#keybindings" data-toggle="pill">Keybindings</a></li>
               </ul>
-              <div className="tab-content col-md-9">
+              <div className="tab-content col-md-9" style={{ maxHeight: '300px', overflow: 'auto'}}>
                 <div className="tab-pane active" id="themes">
                   <div className="form-group">
                     <label htmlFor="theme" className="control-label">Theme</label>
@@ -74,10 +74,46 @@ export default class ConfigurationModal extends PureComponent {
                 </div>
                 <div className="tab-pane" id="keybindings">
                   <div className="form-group">
+                    <label htmlFor="newTab" className="control-label">New tab</label>
+                    <InputHotkey id="newTab" className="form-control"
+                      value={this.state.keybindings.newTab}
+                      onChange={(value) => this.handleKeybindChange("newTab", value)} />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="closeTab" className="control-label">Close tab</label>
+                    <InputHotkey id="closeTab" className="form-control"
+                      value={this.state.keybindings.closeTab}
+                      onChange={(value) => this.handleKeybindChange("closeTab", value)} />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="restoreTab" className="control-label">Restore tab</label>
+                    <InputHotkey id="restoreTab" className="form-control"
+                      value={this.state.keybindings.restoreTab}
+                      onChange={(value) => this.handleKeybindChange("restoreTab", value)} />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="previousTab" className="control-label">Previous tab</label>
+                    <InputHotkey id="previousTab" className="form-control"
+                      value={this.state.keybindings.previousTab}
+                      onChange={(value) => this.handleKeybindChange("previousTab", value)} />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="nextTab" className="control-label">Next tab</label>
+                    <InputHotkey id="nextTab" className="form-control"
+                      value={this.state.keybindings.nextTab}
+                      onChange={(value) => this.handleKeybindChange("nextTab", value)} />
+                  </div>
+                  <div className="form-group">
                     <label htmlFor="executeQuery" className="control-label">Execute query</label>
                     <InputHotkey id="executeQuery" className="form-control"
                       value={this.state.keybindings.executeQuery}
                       onChange={(value) => this.handleKeybindChange("executeQuery", value)} />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="formatQuery" className="control-label">Format query</label>
+                    <InputHotkey id="formatQuery" className="form-control"
+                      value={this.state.keybindings.formatQuery}
+                      onChange={(value) => this.handleKeybindChange("formatQuery", value)} />
                   </div>
                 </div>
               </div>

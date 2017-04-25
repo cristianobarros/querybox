@@ -8,27 +8,27 @@ TemplateMenu.prototype.buildTemplate = function(keybindings) {
       submenu: [
         {
           label: 'New tab',
-          accelerator: 'Ctrl+T',
+          accelerator: keybindings.newTab,
           click: (item, win) => win.webContents.send('querybox:newTab'),
         },
         {
           label: 'Close tab',
-          accelerator: 'Ctrl+W',
+          accelerator: keybindings.closeTab,
           click: (item, win) => win.webContents.send('querybox:closeTab'),
         },
         {
           label: 'Restore tab',
-          accelerator: 'Ctrl+Shift+T',
+          accelerator: keybindings.restoreTab,
           click: (item, win) => win.webContents.send('querybox:restoreTab'),
         },
         {
           label: 'Previous tab',
-          accelerator: 'Ctrl+PageUp',
+          accelerator: keybindings.previousTab,
           click: (item, win) => win.webContents.send('querybox:previousTab'),
         },
         {
           label: 'Next tab',
-          accelerator: 'Ctrl+PageDown',
+          accelerator: keybindings.nextTab,
           click: (item, win) => win.webContents.send('querybox:nextTab'),
         },
         {
@@ -36,12 +36,12 @@ TemplateMenu.prototype.buildTemplate = function(keybindings) {
         },
         {
           label: 'Open',
-          accelerator: 'Ctrl+O',
+          accelerator: keybindings.openFile,
           click: (item, win) => win.webContents.send('querybox:open'),
         },
         {
           label: 'Save',
-          accelerator: 'Ctrl+S',
+          accelerator: keybindings.saveFile,
           click: (item, win) => win.webContents.send('querybox:save'),
         },
         {
@@ -54,7 +54,7 @@ TemplateMenu.prototype.buildTemplate = function(keybindings) {
         },
         {
           label: 'Format',
-          accelerator: 'Ctrl+Shift+F',
+          accelerator: keybindings.formatQuery,
           click: (item, win) => win.webContents.send('querybox:format'),
         },
         {
