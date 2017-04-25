@@ -36,7 +36,7 @@ export default class TabContent extends PureComponent {
 
   render() {
     return (
-      <div className={"tab-content " + (this.props.active ? "active" : "")}>
+      <div className={"querybox-tab-content " + (this.props.active ? "active" : "")}>
         <div ref="editor" className="editor">
           <QueryEditor
             ref="aceEditor"

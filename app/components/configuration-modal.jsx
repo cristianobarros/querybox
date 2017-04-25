@@ -53,23 +53,35 @@ export default class ConfigurationModal extends PureComponent {
               <h4 className="modal-title">Configuration</h4>
             </div>
             <div className="modal-body">
-              <div className="form-group">
-                <label htmlFor="theme" className="control-label">Theme</label>
-                <select id="theme" value={this.state.theme} className="form-control" onChange={(event) => this.handleChange(event)}>
-                  <optgroup label="Bright">
-                    {this.renderThemes(this.state.themes.bright)}
-                  </optgroup>
-                  <optgroup label="Dark">
-                    {this.renderThemes(this.state.themes.dark)}
-                  </optgroup>
-                </select>
+              <div className="row" style={{ paddingLeft: '15px'}}>
+              <ul className="nav nav-pills nav-stacked col-md-3">
+                <li className="active"><a href="#themes" data-toggle="pill">Themes</a></li>
+                <li><a href="#keybindings" data-toggle="pill">Keybindings</a></li>
+              </ul>
+              <div className="tab-content col-md-9">
+                <div className="tab-pane active" id="themes">
+                  <div className="form-group">
+                    <label htmlFor="theme" className="control-label">Theme</label>
+                    <select id="theme" value={this.state.theme} className="form-control" onChange={(event) => this.handleChange(event)}>
+                      <optgroup label="Bright">
+                        {this.renderThemes(this.state.themes.bright)}
+                      </optgroup>
+                      <optgroup label="Dark">
+                        {this.renderThemes(this.state.themes.dark)}
+                      </optgroup>
+                    </select>
+                  </div>
+                </div>
+                <div className="tab-pane" id="keybindings">
+                  <div className="form-group">
+                    <label htmlFor="executeQuery" className="control-label">Execute query</label>
+                    <InputHotkey id="executeQuery" className="form-control"
+                      value={this.state.keybindings.executeQuery}
+                      onChange={(value) => this.handleKeybindChange("executeQuery", value)} />
+                  </div>
+                </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="executeQuery" className="control-label">Execute query</label>
-                <InputHotkey id="executeQuery" className="form-control"
-                  value={this.state.keybindings.executeQuery}
-                  onChange={(value) => this.handleKeybindChange("executeQuery", value)} />
-              </div>
+            </div>
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-default" onClick={() => this.cancel()}>Cancel</button>

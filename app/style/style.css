@@ -11,11 +11,11 @@ body {
 	height: calc(100% - 63px);
 	padding: 5px;
 }
-.tab-content {
+.querybox-tab-content {
 	height : 100%;
 	display : none;
 }
-.tab-content.active {
+.querybox-tab-content.active {
 	display : block;
 }
 .editor {
