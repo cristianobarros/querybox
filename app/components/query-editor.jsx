@@ -25,7 +25,9 @@ export default class QueryEditor extends PureComponent {
       this.clearError();
     }
 
-    if (this.props.error !== nextProps.error) {
+    if (!nextProps.error) {
+      this.clearError();
+    } else if (this.props.error !== nextProps.error) {
       this.showError(nextProps.error);
     }
 

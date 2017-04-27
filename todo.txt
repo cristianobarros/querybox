@@ -1,8 +1,0 @@
-// TODO
-( ) Save scrollbar position on exit
-( ) Save text selection on exit
-( ) Save undo/redo history on exit
-
-// DONE
-(X) Save result on exit
-(X) Save info message on exit

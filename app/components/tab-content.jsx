@@ -130,7 +130,8 @@ export default class TabContent extends PureComponent {
   setResult(r) {
     let comp = this;
     this.setState({
-      result : r
+      result : r,
+      error : null,
     }, function() {
       comp.refs.resultTable.resetColumnsWidths();
     });
