@@ -174,9 +174,7 @@ export default class ConfigurationModal extends PureComponent {
   save() {
     const data = {
       theme: this.state.theme,
-      keybindings: {
-        executeQuery: this.state.keybindings.executeQuery,
-      },
+      keybindings: Object.assign({}, this.state.keybindings),
     };
     this.props.onSave(data);
     $(this.refs.connectionModal).modal('hide');
