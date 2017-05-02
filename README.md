@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/cristianobarros/querybox.svg?branch=master)](https://travis-ci.org/cristianobarros/querybox)
-[![Build status](https://ci.appveyor.com/api/projects/status/tq537m2v3d2f76j8/branch/master?svg=true)](https://ci.appveyor.com/project/cristianobarros/querybox/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/sgpsw6q88vuo7njg/branch/master?svg=true)](https://ci.appveyor.com/project/cristianobarros/querybox/branch/master)
 [![Dependency Status](https://david-dm.org/cristianobarros/querybox.svg)](https://david-dm.org/cristianobarros/querybox)
 
 # QueryBox
