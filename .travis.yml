@@ -1,0 +1,35 @@
+sudo: false
+
+language: node_js
+node_js:
+- 7
+
+cache:
+  directories:
+  - node_modules
+  - app/node_modules
+  - "$HOME/.electron"
+  - "$HOME/.cache"
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+    - icnsutils
+    - graphicsmagick
+    - xz-utils
+    - xorriso
+
+install:
+- cd app && npm install && cd .. && npm install
+
+script:
+- node --version
+- npm --version
+- npm run dist:linux
+
+env:
+  global:
+    secure: G2W4Khkq4aPklkxuZS0J2DWfa0FXz7dPOC1BCvFuKGU1bpdXT0XTFC3TWOzymSf9AgPs7/aQoGXH7Xqls+9/m5Qg3x3Zu6C0Dd/OSJL0FBRhd08lN1ZUWFgL9STVT67mBSspat6IzHIueWx0VbDFBIWL3K10EMrAIs8Xsyj02J/pka4q/N2dcyqPDIYiAMg2+VxvftRy6xQHENq4twrvwCMf6wRzkvFN9oJGAscxmqOwO8V8ZrYa38xmzcwJR7VsuU8e67Y55ALjCMGa/oa0iavwtcpo7PT+9LhhqY4KG3mWLXsmaZWTpOt4JVEgW8ec6mPfWqwvDfcrADl0+12Vzlx4VATCv2xSlM/manq/u54UsgRJ44zjcYdKXhyMjQUnSmo0QwgB7f5gKXHmaKBkyOkPJeu+Bl6BUldepq1zp/7JdMXC5+OPk7avA/4crz2PPdCa3tK+RaHFVC9KMsyvITqrk3kRTVki9lCwVHNiCszxvJZMS4LHLUDw+9abBRL6Vkiyyz8UCkRlxGCgklTJzMgLiMyPuSmofWjDVW7mfkT0vNWUU/y2u8VHJVT9rY4p3+HswReeL/bIz1PzLy+2rrALKDtfafAkWsSSHQMA5K/LzwSjmhM+JnUPJ+kh55KSsQ+x9XIuqcFUi4i1Rc3B4DS73Ym0r1Ra0gI9LiZIRk8=
