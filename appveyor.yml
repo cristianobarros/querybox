@@ -1,0 +1,28 @@
+version: '{build}'
+
+platform:
+  - x64
+
+cache:
+  - node_modules -> package.json
+  - app\node_modules -> package.json
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+
+init:
+  - git config --global core.autocrlf input
+
+install:
+  - ps: Install-Product node 7 x64
+  - cd app && npm install && cd .. && npm install
+
+build_script:
+  - node --version
+  - npm --version
+  - npm run dist:windows
+
+test: off
+
+environment:
+  GH_TOKEN:
+    secure: Mo9CChhZMpGXKtO2GfA675XjpKpMIxzPxcC/Yx8vX8fzvUB8ac4FXkGSAfGwf6uM
