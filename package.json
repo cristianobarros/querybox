@@ -6,6 +6,7 @@
   "author": "Cristiano de Barros",
   "main": "main-bundle.js",
   "scripts": {
+    "postinstall": "install-app-deps",
     "start": "npm run compile && electron ./app/",
     "compile": "concurrently \"npm run compile:main\" \"npm run compile:renderer\"",
     "compile:main": "cross-env NODE_ENV=production webpack --config webpack.config.main.js",

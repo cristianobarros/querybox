@@ -23,7 +23,7 @@ addons:
     - xorriso
 
 install:
-- cd app && npm install && cd .. && npm install
+- npm install
 
 script:
 - node --version

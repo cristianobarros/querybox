@@ -14,7 +14,7 @@ init:
 
 install:
   - ps: Install-Product node 7 x64
-  - cd app && npm install && cd .. && npm install
+  - npm install
 
 build_script:
   - node --version

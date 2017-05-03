@@ -16,7 +16,7 @@ git clone https://github.com/cristianobarros/querybox.git
 
 And then install dependencies:
 ```bash
-$ cd querybox/app && npm install && cd .. && npm install
+$ cd querybox && npm install
 ```
 
 ## Run
