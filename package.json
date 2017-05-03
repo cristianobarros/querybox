@@ -32,6 +32,9 @@
       "target": [
         "deb"
       ]
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools"
     }
   },
   "repository": "https://github.com/cristianobarros/querybox",

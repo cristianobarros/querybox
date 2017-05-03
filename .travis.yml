@@ -1,5 +1,9 @@
 sudo: false
 
+os:
+  - linux
+  - osx
+
 language: node_js
 node_js:
 - 7
@@ -28,7 +32,7 @@ install:
 script:
 - node --version
 - npm --version
-- npm run dist:linux
+- npm run dist
 
 env:
   global:
