@@ -6,6 +6,24 @@
 
 ### A simple and lightweight SQL client with cross database and platform support.
 
+[Download lastest version](https://github.com/cristianobarros/querybox/releases/latest)
+
+## Features
+- Syntax highlighting
+- Keywords and table names completion
+- Multiple tabs
+- Code formatting
+- Session restore
+- Supported platforms:
+  - [x] Windows
+  - [x] Linux
+  - [ ] macOS
+- Supported databases:
+  - [x] PostgreSQL
+  - [ ] SQL Server
+  - [ ] Oracle
+  - [ ] MySQL
+
 ## Install
 
 First, clone the repo via git:
@@ -29,10 +47,8 @@ $ npm run dev
 
 ## Packaging
 
-To package apps for the supported platforms:
+To package the app for the current platform:
 
 ```bash
-$ npm run dist:linux
-$ npm run dist:macos
-$ npm run dist:windows
+$ npm run dist
 ```
