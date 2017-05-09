@@ -2,6 +2,7 @@
 import fs from 'fs';
 
 import AppPath from './../util/app-path';
+import MySQLDatabase from './mysql/mysql-database';
 import PostgreSQLDatabase from './postgresql/postgresql-database';
 
 class DatabaseFactory {
@@ -9,6 +10,8 @@ class DatabaseFactory {
 	create() {
 		const config = this.loadConfig();
 		switch(config.type) {
+			case 'MySQL':
+				return new MySQLDatabase(config);
 			case 'PostgreSQL':
 				return new PostgreSQLDatabase(config);
 			default:

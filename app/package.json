@@ -11,6 +11,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "fixed-data-table": "^0.6.4",
+    "mysql": "^2.13.0",
     "nprogress": "^0.2.0",
     "pg": "^6.1.5",
     "split.js": "^1.2.0"

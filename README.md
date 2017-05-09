@@ -19,10 +19,10 @@
   - [x] Linux
   - [ ] macOS
 - Supported databases:
+  - [x] MySQL
   - [x] PostgreSQL
   - [ ] SQL Server
   - [ ] Oracle
-  - [ ] MySQL
 
 ## Install
 

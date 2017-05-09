@@ -62,8 +62,8 @@
     "dateformat": "^2.0.0",
     "fixed-data-table": "^0.6.4",
     "jquery": "^3.2.1",
+    "mysql": "^2.13.0",
     "nedb": "^1.8.0",
-    "uuid": "^3.0.1",
     "nprogress": "^0.2.0",
     "pg": "^6.1.5",
     "react": "^15.5.4",
@@ -71,6 +71,7 @@
     "react-contextmenu": "^2.5.1",
     "react-dom": "^15.5.4",
     "sortablejs": "^1.5.1",
-    "split.js": "^1.2.0"
+    "split.js": "^1.2.0",
+    "uuid": "^3.0.1"
   }
 }
