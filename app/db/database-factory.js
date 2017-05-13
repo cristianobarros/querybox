@@ -15,8 +15,8 @@ class DatabaseFactory {
 				return new MySQLDatabase(config);
 			case 'PostgreSQL':
 				return new PostgreSQLDatabase(config);
-				case 'SQLServer':
-					return new SQLServerDatabase(config);
+			case 'SQLServer':
+				return new SQLServerDatabase(config);
 			default:
 				throw 'Unknown database type: ' + config.type;
 		}

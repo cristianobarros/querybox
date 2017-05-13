@@ -1,6 +1,8 @@
 
 const mysql = require('electron').remote.require('mysql');
 
+import MySQLDataType from './mysql-data-type';
+
 export default class MySQLDatabase {
 
 	constructor(config) {
@@ -8,7 +10,7 @@ export default class MySQLDatabase {
 	}
 
 	getTableNames(onSuccess, onError) {
-		let sql = "SELECT table_name as name FROM information_schema.tables WHERE table_schema = database() AND table_type NOT LIKE '%VIEW%' ORDER BY table_name";
+		let sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = database() AND table_type NOT LIKE '%VIEW%'";
 		this.execute(sql, onSuccess, onError);
 	}
 
@@ -24,7 +26,7 @@ export default class MySQLDatabase {
 				fields : fields.map(field => {
 					return {
 						name : field.name,
-						type : undefined
+						type : MySQLDataType[field.type]
 					};
 				}),
 				rows : results.map(result => this.mapToArray(result, fields))
