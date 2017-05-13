@@ -45,6 +45,7 @@ export default class ConnectionModal extends PureComponent {
                   <option value=""></option>
                   <option value="MySQL">MySQL</option>
                   <option value="PostgreSQL">PostgreSQL</option>
+                  <option value="SQLServer">SQLServer</option>
                 </select>
               </div>
               <div className="form-group">

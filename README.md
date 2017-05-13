@@ -21,7 +21,7 @@
 - Supported databases:
   - [x] MySQL
   - [x] PostgreSQL
-  - [ ] SQL Server
+  - [x] SQL Server
   - [ ] Oracle
 
 ## Install

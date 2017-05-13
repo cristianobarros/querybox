@@ -4,6 +4,7 @@ import fs from 'fs';
 import AppPath from './../util/app-path';
 import MySQLDatabase from './mysql/mysql-database';
 import PostgreSQLDatabase from './postgresql/postgresql-database';
+import SQLServerDatabase from './sqlserver/sqlserver-database';
 
 class DatabaseFactory {
 
@@ -14,6 +15,8 @@ class DatabaseFactory {
 				return new MySQLDatabase(config);
 			case 'PostgreSQL':
 				return new PostgreSQLDatabase(config);
+				case 'SQLServer':
+					return new SQLServerDatabase(config);
 			default:
 				throw 'Unknown database type: ' + config.type;
 		}
