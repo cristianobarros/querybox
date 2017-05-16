@@ -39,7 +39,7 @@ export default class SQLServerDatabase {
 							type : undefined
 						};
 					}),
-					rows : result.recordset.map(result => this.mapToArray(result, fields))
+					rows : result.recordset.map(result => Object.values(result))
 				});
 
 				pool.close();
@@ -47,14 +47,6 @@ export default class SQLServerDatabase {
 
 		});
 
-	}
-
-	mapToArray(result, fields) {
-		const array = [];
-		fields.forEach(key => {
-				array.push(result[key]);
-		});
-		return array;
 	}
 
 	handleErrorIfExists(onError, error) {

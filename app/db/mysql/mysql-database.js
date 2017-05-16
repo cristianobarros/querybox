@@ -29,7 +29,7 @@ export default class MySQLDatabase {
 						type : MySQLDataType[field.type]
 					};
 				}),
-				rows : results.map(result => this.mapToArray(result, fields))
+				rows : results.map(result => Object.values(result))
 			});
 
 			connection.end((err) => {
@@ -38,15 +38,6 @@ export default class MySQLDatabase {
 
 		});
 
-	}
-
-	mapToArray(result, fields) {
-		let index = 0;
-		const array = [];
-		fields.forEach(field => {
-			array[index++] = result[field.name];
-		});
-		return array;
 	}
 
 	handleErrorIfExists(onError, error) {
