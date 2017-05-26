@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import ace from 'brace';
 import 'brace/ext/statusbar';
 
-import {Split} from 'split.js';
+import Split from 'split.js';
 
 import QueryInfo from './../components/query-info.jsx';
 import QueryEditor from './../components/query-editor.jsx';
