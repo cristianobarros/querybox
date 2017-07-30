@@ -118,6 +118,7 @@ export default class ResultTable extends PureComponent {
             <ContextMenuTrigger
                 id={this.uuid}
                 collect={this.collect}
+                holdToDisplay={-1}
                 text={DataTypeFormatter.format(field.type, this.props.result.rows[props.rowIndex][props.columnKey])}>
                 <ResultTableCell value={DataTypeFormatter.format(field.type, this.props.result.rows[props.rowIndex][props.columnKey])}></ResultTableCell>
             </ContextMenuTrigger>
