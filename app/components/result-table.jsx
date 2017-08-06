@@ -113,7 +113,15 @@ export default class ResultTable extends PureComponent {
         <Column
           key={index}
           columnKey={index}
-          header={<ResultTableCell value={field.name}></ResultTableCell>}
+          header={props => (
+            <ContextMenuTrigger
+                id={this.uuid}
+                collect={this.collect}
+                holdToDisplay={-1}
+                text={field.name}>
+                <ResultTableCell value={field.name}></ResultTableCell>
+            </ContextMenuTrigger>
+          )}
           cell={props => (
             <ContextMenuTrigger
                 id={this.uuid}
