@@ -13,9 +13,13 @@ class UpdateChecker {
 			    'User-Agent': 'request'
 			  }
 			}, (error, response, body) => {
-				const latestVersion = JSON.parse(body).tag_name;
-				const currentVersion = 'v' + config.version;
-				fulfill(latestVersion !== currentVersion);
+				if (error) {
+					reject(error);
+				} else {
+					const latestVersion = JSON.parse(body).tag_name;
+					const currentVersion = 'v' + config.version;
+					fulfill(latestVersion !== currentVersion);
+				}
 			});
 		});
 	}

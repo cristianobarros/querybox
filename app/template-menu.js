@@ -150,6 +150,15 @@ TemplateMenu.prototype.buildTemplate = function(keybindings) {
           role: 'zoomin',
         }
       ],
+    },
+    {
+      label: 'Help',
+      submenu: [
+        {
+          label: 'Check for updates',
+          click: (item, win) => win.webContents.send('querybox:checkForUpdates'),
+        }
+      ]
     }
   ];
 }

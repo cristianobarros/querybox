@@ -6,6 +6,7 @@ import {ContextMenu, MenuItem, ContextMenuTrigger} from "react-contextmenu";
 import Sortable from "sortablejs";
 
 import Session from './../util/session';
+import UpdateChecker from './../util/update-checker';
 
 import QueryActions from './../actions/query-actions';
 
@@ -44,6 +45,7 @@ export default class App extends PureComponent {
     ipcRenderer.on('querybox:redo', (event, message) => this.redo());
     ipcRenderer.on('querybox:find', (event, message) => this.find());
     ipcRenderer.on('querybox:replace', (event, message) => this.replace());
+    ipcRenderer.on('querybox:checkForUpdates', (event, message) => this.checkForUpdates());
     ipcRenderer.on('close', (event, message) => this.close(event));
   }
 
@@ -321,6 +323,18 @@ export default class App extends PureComponent {
 
    replace() {
      return this.getActiveTabContent().replace();
+   }
+
+   checkForUpdates() {
+     UpdateChecker.hasUpdateAvaliable()
+       .then(hasUpdateAvaliable => {
+         if (hasUpdateAvaliable) {
+           alert('There is a newer version available for download');
+         } else {
+           alert('You already have the latest version');
+         }
+       })
+       .catch(error => alert('An error occurred while checking for updates'));
    }
 
    getSql() {
