@@ -1,4 +1,6 @@
-import {ipcRenderer, webFrame, remote} from 'electron';
+import {ipcRenderer, webFrame, remote, shell} from 'electron';
+
+import config from './../package.json';
 
 import React, {PureComponent} from 'react';
 
@@ -126,6 +128,15 @@ export default class App extends PureComponent {
          });
        },
      });
+
+     UpdateChecker.hasUpdateAvaliable()
+       .then(hasUpdateAvaliable => {
+         if (hasUpdateAvaliable) {
+           this.confirmDownloadNewVersion();
+         }
+       })
+       .catch(error => console.error(error));
+
    }
 
    collect(props) {
@@ -329,12 +340,18 @@ export default class App extends PureComponent {
      UpdateChecker.hasUpdateAvaliable()
        .then(hasUpdateAvaliable => {
          if (hasUpdateAvaliable) {
-           alert('There is a newer version available for download');
+           this.confirmDownloadNewVersion();
          } else {
-           alert('You already have the latest version');
+           alert('You already have the latest version.');
          }
        })
-       .catch(error => alert('An error occurred while checking for updates'));
+       .catch(error => alert('An error occurred while checking for updates.'));
+   }
+
+   confirmDownloadNewVersion() {
+     if (confirm('There is a newer version available. Do you want to download it?')) {
+       shell.openExternal(config.repository + '/releases/latest');
+     }
    }
 
    getSql() {
