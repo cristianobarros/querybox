@@ -3,10 +3,11 @@ import ace from 'brace';
 import 'brace/ext/statusbar';
 
 import Split from 'split.js';
+import {ResizeSensor} from 'css-element-queries';
 
-import QueryInfo from './../components/query-info.jsx';
-import QueryEditor from './../components/query-editor.jsx';
-import ResultTable from './../components/result-table.jsx';
+import QueryInfo from './query-info.jsx';
+import QueryEditor from './query-editor.jsx';
+import ResultTable from './result-table.jsx';
 
 import KeywordManager from './../db/keyword-manager';
 import SnippetManager from './../db/snippet-manager';
@@ -16,6 +17,7 @@ export default class TabContent extends PureComponent {
 
   constructor(props) {
     super(props);
+    this.mountedResizeSensor = false;
     this.state = {
       sql : props.state.sql,
       result : props.state.result,
@@ -32,6 +34,23 @@ export default class TabContent extends PureComponent {
     this.mountStatusBar();
     this.mountSplit();
     this.loadTables();
+    this.mountResizeSensor();
+  }
+
+  componentDidUpdate() {
+    this.mountResizeSensor();
+  }
+
+  mountResizeSensor() {
+    if (this.props.active && !this.mountedResizeSensor) {
+      this.mountedResizeSensor = true;
+      const parent = this.refs.result;
+      this.refs.resultTable.updateSize(parent).then(() => {
+        new ResizeSensor(parent, () => {
+          this.refs.resultTable.updateSize(parent);
+        });
+      });
+    }
   }
 
   render() {
@@ -50,11 +69,12 @@ export default class TabContent extends PureComponent {
             error={this.state.error}
             />
         </div>
-        <ResultTable
-          ref="resultTable"
-          result={this.state.result}
-          visible={this.props.active}
-          />
+        <div ref="result" className="result">
+          <ResultTable
+            ref="resultTable"
+            result={this.state.result}
+            />
+        </div>
         <div ref="statusBar" className="status-bar"><QueryInfo message={this.state.message} /></div>
       </div>
     );
@@ -73,7 +93,7 @@ export default class TabContent extends PureComponent {
   mountSplit() {
 
     const editor = this.getEditor();
-    const split = Split([this.refs.editor, this.refs.resultTable.refs.result], {
+    const split = Split([this.refs.editor, this.refs.result], {
       sizes : this.state.split,
       direction : "vertical",
       onDrag: () => {

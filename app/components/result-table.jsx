@@ -5,7 +5,6 @@ import React, {PureComponent} from 'react';
 
 import ResultTableCell from './result-table-cell.jsx';
 import {Table, Column, Cell} from 'fixed-data-table';
-import {ResizeSensor} from 'css-element-queries';
 import {ContextMenu, MenuItem, ContextMenuTrigger} from "react-contextmenu";
 
 import DataTypeFormatter from './../util/data-type-formatter';
@@ -27,7 +26,6 @@ export default class ResultTable extends PureComponent {
   constructor(props) {
     super(props);
     this.uuid = uuid();
-    this.attachedResizeSensor = false;
     this.state = {
       width : 0,
       height : 0,
@@ -35,75 +33,29 @@ export default class ResultTable extends PureComponent {
     }
   }
 
-  resetColumnsWidths() {
-    this.setState({
-      columnWidths: this.getDefaultWidths()
-    });
-  }
-
-  componentDidMount() {
-    if (this.props.visible && !this.attachedResizeSensor) {
-      this.attachedResizeSensor = true;
-      this.attachResizeSensor();
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.visible && !this.attachedResizeSensor) {
-      this.attachedResizeSensor = true;
-      this.updateSize(this.refs.result)
-      .then(() => {
-        this.attachResizeSensor();
-      });
-    }
-  }
-
-  attachResizeSensor() {
-    const element = this.refs.result;
-    new ResizeSensor(element, () => {
-      this.updateSize(element);
-    });
-  }
-
-  updateSize(element, callback) {
-    return new Promise((fulfill, reject) => {
-      this.setState({
-        width : element.clientWidth,
-        height : element.clientHeight
-      }, function() {
-        fulfill();
-      })
-    });
-  }
-
   render() {
-
-    let table = null;
-
-    if (this.props.result != null) {
-      table = this.renderTable()
-    }
-
-    return <div ref="result" className="result">{table}</div>
-  }
-
-  renderTable() {
     return (
       <div>
-        <Table
-          headerHeight={30}
-          onColumnResizeEndCallback={(newColumnWidth, columnKey) => this.onColumnResizeEndCallback(newColumnWidth, columnKey)}
-          rowsCount={this.props.result.rows.length}
-          rowHeight={30}
-          isColumnResizing={false}
-          width={this.state.width}
-          height={this.state.height}>
-          {this.renderColumns()}
-        </Table>
+        {this.props.result ? this.renderTable() : null}
         <ContextMenu id={this.uuid}>
             <MenuItem onClick={this.copy}>Copy</MenuItem>
         </ContextMenu>
       </div>
+    );
+  }
+
+  renderTable() {
+    return (
+      <Table
+        headerHeight={30}
+        onColumnResizeEndCallback={(newColumnWidth, columnKey) => this.onColumnResizeEndCallback(newColumnWidth, columnKey)}
+        rowsCount={this.props.result.rows.length}
+        rowHeight={30}
+        isColumnResizing={false}
+        width={this.state.width}
+        height={this.state.height}>
+        {this.renderColumns()}
+      </Table>
     );
   }
 
@@ -191,6 +143,23 @@ export default class ResultTable extends PureComponent {
 
   getTextWidth(text, font) {
     return TextMeasurer.getTextWidth(text, font) + PADDING + BORDER;
+  }
+
+  updateSize(parent) {
+    return new Promise((fulfill, reject) => {
+      this.setState({
+        width : parent.clientWidth,
+        height : parent.clientHeight
+      }, function() {
+        fulfill();
+      })
+    });
+  }
+
+  resetColumnsWidths() {
+    this.setState({
+      columnWidths: this.getDefaultWidths()
+    });
   }
 
 }
