@@ -8,6 +8,7 @@ import {ResizeSensor} from 'css-element-queries';
 import QueryInfo from './query-info.jsx';
 import QueryEditor from './query-editor.jsx';
 import ResultTable from './result-table.jsx';
+import ErrorPanel from './error-panel.jsx';
 
 import KeywordManager from './../db/keyword-manager';
 import SnippetManager from './../db/snippet-manager';
@@ -41,18 +42,6 @@ export default class TabContent extends PureComponent {
     this.mountResizeSensor();
   }
 
-  mountResizeSensor() {
-    if (this.props.active && !this.mountedResizeSensor) {
-      this.mountedResizeSensor = true;
-      const parent = this.refs.result;
-      this.refs.resultTable.updateSize(parent).then(() => {
-        new ResizeSensor(parent, () => {
-          this.refs.resultTable.updateSize(parent);
-        });
-      });
-    }
-  }
-
   render() {
     return (
       <div className={"querybox-tab-content " + (this.props.active ? "active" : "")}>
@@ -74,9 +63,18 @@ export default class TabContent extends PureComponent {
             ref="resultTable"
             result={this.state.result}
             />
+          {this.state.error ? this.renderErrorPanel() : null}
         </div>
         <div ref="statusBar" className="status-bar"><QueryInfo message={this.state.message} /></div>
       </div>
+    );
+  }
+
+  renderErrorPanel() {
+    return (
+      <ErrorPanel
+        error={this.state.error}
+        />
     );
   }
 
@@ -129,6 +127,18 @@ export default class TabContent extends PureComponent {
     }
   }
 
+  mountResizeSensor() {
+    if (this.props.active && !this.mountedResizeSensor) {
+      this.mountedResizeSensor = true;
+      const parent = this.refs.result;
+      this.refs.resultTable.updateSize(parent).then(() => {
+        new ResizeSensor(parent, () => {
+          this.refs.resultTable.updateSize(parent);
+        });
+      });
+    }
+  }
+
   formatSQL() {
     return this.refs.aceEditor.formatSQL();
   }
@@ -159,6 +169,7 @@ export default class TabContent extends PureComponent {
 
   setError(e) {
     this.setState({
+      result : null,
       error : JSON.parse(JSON.stringify(e)),
       message : e.message
     });
