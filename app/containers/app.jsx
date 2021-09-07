@@ -394,15 +394,17 @@ export default class App extends PureComponent {
      QueryActions.executeSQL(this);
    }
 
-   close(event) {
-     Object.assign(remote.getGlobal('configuration'), this.state.configuration, {
-       zoomFactor : webFrame.getZoomFactor(),
-       activeTabIndex : this.state.activeTabIndex
-     });
-     const tabs = this.getTabs();
-     Session.saveAll(tabs).then(function() {
+   async close(event) {
+     try {
+       Object.assign(remote.getGlobal('configuration'), this.state.configuration, {
+         zoomFactor : webFrame.getZoomFactor(),
+         activeTabIndex : this.state.activeTabIndex
+       });
+       const tabs = this.getTabs();
+       await Session.saveAll(tabs);
+     } finally {
        event.sender.send('querybox:close');
-     });
+     }
    }
 
    getTabs() {
