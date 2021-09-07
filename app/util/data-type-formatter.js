@@ -6,6 +6,7 @@ class DataTypeFormatter {
 	constructor() {
 		this.formatters = {
 			date : (value) => dateFormat(value, 'yyyy-mm-dd'),
+			json : (value) => JSON.stringify(value),
 			timestampWithoutTimezone : (value) => dateFormat(value, 'yyyy-mm-dd HH:MM:ss.l'),
 			timestamp : (value) => dateFormat(value, 'yyyy-mm-dd HH:MM:ss.l'),
 			undefined : (value) => String(value)
