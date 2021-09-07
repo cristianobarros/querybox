@@ -54,7 +54,7 @@ function QueryActions() {
     });
   }
 
-  function executeSQL(app) {
+  async function executeSQL(app) {
 
     if (!DatabaseFactory.hasConfig()) {
       app.setMessage('No connection configured.');
@@ -66,19 +66,20 @@ function QueryActions() {
 
     timer.start();
 
-    const onSuccess = function(result) {
-       timer.stop();
-       app.setMessage(result.rows.length + ' rows in ' + timer.getTime() + ' ms');
-       app.setResult(result);
-       NProgress.done();
-     };
+     try {
 
-     const onError = function(error) {
-       app.setError(error);
-       NProgress.done();
-     };
+      const result = await DatabaseFactory.create().execute(app.getSQL());
 
-     DatabaseFactory.create().execute(app.getSQL(), onSuccess, onError);
+      timer.stop();
+
+      app.setMessage(`${result.rows.length} rows in ${timer.getTime()} ms`);
+      app.setResult(result);
+
+    } catch (error) {
+      app.setError(error);
+     } finally {
+      NProgress.done();
+     }
    }
 
    return {

@@ -1,6 +1,8 @@
 
 const pg = require('electron').remote.require('pg');
 
+import 'babel-polyfill'
+
 import PostgreSQLDataType from './postgresql-data-type';
 
 export default class PostgreSQLDatabase {
@@ -9,45 +11,33 @@ export default class PostgreSQLDatabase {
 		this.config = config;
 	}
 
-	getTableNames(onSuccess, onError) {
-		let sql = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');";
-		this.execute(sql, onSuccess, onError);
+	async getTableNames() {
+		const sql = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');";
+		return await this.execute(sql);
 	}
 
-	execute(sql, onSuccess, onError) {
+	async execute(sql) {
 
-			var client = new pg.Client(this.config);
+		const client = new pg.Client(this.config);
 
-			client.connect(err => {
+		try {
 
-				this.handleErrorIfExists(onError, err);
+			await client.connect();
 
-				client.query({ rowMode : "array", text : sql }, (err, res) => {
+			const result = await client.query({ rowMode : "array", text : sql });
 
-					this.handleErrorIfExists(onError, err);
+			return {
+				fields : result.fields.map(field => {
+					return {
+						name : field.name,
+						type : PostgreSQLDataType[field.dataTypeID]
+					};
+				}),
+				rows : result.rows
+			};
 
-					onSuccess({
-						fields : res.fields.map(field => {
-							return {
-								name : field.name,
-								type : PostgreSQLDataType[field.dataTypeID]
-							};
-						}),
-						rows : res.rows
-					});
-
-					client.end(err => {
-						this.handleErrorIfExists(onError, err);
-					});
-				});
-
-			});
-	}
-
-	handleErrorIfExists(onError, error) {
-		if (error) {
-			onError(error);
-			throw error;
+		} finally {
+			await client.end();
 		}
 	}
 

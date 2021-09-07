@@ -103,27 +103,18 @@ export default class TabContent extends PureComponent {
     editor.resize();
   }
 
-  loadTables() {
-
-    const onSuccess = (res) => {
-      const newTables = res.rows.map((row) => row[0]);
-      this.setState({
-        tables : newTables
-      });
-    };
-
-    const onError = (error) => {
+  async loadTables() {
+    try {
+      if (DatabaseFactory.hasConfig()) {
+        const result = await DatabaseFactory.create().getTableNames();
+        this.setState({
+          tables : result.rows.map(row => row[0])
+        });
+      }
+    } catch (error) {
       this.setState({
         message : error.message
       });
-    };
-
-    try {
-      if (DatabaseFactory.hasConfig()) {
-        DatabaseFactory.create().getTableNames(onSuccess, onError);
-      }
-    } catch (error) {
-      onError(error);
     }
   }
 
