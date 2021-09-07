@@ -1,5 +1,5 @@
 
-import uuid from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import Datastore from 'nedb';
 
 import AppPath from './app-path';
@@ -53,7 +53,7 @@ class Session {
 
 	getDefaultTab(number) {
 		return {
-			uuid : uuid(),
+			uuid : uuidv4(),
 			name : 'Tab ' + number,
 			content : {
 				sql : '',

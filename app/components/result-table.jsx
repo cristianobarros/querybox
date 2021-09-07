@@ -11,7 +11,7 @@ import DataTypeFormatter from './../util/data-type-formatter';
 
 import TextMeasurer from './../util/text-measurer';
 
-import uuid from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 
 const BORDER = 1;
 const PADDING = 16;
@@ -25,7 +25,7 @@ export default class ResultTable extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.uuid = uuid();
+    this.uuid = uuidv4();
     this.state = {
       width : 0,
       height : 0,

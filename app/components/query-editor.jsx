@@ -4,7 +4,7 @@ import AceEditor from 'react-ace';
 import 'brace/ext/searchbox';
 import 'brace/ext/language_tools';
 
-import uuid from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 
 import '../util/mode';
 import '../util/snippet';
@@ -14,7 +14,7 @@ export default class QueryEditor extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.uuid = uuid();
+    this.uuid = uuidv4();
   }
 
   componentWillReceiveProps(nextProps) {
