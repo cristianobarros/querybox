@@ -1,9 +1,7 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 
-export default class QueryInfo extends PureComponent {
-  render() {
-    return (
-      <div id="info">{ this.props.message }</div>
-    );
-  }
-}
+const QueryInfo = React.memo(({ message }) => {
+	return <div id="info">{ message }</div>;
+});
+
+export default QueryInfo;
