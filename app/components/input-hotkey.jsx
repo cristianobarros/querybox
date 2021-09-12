@@ -1,56 +1,53 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 
 const NAMES = {
 	Control: 'Ctrl',
 };
 
-export default class InputHotkey extends PureComponent {
+const InputHotkey = React.memo(props => {
 
-	render() {
-		return (
-			<input
-				{...this.props}
-				type="text"
-				ref={input => this.input = input}
-				onKeyDown={event => this.onKeyDown(event)}
-				value={this.props.value}
-				/>
-		);
-	}
-
-	onKeyDown(event) {
+	const onKeyDown = event => {
 		event.preventDefault();
-		const newValue = this.format(event);
-		if (this.props.value !== newValue) {
-			this.fireChange(newValue);
+		const newValue = format(event);
+		if (props.value !== newValue) {
+			fireChange(newValue);
 		}
-	}
+	};
 
-	fireChange(value) {
-		if (this.props.onChange) {
-			this.props.onChange(value);
+	const fireChange = value => {
+		if (props.onChange) {
+			props.onChange(value);
 		}
-	}
+	};
 
-	format(event) {
+	const format = event => {
 		const keys = [];
 		if (event.ctrlKey) {
-			keys.push(this.getName("Control"));
+			keys.push(getName("Control"));
 		}
 		if (event.altKey) {
-			keys.push(this.getName("Alt"));
+			keys.push(getName("Alt"));
 		}
 		if (event.shiftKey) {
-			keys.push(this.getName("Shift"));
+			keys.push(getName("Shift"));
 		}
-		if (keys.indexOf(this.getName(event.key)) == -1) {
-			keys.push(this.getName(event.key));
+		if (keys.indexOf(getName(event.key)) == -1) {
+			keys.push(getName(event.key));
 		}
 		return keys.join("+");
-	}
+	};
 
-	getName(value) {
+	const getName = value => {
 		return NAMES[value] || value;
-	}
+	};
 
-}
+	return (
+		<input
+			{...props}
+			type="text"
+			onKeyDown={event => onKeyDown(event)}
+			/>
+	);
+});
+
+export default InputHotkey;
