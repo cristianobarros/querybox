@@ -8,9 +8,14 @@ class DataTypeFormatter {
 			date : (value) => dateFormat(value, 'yyyy-mm-dd'),
 			json : (value) => JSON.stringify(value),
 			timestampWithoutTimezone : (value) => dateFormat(value, 'yyyy-mm-dd HH:MM:ss.l'),
-			timestamp : (value) => dateFormat(value, 'yyyy-mm-dd HH:MM:ss.l'),
-			undefined : (value) => String(value)
+			timestamp : (value) => dateFormat(value, 'yyyy-mm-dd HH:MM:ss.lo'),
+			undefined : (value) => Array.isArray(value) ? `{${value.map(String)}}` : String(value)
 		};
+		for (const [key, value] of Object.entries(this.formatters)) {
+			if (key !== 'undefined') {
+				this.formatters[`${key}[]`] = (values) => `{${values.map(value)}}`;
+			}
+		}
 	}
 
 	format(type, value) {
