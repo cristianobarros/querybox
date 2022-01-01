@@ -146,8 +146,51 @@ export default class QueryEditor extends PureComponent {
   }
 
   getSQL() {
-    let editor = this.getEditor();
-  	return editor.getSelectedText() || editor.getValue();
+
+    const editor = this.getEditor();
+
+    if (editor.getSelectedText()) {
+      return editor.getSelectedText();
+    }
+
+    const cursorRowIndex = editor.getCursorPosition().row;
+
+    const sql = editor.getValue();
+
+    const rows = sql.split('\n');
+
+    const startRowIndex = this.getStartRowIndex(rows, cursorRowIndex);
+    const endRowIndex = this.getEndRowIndex(rows, cursorRowIndex);
+
+    const resultSql = rows.slice(startRowIndex, endRowIndex + 1).join('\n');
+
+    return resultSql;
+  }
+
+  getStartRowIndex(rows, cursorRowIndex) {
+    let rowIndex = cursorRowIndex;
+    for (let i = cursorRowIndex; i >= 0; i--) {
+      if (this.isEmpty(rows[i])) {
+        break;
+      }
+      rowIndex = i;
+    }
+    return rowIndex;
+  }
+
+  getEndRowIndex(rows, cursorRowIndex) {
+    let rowIndex = cursorRowIndex;
+    for (let i = cursorRowIndex; i < rows.length; i++) {
+      if (this.isEmpty(rows[i])) {
+        break;
+      }
+      rowIndex = i;
+    }
+    return rowIndex;
+  }
+
+  isEmpty(text) {
+    return text.trim() == '';
   }
 
   undo() {
